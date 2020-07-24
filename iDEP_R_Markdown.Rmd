@@ -1,7 +1,7 @@
 ---
 title: 'Reproducing iDEP analyses with auto-generated R Markdown'
 author:  iDEP 0.91  http://ge-lab.org/idep/, originally by Steven Xijin.Ge@sdstate.edu  
-date: Fri Jul 24 21:21:22 2020  
+date: Fri Jul 24 23:04:27 2020  
 output: html_document
 ---
 ```{r setup, include=FALSE}
@@ -61,7 +61,7 @@ Parameters for reading data
 ```
 ```{r, message=FALSE  }  
  input_selectOrg ="NEW" 
- input_selectGO <- 'GOBP'	#Gene set category 
+ input_selectGO <- NULL 	#Gene set category 
  input_noIDConversion = TRUE  
  allGeneInfo.out <- geneInfo(geneInfoFile) 
  converted.out = NULL 
@@ -145,7 +145,7 @@ Parameters for reading data
  input_distFunctions <- 1	#which distant funciton to use
  input_hclustFunctions <- 1	#Linkage type
  input_heatColors1 <- 1	#Colors
- input_selectFactorsHeatmap <- 'Light'	#Sample coloring factors 
+ input_selectFactorsHeatmap <- 'Gravity'	#Sample coloring factors 
  png('heatmap.png', width = 10, height = 15, units = 'in', res = 300) 
  staticHeatmap() 
  dev.off()  
@@ -198,8 +198,8 @@ Parameters for reading data
 
 ## 5. PCA and beyond   
 ```{r, message=FALSE  } 
- input_selectFactors <- 'Variety'	#Factor coded by color
- input_selectFactors2 <- 'Light'	#Factor coded by shape
+ input_selectFactors <- 'Sample_Name'	#Factor coded by color
+ input_selectFactors2 <- 'Sample_Name'	#Factor coded by shape
  input_tsneSeed2 <- 0	#Random seed for t-SNE 
  #PCA, MDS and t-SNE plots
  PCAplot()  
@@ -228,11 +228,11 @@ Parameters for reading data
  input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval <- 0.1	#FDR cutoff
  input_limmaFC <- 2	#Fold-change cutoff
- input_selectModelComprions <- 'Gravity: Microgravity vs. Terrestrial'	#Selected comparisons
+ input_selectModelComprions <- c('Gravity: 1G vs. 009G','Gravity: 1G vs. 018G','Gravity: 1G vs. 036G','Gravity: 1G vs. 057G','Gravity: 1G vs. uG')	#Selected comparisons
  input_selectFactorsModel <- 'Gravity'	#Selected comparisons
  input_selectInteractions <- NULL 	#Selected comparisons
  input_selectBlockFactorsModel <- NULL 	#Selected comparisons
- factorReferenceLevels.out <- c('Gravity:Terrestrial','Light:Alight') 
+ factorReferenceLevels.out <- c('Gravity:1G') 
 
  limma.out <- limma()
  DEG.data.out <- DEG.data()
@@ -252,7 +252,7 @@ Parameters for reading data
 
 ## 7. DEG2   
 ```{r, message=FALSE  } 
- input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
+ input_selectContrast <- '1G-009G'	#Selected comparisons 
  selectedHeatmap.data.out <- selectedHeatmap.data()
  selectedHeatmap()   # heatmap for DEGs in selected comparison
 
@@ -319,10 +319,10 @@ Generating interactive PPI
 ```
 
 ## 8. Pathway analysis   
-```{r, message=FALSE  } 
- input_selectContrast1 <- 'Microgravity-Terrestrial'	#select Comparison 
- #input_selectContrast1 = limma.out$comparisons[3] # manually set
- input_selectGO <- 'GOBP'	#Gene set category 
+```{r, message=FALSE  }  
+ input_selectContrast1 = limma.out$comparisons[1] 
+ #input_selectContrast1 = limma.out$comparisons[3] # manually set 
+ input_selectGO = 'GOBP'  # gene set category 
  #input_selectGO='custom' # if custom gmt file
  input_minSetSize <- 15	#Min size for gene set
  input_maxSetSize <- 2000	#Max size for gene set 
@@ -375,8 +375,8 @@ Generating interactive PPI
 ```
 
 ## 9. Chromosome   
-```{r, message=FALSE  } 
- input_selectContrast2 <- 'Terrestrial-Microgravity'	#select Comparison 
+```{r, message=FALSE  }  
+ input_selectContrast2 = limma.out$comparisons[1] 
  #input_selectContrast2 = limma.out$comparisons[3] # manually set
  input_limmaPvalViz <- 0.1	#FDR to filter genes
  input_limmaFCViz <- 2	#FDR to filter genes 
