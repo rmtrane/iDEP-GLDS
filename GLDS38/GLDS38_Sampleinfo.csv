@@ -1,0 +1,3 @@
+Analysis.Id,FLT_Rep1,FLT_Rep2,FLT_Rep3,GC_Rep1,GC_Rep2,GC_Rep3,LN2_Rep1,LN2_Rep2,LN2_Rep3,RNAlat_Rep1,RNAlat_Rep2,RNAlat_Rep3
+Gravity,Microgravity,Microgravity,Microgravity,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial
+Preservation.Method.,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,Liquid Nitrogen,Liquid Nitrogen,Liquid Nitrogen,RNAlater,RNAlater,RNAlater

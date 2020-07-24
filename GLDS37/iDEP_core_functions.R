@@ -98,6 +98,16 @@ speciesChoice <- append( setNames( "BestMatch","Best matching species"), species
 # Read data and pre-process
 ################################################################
 
+readMetadata <- function(inFile ){
+  x <- read.csv(inFile,row.names=1,header=T,colClasses="character")	# try CSV
+  if(dim(x)[2] <= 2 )   # if less than 3 columns, try tab-deliminated
+    x <- read.table(inFile, row.names=1,sep="\t",header=TRUE,colClasses="character")
+  # remove "-" or "." from sample names
+  colnames(x) = gsub("-","",colnames(x))
+  colnames(x) = gsub("\\.","",colnames(x))	
+  return(x)
+}
+
 readData <- function(inFile ) {
 
 				# these packages moved here to reduce loading time

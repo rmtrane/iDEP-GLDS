@@ -1,3 +1,24 @@
-﻿Sample.Name,Atha_Col.0_wo_act2.3_FLT_Rep1,Atha_Col.0_wo_act2.3_FLT_Rep2,Atha_Col.0_wo_act2.3_FLT_Rep3,Atha_Col.0_wo_act2.3_GC_Rep1,Atha_Col.0_wo_act2.3_GC_Rep2,Atha_Col.0_wo_act2.3_GC_Rep3,Atha_Col.0_wo_WT_FLT_Rep1,Atha_Col.0_wo_WT_FLT_Rep2,Atha_Col.0_wo_WT_FLT_Rep3,Atha_Col.0_wo_WT_GC_Rep1,Atha_Col.0_wo_WT_GC_Rep2,Atha_Col.0_wo_WT_GC_Rep3
-Gravity,Microgravity,Microgravity,Terrestrial,Terrestrial,Terrestrial,Microgravity,Microgravity,Microgravity,Terrestrial,Terrestrial,Terrestrial,Terrestrial
-Variety,Col-0 act2-3,Col-0 act2-3,Col-0 act2-3,Col-0 act2-3,Col-0 act2-3,Col-0 WT,Col-0 WT,Col-0 WT,Col-0 WT,Col-0 WT,Col-0 WT,Col-0 WT
+Analysis.Id,"Act2,3_FLT_Rep1","Act2,3_FLT_Rep2","Act2,3_FLT_Rep3","Act2,3_GC_Rep1","Act2,3_GC_Rep2","Act2,3_GC_Rep3",WT_FLT_Rep1,WT_FLT_Rep2,WT_FLT_Rep3,WT_GC_Rep1,WT_GC_Rep2,WT_GC_Rep3
+Sample.LongId,Atha.Col.0.wo.act2.3.FLT.Rep1.Array,Atha.Col.0.wo.act2.3.FLT.Rep2.Array,Atha.Col.0.wo.act2.3.FLT.Rep3.Array,Atha.Col.0.wo.act2.3.GC.Rep1.Array,Atha.Col.0.wo.act2.3.GC.Rep2.Array,Atha.Col.0.wo.act2.3.GC.Rep3.Array,Atha.Col.0.wo.WT.FLT.Rep1.Array,Atha.Col.0.wo.WT.FLT.Rep2.Array,Atha.Col.0.wo.WT.FLT.Rep3.Array,Atha.Col.0.wo.WT.GC.Rep1.Array,Atha.Col.0.wo.WT.GC.Rep2.Array,Atha.Col.0.wo.WT.GC.Rep3.Array
+Sample.Id,Atha.Col.0.wo.act2.3.FLT.Rep1,Atha.Col.0.wo.act2.3.FLT.Rep2,Atha.Col.0.wo.act2.3.FLT.Rep3,Atha.Col.0.wo.act2.3.GC.Rep1,Atha.Col.0.wo.act2.3.GC.Rep2,Atha.Col.0.wo.act2.3.GC.Rep3,Atha.Col.0.wo.WT.FLT.Rep1,Atha.Col.0.wo.WT.FLT.Rep2,Atha.Col.0.wo.WT.FLT.Rep3,Atha.Col.0.wo.WT.GC.Rep1,Atha.Col.0.wo.WT.GC.Rep2,Atha.Col.0.wo.WT.GC.Rep3
+Sample.Name,Atha_Col-0_wo_act2-3_FLT_Rep1,Atha_Col-0_wo_act2-3_FLT_Rep2,Atha_Col-0_wo_act2-3_FLT_Rep3,Atha_Col-0_wo_act2-3_GC_Rep1,Atha_Col-0_wo_act2-3_GC_Rep2,Atha_Col-0_wo_act2-3_GC_Rep3,Atha_Col-0_wo_WT_FLT_Rep1,Atha_Col-0_wo_WT_FLT_Rep2,Atha_Col-0_wo_WT_FLT_Rep3,Atha_Col-0_wo_WT_GC_Rep1,Atha_Col-0_wo_WT_GC_Rep2,Atha_Col-0_wo_WT_GC_Rep3
+GLDS,44,44,44,44,44,44,44,44,44,44,44,44
+Accession,GLDS-44,GLDS-44,GLDS-44,GLDS-44,GLDS-44,GLDS-44,GLDS-44,GLDS-44,GLDS-44,GLDS-44,GLDS-44,GLDS-44
+Hardware,BRIC,BRIC,BRIC,BRIC,BRIC,BRIC,BRIC,BRIC,BRIC,BRIC,BRIC,BRIC
+Tissue,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling
+Age,14 days,14 days,14 days,14 days,14 days,14 days,14 days,14 days,14 days,14 days,14 days,14 days
+Organism,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana
+Ecotype,Col-0,Col-0,Col-0,Col-0,Col-0,Col-0,Col-0,Col-0,Col-0,Col-0,Col-0,Col-0
+Genotype,act2-3,act2-3,act2-3,act2-3,act2-3,act2-3,WT,WT,WT,WT,WT,WT
+Variety,Col-0 act2-3,Col-0 act2-3,Col-0 act2-3,Col-0 act2-3,Col-0 act2-3,Col-0 act2-3,Col-0 WT,Col-0 WT,Col-0 WT,Col-0 WT,Col-0 WT,Col-0 WT
+Radiation,Cosmic radiation,Cosmic radiation,Cosmic radiation,Background Earth,Background Earth,Background Earth,Cosmic radiation,Cosmic radiation,Cosmic radiation,Background Earth,Background Earth,Background Earth
+Gravity,Microgravity,Microgravity,Microgravity,Terrestrial,Terrestrial,Terrestrial,Microgravity,Microgravity,Microgravity,Terrestrial,Terrestrial,Terrestrial
+Developmental,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings,Etiolated 12 day old seedlings
+Time.series.or.Concentration.gradient,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point
+Light,Dark,Dark,Dark,Dark,Dark,Dark,Dark,Dark,Dark,Dark,Dark,Dark
+Assay..RNAseq.,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling
+Temperature,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle
+Treatment.type,Space flight,Space flight,Space flight,Space flight,Space flight,Space flight,Space flight,Space flight,Space flight,Space flight,Space flight,Space flight
+Treatment.intensity,x,x,x,x,x,x,x,x,x,x,x,x
+Treament.timing,x,x,x,x,x,x,x,x,x,x,x,x
+Preservation.Method.,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater

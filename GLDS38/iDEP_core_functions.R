@@ -98,6 +98,16 @@ speciesChoice <- append( setNames( "BestMatch","Best matching species"), species
 # Read data and pre-process
 ################################################################
 
+readMetadata <- function(inFile ){
+  x <- read.csv(inFile,row.names=1,header=T,colClasses="character")	# try CSV
+  if(dim(x)[2] <= 2 )   # if less than 3 columns, try tab-deliminated
+    x <- read.table(inFile, row.names=1,sep="\t",header=TRUE,colClasses="character")
+  # remove "-" or "." from sample names
+  colnames(x) = gsub("-","",colnames(x))
+  colnames(x) = gsub("\\.","",colnames(x))	
+  return(x)
+}
+
 readData <- function(inFile ) {
 
 				# these packages moved here to reduce loading time
@@ -1201,7 +1211,7 @@ readCountsBias <- function( ){
 	  y <- readSampleInfo.out
 		for (j in 1:ncol(y) ) { 
 		pval = summary( aov(totalCounts ~ as.factor(y[,j])))[[1]][["Pr(>F)"]][1]
-
+		print(pval)
 		if(pval <0.05)
 		tem = paste(tem, " Total read counts seem to be correlated with factor",colnames(y)[j], 
 					"(p=",  sprintf("%-3.2e",pval),").  ")

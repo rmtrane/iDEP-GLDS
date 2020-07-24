@@ -39,7 +39,8 @@ We are using the downloaded gene expression file where gene IDs has
 	to use the pathway files available in iDEP (or it is not available).  
 ```{r, message=FALSE  }  
  inputFile <- 'GLDS37_Expression.csv'  # Expression matrix
- sampleInfoFile <- 'GLDS37_Metadata.csv' # Experiment design file 
+ sampleInfoFile <- 'GLDS37_Sampleinfo.csv' # Experiment design file 
+ gldsMetadataFile <- 'GLDS37_Metadata.csv' # GLDS metadata info
  geneInfoFile <- 'Arabidopsis_thaliana__athaliana_eg_gene_GeneInfo.csv' #Gene symbols, location etc. 
  geneSetFile <- 'Arabidopsis_thaliana__athaliana_eg_gene.db'  # pathway database in SQL; can be GMT format 
  STRING10_speciesFile <- 'https://raw.githubusercontent.com/iDEP-SDSU/idep/master/shinyapps/idep/STRING10_species.csv' 
@@ -53,15 +54,27 @@ Parameters for reading data
  input_countsLogStart <- 4	#Pseudo count for log CPM
  input_CountsTransform <- 1	#Methods for data transformation of counts. 1-EdgeR's logCPM 2-VST, 3-rlog 
 ```
+
+```{r, message=FALSE}
+readMetadata.out <- readMetadata(gldsMetadataFile)
+library(knitr)   #  install if needed. for showing tables with kable
+library(kableExtra)
+kable( readMetadata.out ) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
+```
+
 ```{r, message=FALSE  }  
 
  readData.out <- readData(inputFile) 
- library(knitr)   #  install if needed. for showing tables with kable 
- kable( head(readData.out$data) )    # show the first few rows of data 
+ kable( head(readData.out$data) ) %>% # show the first few rows of data
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")     
 ```
 ```{r, message=FALSE  }  
  readSampleInfo.out <- readSampleInfo(sampleInfoFile) 
- kable( readSampleInfo.out )  
+ kable( readSampleInfo.out ) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 ```{r, message=FALSE  }  
  input_selectOrg ="NEW" 
@@ -192,7 +205,8 @@ Parameters for reading data
  #GeneSets.out <- readGMTRobust('somefile.GMT')  
  results <- KmeansGO()  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
- kable( results, row.names=FALSE) 
+ kable( results, row.names=FALSE) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```     
 ```{r, message=FALSE  } 
  input_seedTSNE <- 0	#Random seed for t-SNE
@@ -286,7 +300,8 @@ Parameters for reading data
  input_removeRedudantSets <- TRUE	#Remove highly redundant gene sets? 
  results <- geneListGO()  #Enrichment analysis
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
- kable( results, row.names=FALSE) 
+ kable( results, row.names=FALSE) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
 STRING-db API access. 
@@ -310,7 +325,8 @@ Enrichment analysis using STRING
  input_STRINGdbGO <- 'Process'	#'Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro' 
  results <- stringDB_GO_enrichmentData()  # enrichment using STRING	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
- kable( results, row.names=FALSE) 
+ kable( results, row.names=FALSE) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ``` 
 PPI network retrieval and analysis    
 ```{r, message=FALSE  } 
@@ -345,7 +361,8 @@ Generating interactive PPI
    
  results <- gagePathwayData.out  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
- kable( results, row.names=FALSE) 
+ kable( results, row.names=FALSE) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```     
 ```{r, message=FALSE  }  
  pathwayListData.out = pathwayListData() 
@@ -363,7 +380,8 @@ Generating interactive PPI
  fgseaPathwayData.out <- fgseaPathwayData() #Pathway analysis using fgsea 
  results <- fgseaPathwayData.out  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
- kable( results, row.names=FALSE) 
+ kable( results, row.names=FALSE) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```     
 ```{r, message=FALSE  }  
   pathwayListData.out = pathwayListData() 
@@ -405,7 +423,8 @@ Generating interactive PPI
     c(input_minSetSize, input_maxSetSize)  )  
  results <- geneListBclustGO()  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
- kable( results, row.names=FALSE) 
+ kable( results, row.names=FALSE) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
 ## 11. Co-expression network    
@@ -439,5 +458,6 @@ Generating interactive PPI
  input_removeRedudantSets <- TRUE	#Remove redundant gene sets 
  results <- networkModuleGO()  #Enrichment analysis of selected module
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
- kable( results, row.names=FALSE) 
+ kable( results, row.names=FALSE) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```   
