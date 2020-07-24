@@ -272,6 +272,7 @@ kable( readMetadata.out ) %>%
 ```{r, message=FALSE  } 
  input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
  selectedHeatmap.data.out <- selectedHeatmap.data()
+ print(selectedHeatmap.data())
  selectedHeatmap()   # heatmap for DEGs in selected comparison
 
  # Save gene lists and data into files

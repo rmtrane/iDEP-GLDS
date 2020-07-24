@@ -1,7 +1,7 @@
 ---
 title: 'GLDS-120 Analysis Using iDEP 0.91'
 author: Hyun-seok 'Ren' Chang 
-date: Fri Jul 24 15:50:58 2020
+date: Fri Jul 24 16:24:47 2020
 output: html_document
 ---
 ```{r setup, include=FALSE}
@@ -219,7 +219,7 @@ kable( readMetadata.out ) %>%
 ## 5. PCA and beyond   
 ```{r, message=FALSE  } 
  input_selectFactors <- 'Variety'	#Factor coded by color
- input_selectFactors2 <- 'Gravity'	#Factor coded by shape
+ input_selectFactors2 <- 'Light'	#Factor coded by shape
  input_tsneSeed2 <- 0	#Random seed for t-SNE 
  #PCA, MDS and t-SNE plots
  PCAplot()  
@@ -248,11 +248,11 @@ kable( readMetadata.out ) %>%
  input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval <- 0.1	#FDR cutoff
  input_limmaFC <- 2	#Fold-change cutoff
- input_selectModelComprions <- 'Light: 46 umoles m2 s1 total light vs. Lightactivated for 4 hours, then darkgrown'	#Selected comparisons
- input_selectFactorsModel <- 'Light'	#Selected comparisons
+ input_selectModelComprions <- 'Gravity: Microgravity vs. Terrestrial'	#Selected comparisons
+ input_selectFactorsModel <- 'Gravity'	#Selected comparisons
  input_selectInteractions <- NULL 	#Selected comparisons
  input_selectBlockFactorsModel <- NULL 	#Selected comparisons
- factorReferenceLevels.out <- c('Light:46 umoles m2 s1 total light','Light:46 umoles m2 s1 total light') 
+ factorReferenceLevels.out <- c('Gravity:Terrestrial','Light:Alight') 
 
  limma.out <- limma()
  DEG.data.out <- DEG.data()
@@ -272,7 +272,7 @@ kable( readMetadata.out ) %>%
 
 ## 7. DEG2   
 ```{r, message=FALSE  } 
- input_selectContrast <- '46 umoles m2 s1 total light-Lightactivated for 4 hours, then darkgrown'	#Selected comparisons 
+ input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
  selectedHeatmap.data.out <- selectedHeatmap.data()
  selectedHeatmap()   # heatmap for DEGs in selected comparison
 
@@ -344,7 +344,7 @@ Generating interactive PPI
 
 ## 8. Pathway analysis   
 ```{r, message=FALSE  } 
- input_selectContrast1 <- '46 umoles m2 s1 total light-Lightactivated for 4 hours, then darkgrown'	#select Comparison 
+ input_selectContrast1 <- 'Microgravity-Terrestrial'	#select Comparison 
  #input_selectContrast1 = limma.out$comparisons[3] # manually set
  input_selectGO <- 'GOBP'	#Gene set category 
  #input_selectGO='custom' # if custom gmt file
