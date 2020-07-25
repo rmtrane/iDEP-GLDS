@@ -1,0 +1,21 @@
+GLDS#,Status,Notes
+GLDS7,No Significant Differential Genes,
+GLDS17,Limma Error,"Quitting from lines 248-260 (iDEP_GLDS17.Rmd) 
+Error in DESeqDataSetFromMatrix(countData = rawCounts, colData = colData,  : 
+  ncol(countData) == nrow(colData) is not TRUE
+Calls: <Anonymous> ... eval -> eval -> DESeqDataSetFromMatrix -> stopifnot
+Execution halted"
+GLDS37,No Errors,
+GLDS38,No Errors,
+GLDS44,No Significant Differential Genes,
+GLDS46,DEG1 Error,
+GLDS120,No Errors,
+GLDS121,No Significant Differential Genes,
+GLDS136,DEG1 Error,
+GLDS147,DEG1 Error,
+GLDS205,No Significant Differential Genes,
+GLDS208_A,DEG1 Error,
+GLDS208_R,DEG1 Error,
+GLDS213,DEG1 Error,
+GLDS218,No Errors,
+GLDS251,No DEG Heatmap,
