@@ -41,8 +41,8 @@ We are using the downloaded gene expression file where gene IDs has
  inputFile <- 'GLDS17_Expression.csv'
  sampleInfoFile <- 'GLDS17_Sampleinfo.csv'
  gldsMetadataFile <- 'GLDS17_Metadata.csv'
- geneInfoFile <- 'Brassica_rapa__brapa_eg_gene_GeneInfo.csv' #Gene symbols, location etc. 
- geneSetFile <- 'Brassica_rapa__brapa_eg_gene.db'  # pathway database in SQL; can be GMT format 
+ geneInfoFile <- 'Arabidopsis_thaliana__athaliana_eg_gene_GeneInfo.csv' #Gene symbols, location etc. 
+ geneSetFile <- 'Arabidopsis_thaliana__athaliana_eg_gene.db'  # pathway database in SQL; can be GMT format 
  STRING10_speciesFile <- 'https://raw.githubusercontent.com/iDEP-SDSU/idep/master/shinyapps/idep/STRING10_species.csv' 
 ``` 
 Parameters for reading data  

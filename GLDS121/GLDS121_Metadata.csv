@@ -1,2 +1,24 @@
-﻿Sample.Name,Atha_Ler.0_sShoots_FLT_Rep1,Atha_Ler.0_sShoots_FLT_Rep2,Atha_Ler.0_sShoots_FLT_Rep3,Atha_Ler.0_sShoots_GC_Rep1,Atha_Ler.0_sShoots_GC_Rep2,Atha_Ler.0_sShoots_GC_Rep3
+Analysis.Id,FLT_Rep1,FLT_Rep2,FLT_Rep3,GC_Rep1,GC_Rep2,GC_Rep3
+Sample.LongId,Atha.Ler.0.sShoots.FLT.Rep1.Array,Atha.Ler.0.sShoots.FLT.Rep2.Array,Atha.Ler.0.sShoots.FLT.Rep3.Array,tha.Ler.0.sShoots.GC.Rep1,tha.Ler.0.sShoots.GC.Rep2,tha.Ler.0.sShoots.GC.Rep3
+Sample.Id,Atha.Ler.0.sShoots.FLT.Rep1,Atha.Ler.0.sShoots.FLT.Rep2,Atha.Ler.0.sShoots.FLT.Rep3,Atha.Ler.0.sShoots.GC.Rep1,Atha.Ler.0.sShoots.GC.Rep2,Atha.Ler.0.sShoots.GC.Rep3
+Sample.Name,Atha_Ler-0_sShoots_FLT_Rep1,Atha_Ler-0_sShoots_FLT_Rep2,Atha_Ler-0_sShoots_FLT_Rep3,Atha_Ler-0_sShoots_GC_Rep1,Atha_Ler-0_sShoots_GC_Rep2,Atha_Ler-0_sShoots_GC_Rep3
+GLDS,121,121,121,121,121,121
+Accession,GLDS-121,GLDS-121,GLDS-121,GLDS-121,GLDS-121,GLDS-121
+Hardware,BRIC,BRIC,BRIC,BRIC,BRIC,BRIC
+Tissue,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling,Etiolated seedling
+Age,14 days,14 days,14 days,14 days,14 days,14 days
+Organism,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana
+Ecotype,Ler-0,Ler-0,Ler-0,Ler-0,Ler-0,Ler-0
+Genotype,WT,WT,WT,WT,WT,WT
+Variety,Ler-0 WT,Ler-0 WT,Ler-0 WT,Ler-0 WT,Ler-0 WT,Ler-0 WT
+Radiation,Cosmic radiation,Cosmic radiation,Cosmic radiation,Background Earth,Background Earth,Background Earth
 Gravity,Microgravity,Microgravity,Microgravity,Terrestrial,Terrestrial,Terrestrial
+Developmental,Etiolated 14 day old seelings,Etiolated 14 day old seelings,Etiolated 14 day old seelings,Etiolated 14 day old seelings,Etiolated 14 day old seelings,Etiolated 14 day old seelings
+Time.series.or.Concentration.gradient,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point
+Light,Dark,Dark,Dark,Dark,Dark,Dark
+Assay..RNAseq.,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling
+Temperature,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle,Ambient shuttle
+Treatment.type,Biological Research in Canisters16 (BRIC16): Investigations of the plant cytoskeleton in microgravity with gene profiling and cytochemistry,Biological Research in Canisters16 (BRIC16): Investigations of the plant cytoskeleton in microgravity with gene profiling and cytochemistry,Biological Research in Canisters16 (BRIC16): Investigations of the plant cytoskeleton in microgravity with gene profiling and cytochemistry,Biological Research in Canisters16 (BRIC16): Investigations of the plant cytoskeleton in microgravity with gene profiling and cytochemistry,Biological Research in Canisters16 (BRIC16): Investigations of the plant cytoskeleton in microgravity with gene profiling and cytochemistry,Biological Research in Canisters16 (BRIC16): Investigations of the plant cytoskeleton in microgravity with gene profiling and cytochemistry
+Treatment.intensity,Full Flight,Full Flight,Full Flight,Full Flight,Full Flight,Full Flight
+Treament.timing,Full Flight,Full Flight,Full Flight,Full Flight,Full Flight,Full Flight
+Preservation.Method.,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater,RNAlater
