@@ -271,7 +271,7 @@ kable( readMetadata.out ) %>%
 ```
 
 ## 7. DEG2   
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
  selectedHeatmap.data.out <- selectedHeatmap.data()
  selectedHeatmap()   # heatmap for DEGs in selected comparison
@@ -293,7 +293,7 @@ kable( readMetadata.out ) %>%
 ```{r, message=FALSE  }  
   MAplot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   geneListGOTable.out <- geneListGOTable()  
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
@@ -312,7 +312,7 @@ STRING-db API access.
   First we try to guess the ID based on iDEP's database. Users can also skip this step and assign NCBI taxonomy id directly by
   findTaxonomyID.out = 10090 # mouse 10090, human 9606 etc.
 	
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE }  
 
   
  STRING10_species = read.csv(STRING10_speciesFile)  
@@ -322,7 +322,7 @@ STRING-db API access.
  
 ``` 
 Enrichment analysis using STRING     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   STRINGdb_geneList.out <- STRINGdb_geneList() #convert gene lists
  input_STRINGdbGO <- 'Process'	#'Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro' 
  results <- stringDB_GO_enrichmentData()  # enrichment using STRING	
@@ -332,12 +332,12 @@ Enrichment analysis using STRING
   scroll_box(width = "100%") 
 ``` 
 PPI network retrieval and analysis    
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_nGenesPPI <- 100	#Number of top genes for PPI retrieval and analysis 
  stringDB_network1(1) #Show PPI network 
 ``` 
 Generating interactive PPI   
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  write(stringDB_network_link(), 'PPI_results.html') # write results to html file 
  browseURL('PPI_results.html') # open in browser 
 ```
@@ -412,7 +412,7 @@ Generating interactive PPI
 ```
 
 ## 10. Biclustering   
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE } 
  input_nGenesBiclust <- 1000	#Top genes for biclustering
  input_biclustMethod <- 'BCCC()'	#Method: 'BCCC', 'QUBIC', 'runibic' ... 
  biclustering.out = biclustering()  # run analysis
@@ -420,7 +420,7 @@ Generating interactive PPI
  input_selectBicluster <- NULL 	#select a cluster 
  biclustHeatmap()   # heatmap for selected cluster 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE}  
  input_selectGO4 = 'GOBP'  # gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
@@ -448,7 +448,7 @@ Generating interactive PPI
   listWGCNA.Modules.out = listWGCNA.Modules() #modules
  
 ```     
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE } 
  input_selectGO5 <- 'GOBP'	#Gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,

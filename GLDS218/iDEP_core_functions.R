@@ -1981,7 +1981,9 @@ DEG.DESeq2 <- function (  rawCounts,maxP_limma=.05, minFC_limma=2, selectedCompa
 			}			
 		}
 		DESeq2.Object= paste( DESeq2.Object, ")") # ends the model
-
+		
+		print(DEseq2.Object)
+		
 		eval(parse(text = DESeq2.Object) )
 		dds = DESeq(dds)  # main function		
 		
