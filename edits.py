@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from datetime import datetime
 
-glds_num = "218"
+glds_num = "7"
 
 with open(f"iDEP_GLDS{glds_num}.Rmd", "a") as result:
     with open("iDEP_R_Markdown.Rmd", "r") as mkdwn:
@@ -55,5 +55,7 @@ kable( readMetadata.out ) %>%
             elif line.startswith(" ix = grep('Mus musculus', "):
                  result.write(" ix = grep('Arabidopsis thaliana', STRING10_species$official_name ) \n")
 
+            #elif line.startswith("```{r, message=FALSE  }"):
+            #    result.write("```{r, message=FALSE, error=TRUE  }\n")
             else:
                 result.write(line)

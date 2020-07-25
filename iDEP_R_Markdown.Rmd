@@ -1,7 +1,7 @@
 ---
 title: 'Reproducing iDEP analyses with auto-generated R Markdown'
 author:  iDEP 0.91  http://ge-lab.org/idep/, originally by Steven Xijin.Ge@sdstate.edu  
-date: Sat Jul 25 00:13:15 2020  
+date: Sat Jul 25 01:17:14 2020  
 output: html_document
 ---
 ```{r setup, include=FALSE}
@@ -61,7 +61,7 @@ Parameters for reading data
 ```
 ```{r, message=FALSE  }  
  input_selectOrg ="NEW" 
- input_selectGO <- 'GOBP'	#Gene set category 
+ input_selectGO <- NULL 	#Gene set category 
  input_noIDConversion = TRUE  
  allGeneInfo.out <- geneInfo(geneInfoFile) 
  converted.out = NULL 
@@ -145,7 +145,7 @@ Parameters for reading data
  input_distFunctions <- 1	#which distant funciton to use
  input_hclustFunctions <- 1	#Linkage type
  input_heatColors1 <- 1	#Colors
- input_selectFactorsHeatmap <- 'Gravity'	#Sample coloring factors 
+ input_selectFactorsHeatmap <- NULL 	#Sample coloring factors 
  png('heatmap.png', width = 10, height = 15, units = 'in', res = 300) 
  staticHeatmap() 
  dev.off()  
@@ -178,7 +178,7 @@ Parameters for reading data
 
  #Read gene sets for enrichment analysis 
  sqlite  <- dbDriver('SQLite')
- input_selectGO3 <- 'GOBP'	#Gene set category
+ input_selectGO3 <- NULL 	#Gene set category
  input_minSetSize <- 15	#Min gene set size
  input_maxSetSize <- 2000	#Max gene set size 
  GeneSets.out <-readGeneSets( geneSetFile,
@@ -198,8 +198,8 @@ Parameters for reading data
 
 ## 5. PCA and beyond   
 ```{r, message=FALSE  } 
- input_selectFactors <- 'Gravity'	#Factor coded by color
- input_selectFactors2 <- 'Tissue'	#Factor coded by shape
+ input_selectFactors <- 'Sample_Name'	#Factor coded by color
+ input_selectFactors2 <- 'Sample_Name'	#Factor coded by shape
  input_tsneSeed2 <- 0	#Random seed for t-SNE 
  #PCA, MDS and t-SNE plots
  PCAplot()  
@@ -232,7 +232,7 @@ Parameters for reading data
  input_selectFactorsModel <- 'Gravity'	#Selected comparisons
  input_selectInteractions <- NULL 	#Selected comparisons
  input_selectBlockFactorsModel <- NULL 	#Selected comparisons
- factorReferenceLevels.out <- c('Gravity:Microgravity') 
+ factorReferenceLevels.out <- c('Gravity:Terrestrial') 
 
  limma.out <- limma()
  DEG.data.out <- DEG.data()
@@ -319,10 +319,10 @@ Generating interactive PPI
 ```
 
 ## 8. Pathway analysis   
-```{r, message=FALSE  } 
- input_selectContrast1 <- 'Microgravity-Terrestrial'	#select Comparison 
- #input_selectContrast1 = limma.out$comparisons[3] # manually set
- input_selectGO <- 'GOBP'	#Gene set category 
+```{r, message=FALSE  }  
+ input_selectContrast1 = limma.out$comparisons[1] 
+ #input_selectContrast1 = limma.out$comparisons[3] # manually set 
+ input_selectGO = 'GOBP'  # gene set category 
  #input_selectGO='custom' # if custom gmt file
  input_minSetSize <- 15	#Min size for gene set
  input_maxSetSize <- 2000	#Max size for gene set 
@@ -375,8 +375,8 @@ Generating interactive PPI
 ```
 
 ## 9. Chromosome   
-```{r, message=FALSE  } 
- input_selectContrast2 <- 'Microgravity-Terrestrial'	#select Comparison 
+```{r, message=FALSE  }  
+ input_selectContrast2 = limma.out$comparisons[1] 
  #input_selectContrast2 = limma.out$comparisons[3] # manually set
  input_limmaPvalViz <- 0.1	#FDR to filter genes
  input_limmaFCViz <- 2	#FDR to filter genes 
@@ -389,11 +389,11 @@ Generating interactive PPI
  input_biclustMethod <- 'BCCC()'	#Method: 'BCCC', 'QUBIC', 'runibic' ... 
  biclustering.out = biclustering()  # run analysis
 
- input_selectBicluster <- 1	#select a cluster 
+ input_selectBicluster <- NULL 	#select a cluster 
  biclustHeatmap()   # heatmap for selected cluster 
 ```     
-```{r, message=FALSE  } 
- input_selectGO4 <- 'GOBP'	#Gene set category 
+```{r, message=FALSE  }  
+ input_selectGO4 = 'GOBP'  # gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
     convertedData.out, input_selectGO4,input_selectOrg,
@@ -418,13 +418,13 @@ Generating interactive PPI
   listWGCNA.Modules.out = listWGCNA.Modules() #modules
  
 ```     
-```{r, message=FALSE  } 
- input_selectGO5 <- 'GOBP'	#Gene set category 
+```{r, message=FALSE  }  
+ input_selectGO5 = 'GOBP'  # gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
     convertedData.out, input_selectGO5,input_selectOrg,
     c(input_minSetSize, input_maxSetSize)  ) 
- input_selectWGCNA.Module <- '1. turquoise (999 genes)'	#Select a module
+ input_selectWGCNA.Module <- NULL 	#Select a module
  input_topGenesNetwork <- 10	#SoftPower to cutoff
  input_edgeThreshold <- 0.4	#Number of top genes 
  moduleNetwork()	# show network of top genes in selected module
