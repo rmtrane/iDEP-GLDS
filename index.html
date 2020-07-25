@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Plant Space Transcriptome iDEP Processes</title>
+    <meta name="description" content="Plant Space Transcriptome iDEP Processes">
+    <meta name="author" content="Hyun-seok 'Ren' Chang">
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+
+</head>
+
+<body>
+    <table class="table table-bordered table-hover table-condensed">
+        <thead>
+            <tr>
+                <th title="GLDS Number">GLDS#</th>
+                <th title="Md Link">Md Link</th>
+                <th title="Status">Status</th>
+                <th title="Outputs">Outputs</th>
+                <th title="Comments">Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GLDS7</td>
+                <td><a href="./GLDS7/iDEP_GLDS7.html"> GLDS7 </a></td>
+                <td>No Significant Differential Genes</td>
+                <td></td>
+                <td>iDEP did not find any genes above the FDR cutoff (0.1) and Min fold change (2)</td>
+            </tr>
+            <tr>
+                <td>GLDS17</td>
+                <td><a href="./GLDS17/iDEP_GLDS17.html">GLDS17</a></td>
+                <td>DESeqDataSetFromMatrix Error</td>
+                <td>Quitting from lines 248-260 (iDEP_GLDS17.Rmd) <br />Error in DESeqDataSetFromMatrix(countData =
+                    rawCounts, colData = colData, : <br /> ncol(countData) == nrow(colData) is not TRUE<br />Calls:
+                    &lt;Anonymous&gt; ... eval -&gt; eval -&gt; DESeqDataSetFromMatrix -&gt; stopifnot<br />Execution
+                    halted</td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>GLDS37</td>
+                <td><a href="./GLDS37/iDEP_GLDS37.html">GLDS37</a></td>
+                <td>No Errors</td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>GLDS38</td>
+                <td><a href="./GLDS38/iDEP_GLDS38.html">GLDS38</a></td>
+                <td>No Errors</td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>GLDS44</td>
+                <td><a href="./GLDS44/iDEP_GLDS44.html">GLDS44</a></td>
+                <td>No Significant Differential Genes</td>
+                <td> </td>
+                <td>iDEP did not find any genes above the FDR cutoff (0.1) and Min fold change (2) </td>
+            </tr>
+            <tr>
+                <td>GLDS46</td>
+                <td><a href="./GLDS46/iDEP_GLDS46.html">GLDS46</a></td>
+                <td>Genewise Dispersion Error</td>
+                <td>Quitting from lines 248-260 (iDEP_GLDS46.Rmd) <br />Error in estimateDispersionsFit(object, fitType
+                    = fitType, quiet = quiet) : <br /> all gene-wise dispersion estimates are within 2 orders of
+                    magnitude<br /> from the minimum value, and so the standard curve fitting techniques will not
+                    work.<br /> One can instead use the gene-wise estimates as final estimates:<br /> dds &lt;-
+                    estimateDispersionsGeneEst(dds)<br /> dispersions(dds) &lt;- mcols(dds)$dispGeneEst<br /> ...then
+                    continue with testing using nbinomWaldTest or nbinomLRT<br />Calls: &lt;Anonymous&gt; ...
+                    estimateDispersions -&gt; .local -&gt; estimateDispersionsFit<br />Execution halted</td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>GLDS120</td>
+                <td><a href="./GLDS120/iDEP_GLDS120.html">GLDS120</a></td>
+                <td>No Errors</td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>GLDS121</td>
+                <td><a href="./GLDS121/iDEP_GLDS121.html">GLDS121</a></td>
+                <td>No Significant Differential Genes</td>
+                <td> </td>
+                <td>iDEP did not find any genes above the FDR cutoff (0.1) and Min fold change (2) </td>
+            </tr>
+            <tr>
+                <td>GLDS136</td>
+                <td><a href="./GLDS136/iDEP_GLDS136.html">GLDS136</a></td>
+                <td>Genewise Dispersion Error</td>
+                <td>Quitting from lines 248-260 (iDEP_GLDS136.Rmd) <br />Error in estimateDispersionsFit(object, fitType
+                    = fitType, quiet = quiet) : <br /> all gene-wise dispersion estimates are within 2 orders of
+                    magnitude<br /> from the minimum value, and so the standard curve fitting techniques will not
+                    work.<br /> One can instead use the gene-wise estimates as final estimates:<br /> dds &lt;-
+                    estimateDispersionsGeneEst(dds)<br /> dispersions(dds) &lt;- mcols(dds)$dispGeneEst<br /> ...then
+                    continue with testing using nbinomWaldTest or nbinomLRT<br />Calls: &lt;Anonymous&gt; ...
+                    estimateDispersions -&gt; .local -&gt; estimateDispersionsFit<br />Execution halted</td>
+                <td>Heatmap uses to 500 genes instead of top 1000</td>
+            </tr>
+            <tr>
+                <td>GLDS147</td>
+                <td><a href="./GLDS147/iDEP_GLDS147.html">GLDS147</a></td>
+                <td>Genewise Dispersion Error</td>
+                <td>Quitting from lines 248-260 (iDEP_GLDS147.Rmd) <br />Error in estimateDispersionsFit(object, fitType
+                    = fitType, quiet = quiet) : <br /> all gene-wise dispersion estimates are within 2 orders of
+                    magnitude<br /> from the minimum value, and so the standard curve fitting techniques will not
+                    work.<br /> One can instead use the gene-wise estimates as final estimates:<br /> dds &lt;-
+                    estimateDispersionsGeneEst(dds)<br /> dispersions(dds) &lt;- mcols(dds)$dispGeneEst<br /> ...then
+                    continue with testing using nbinomWaldTest or nbinomLRT<br />Calls: &lt;Anonymous&gt; ...
+                    estimateDispersions -&gt; .local -&gt; estimateDispersionsFit<br />Execution halted</td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>GLDS205</td>
+                <td><a href="./GLDS205/iDEP_GLDS205.html">GLDS205</a></td>
+                <td>No Significant Differential Genes</td>
+                <td> </td>
+                <td>iDEP did not find any genes above the FDR cutoff (0.1) and Min fold change (2) </td>
+            </tr>
+            <tr>
+                <td>GLDS208_A</td>
+                <td><a href="./GLDS208_Array/iDEP_GLDS208_Array.html">GLDS208 Array</a></td>
+                <td>Genewise Dispersion Error</td>
+                <td>Quitting from lines 248-260 (iDEP_GLDS208_Array.Rmd) <br />Error in estimateDispersionsFit(object,
+                    fitType = fitType, quiet = quiet) : <br /> all gene-wise dispersion estimates are within 2 orders of
+                    magnitude<br /> from the minimum value, and so the standard curve fitting techniques will not
+                    work.<br /> One can instead use the gene-wise estimates as final estimates:<br /> dds &lt;-
+                    estimateDispersionsGeneEst(dds)<br /> dispersions(dds) &lt;- mcols(dds)$dispGeneEst<br /> ...then
+                    continue with testing using nbinomWaldTest or nbinomLRT<br />Calls: &lt;Anonymous&gt; ...
+                    estimateDispersions -&gt; .local -&gt; estimateDispersionsFit<br />Execution halted</td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>GLDS208_R</td>
+                <td><a href="./GLDS208_RNASEQ/iDEP_GLDS208.html">GLDS208 RNASEQ</a></td>
+                <td>No DEG Heatmap</td>
+                <td>## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : &#39;data&#39; must
+                    be of a vector type, was &#39;NULL&#39;</td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>GLDS213</td>
+                <td><a href="./GLDS213/iDEP_GLDS213.html">GLDS213</a></td>
+                <td>DEG1 Error</td>
+                <td>Quitting from lines 248-260 (iDEP_GLDS213.Rmd) Error in estimateDispersionsFit(object, fitType =
+                    fitType, quiet = quiet) : all gene-wise dispersion estimates are within 2 orders of magnitude from
+                    the minimum value, and so the standard curve fitting techniques will not work. One can instead use
+                    the gene-wise estimates as final estimates: dds &lt;- estimateDispersionsGeneEst(dds)
+                    dispersions(dds) &lt;- mcols(dds)$dispGeneEst ...then continue with testing using nbinomWaldTest or
+                    nbinomLRT Calls: &lt;Anonymous&gt; ... estimateDispersions -&gt; .local -&gt; estimateDispersionsFit
+                    Execution halted</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>GLDS218</td>
+                <td><a href="./GLDS218/iDEP_GLDS218.html">GLDS218</a></td>
+                <td>No Errors</td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>GLDS251</td>
+                <td><a href="./GLDS251/iDEP_GLDS251.html">GLDS251</a></td>
+                <td>No DEG Heatmap</td>
+                <td>## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : &#39;data&#39; must
+                    be of a vector type, was &#39;NULL&#39;</td>
+                <td> </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

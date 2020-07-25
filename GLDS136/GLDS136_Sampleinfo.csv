@@ -1,0 +1,3 @@
+Analysis.Id,50kPa_notsuppO2_Rep1,50kPa_notsuppO2_Rep2,50kPa_notsuppO2_Rep3,50kPa_suppO2_Rep1,50kPa_suppO2_Rep2,50kPa_suppO2_Rep3,97kPa_CTRL_Rep1,97kPa_CTRL_Rep2,97kPa_CTRL_Rep3
+Treatment.type,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,Ambient_pressure,Ambient_pressure,Ambient_pressure
+Treatment.intensity,50kPa_notsuppO2,50kPa_notsuppO2,50kPa_notsuppO2,50kPa_suppO2,50kPa_suppO2,50kPa_suppO2,Control,Control,Control

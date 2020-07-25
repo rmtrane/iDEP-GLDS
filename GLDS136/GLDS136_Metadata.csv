@@ -1,3 +1,24 @@
 Analysis.Id,50kPa_notsuppO2_Rep1,50kPa_notsuppO2_Rep2,50kPa_notsuppO2_Rep3,50kPa_suppO2_Rep1,50kPa_suppO2_Rep2,50kPa_suppO2_Rep3,97kPa_CTRL_Rep1,97kPa_CTRL_Rep2,97kPa_CTRL_Rep3
-Treatment.type,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,Ambient_pressure,Ambient_pressure,Ambient_pressure
-Treatment.intensity,50kPa_notsuppO2,50kPa_notsuppO2,50kPa_notsuppO2,50kPa_suppO2,50kPa_suppO2,50kPa_suppO2,Control,Control,Control
+Sample.LongId,Atha.Ws.0.root.50kPa.notsuppO2.Rep1.Array,Atha.Ws.0.root.50kPa.notsuppO2.Rep2.Array,Atha.Ws.0.root.50kPa.notsuppO2.Rep3.Array,Atha.Ws.0.root.50kPa.suppO2.Rep1.Array,Atha.Ws.0.root.50kPa.suppO2.Rep2.Array,Atha.Ws.0.root.50kPa.suppO2.Rep3.Array,Atha.Ws.0.root.97kPa.CTRL.Rep1.Array,Atha.Ws.0.root.97kPa.CTRL.Rep2.Array,Atha.Ws.0.root.97kPa.CTRL.Rep3.Array
+Sample.Id,Atha.Ws.0.root.50kPa.notsuppO2.Rep1,Atha.Ws.0.root.50kPa.notsuppO2.Rep2,Atha.Ws.0.root.50kPa.notsuppO2.Rep3,Atha.Ws.0.root.50kPa.suppO2.Rep1,Atha.Ws.0.root.50kPa.suppO2.Rep2,Atha.Ws.0.root.50kPa.suppO2.Rep3,Atha.Ws.0.root.97kPa.CTRL.Rep1,Atha.Ws.0.root.97kPa.CTRL.Rep2,Atha.Ws.0.root.97kPa.CTRL.Rep3
+Sample.Name,Atha_Ws-0_root_50kPa_notsuppO2_Rep1,Atha_Ws-0_root_50kPa_notsuppO2_Rep2,Atha_Ws-0_root_50kPa_notsuppO2_Rep3,Atha_Ws-0_root_50kPa_suppO2_Rep1,Atha_Ws-0_root_50kPa_suppO2_Rep2,Atha_Ws-0_root_50kPa_suppO2_Rep3,Atha_Ws-0_root_97kPa_CTRL_Rep1,Atha_Ws-0_root_97kPa_CTRL_Rep2,Atha_Ws-0_root_97kPa_CTRL_Rep3
+GLDS,136,136,136,136,136,136,136,136,136
+Accession,GLDS-136,GLDS-136,GLDS-136,GLDS-136,GLDS-136,GLDS-136,GLDS-136,GLDS-136,GLDS-136
+Hardware,Petri dish,Petri dish,Petri dish,Petri dish,Petri dish,Petri dish,Petri dish,Petri dish,Petri dish
+Tissue,Roots,Roots,Roots,Roots,Roots,Roots,Roots,Roots,Roots
+Age,5 days,5 days,5 days,5 days,5 days,5 days,5 days,5 days,5 days
+Organism,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana,Arabidopsis thaliana
+Ecotype,WS-0,WS-0,WS-0,WS-0,WS-0,WS-0,WS-0,WS-0,WS-0
+Genotype,WT,WT,WT,WT,WT,WT,WT,WT,WT
+Variety,WS-0 WT,WS-0 WT,WS-0 WT,WS-0 WT,WS-0 WT,WS-0 WT,WS-0 WT,WS-0 WT,WS-0 WT
+Radiation,Background Earth,Background Earth,Background Earth,Background Earth,Background Earth,Background Earth,Background Earth,Background Earth,Background Earth
+Gravity,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial,Terrestrial
+Developmental,"10 day old seedling, 2 rosette leaves gt1 mm in length","10 day old seedling, 2 rosette leaves gt1 mm in length","10 day old seedling, 2 rosette leaves gt1 mm in length","10 day old seedling, 2 rosette leaves gt1 mm in length","10 day old seedling, 2 rosette leaves gt1 mm in length","10 day old seedling, 2 rosette leaves gt1 mm in length","10 day old seedling, 2 rosette leaves gt1 mm in length","10 day old seedling, 2 rosette leaves gt1 mm in length","10 day old seedling, 2 rosette leaves gt1 mm in length"
+Time.series.or.Concentration.gradient,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point,Single time point
+Light,White light,White light,White light,White light,White light,White light,White light,White light,White light
+Assay..RNAseq.,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling,Microarray Transcription Profiling
+Temperature,Ambient Terrestrial,Ambient Terrestrial,Ambient Terrestrial,Ambient Terrestrial,Ambient Terrestrial,Ambient Terrestrial,Ambient Terrestrial,Ambient Terrestrial,Ambient Terrestrial
+Treatment.type,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,50kPa_Low pressure,Ambient pressure,Ambient pressure,Ambient pressure
+Treatment.intensity,50kPa_notsuppO2,50kPa_notsuppO2,50kPa_notsuppO2,50kPa_suppO2,50kPa_suppO2,50kPa_suppO2,Ambient kPA &O2,Ambient kPA &O2,Ambient kPA &O2
+Treament.timing,x,x,x,x,x,x,x,x,x
+Preservation.Method.,NA,NA,NA,NA,NA,NA,NA,NA,NA

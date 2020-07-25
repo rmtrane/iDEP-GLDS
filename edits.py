@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from datetime import datetime
 
-glds_num = "121"
+glds_num = "17"
 
 with open(f"iDEP_GLDS{glds_num}.Rmd", "a") as result:
     with open("iDEP_R_Markdown.Rmd", "r") as mkdwn:

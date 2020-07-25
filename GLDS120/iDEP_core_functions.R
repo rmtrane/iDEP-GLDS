@@ -2464,7 +2464,6 @@ findContrastSamples <- function(selectContrast, allSampleNames,sampleInfo=NULL, 
 
 selectedHeatmap <- function() {
   
-     print( selectedHeatmap.data.out )
 		 bar = selectedHeatmap.data.out$bar +2;
 		 bar[bar==3] =2
 
