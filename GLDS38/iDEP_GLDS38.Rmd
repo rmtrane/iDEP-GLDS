@@ -245,7 +245,7 @@ kable( readMetadata.out ) %>%
 
 ## 6. DEG1   
 ```{r, message=FALSE  } 
- input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
+ input_CountsDEGMethod <- 2	#DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval <- 0.1	#FDR cutoff
  input_limmaFC <- 2	#Fold-change cutoff
  input_selectModelComprions <- 'Gravity: Microgravity vs. Terrestrial'	#Selected comparisons
@@ -271,7 +271,7 @@ kable( readMetadata.out ) %>%
 ```
 
 ## 7. DEG2   
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
  selectedHeatmap.data.out <- selectedHeatmap.data()
  selectedHeatmap()   # heatmap for DEGs in selected comparison
@@ -287,13 +287,13 @@ kable( readMetadata.out ) %>%
  geneListData.out <- geneListData()  
  volcanoPlot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE , error=TRUE }  
   scatterPlot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   MAplot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   geneListGOTable.out <- geneListGOTable()  
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
@@ -322,7 +322,7 @@ STRING-db API access.
  
 ``` 
 Enrichment analysis using STRING     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE }  
   STRINGdb_geneList.out <- STRINGdb_geneList() #convert gene lists
  input_STRINGdbGO <- 'Process'	#'Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro' 
  results <- stringDB_GO_enrichmentData()  # enrichment using STRING	
@@ -332,12 +332,12 @@ Enrichment analysis using STRING
   scroll_box(width = "100%") 
 ``` 
 PPI network retrieval and analysis    
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_nGenesPPI <- 100	#Number of top genes for PPI retrieval and analysis 
  stringDB_network1(1) #Show PPI network 
 ``` 
 Generating interactive PPI   
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  write(stringDB_network_link(), 'PPI_results.html') # write results to html file 
  browseURL('PPI_results.html') # open in browser 
 ```
@@ -398,7 +398,7 @@ Generating interactive PPI
 ```{r, message=FALSE  }  
   enrichmentNetworkPlotly(pathwayListData.out) 
 ```     
-```{r, message=FALSE,fig.width=9, fig.height=8  }  
+```{r, message=FALSE,fig.width=9, fig.height=8, error=TRUE  }  
    PGSEAplot() # pathway analysis using PGSEA 
 ```
 

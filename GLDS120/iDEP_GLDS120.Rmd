@@ -17,7 +17,7 @@ Ge SX, Son EW, Yao R: iDEP: an integrated web application for differential expre
 
 ## 1. Read data  
 First we set up the working directory to where the files are saved.    
-```{r, message=FALSE} 
+```{r, message=FALSE, error=TRUE} 
  setwd('~/Documents/HTML_R/GLDS120')
 ```
 R packages and iDEP core Functions. 
@@ -28,7 +28,7 @@ R packages and iDEP core Functions.
 	try un-install the current version of R, delete all folders and files 
 	(C:/Program Files/R/R-3.4.3), and 
 	reinstall from scratch.  
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  if(file.exists('iDEP_core_functions.R'))
 	source('iDEP_core_functions.R') else 
     source('https://raw.githubusercontent.com/iDEP-SDSU/idep/master/shinyapps/idep/iDEP_core_functions.R') 
@@ -37,7 +37,7 @@ We are using the downloaded gene expression file where gene IDs has
 	been converted to Ensembl gene IDs. This is because the ID conversion database is too large
 	to download. You can use your original file if your file uses Ensembl ID, or you do not want 
 	to use the pathway files available in iDEP (or it is not available).  
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  inputFile <- 'GLDS120_Expression.csv'
  sampleInfoFile <- 'GLDS120_Sampleinfo.csv'
  gldsMetadataFile <- 'GLDS120_Metadata.csv'
@@ -46,7 +46,7 @@ We are using the downloaded gene expression file where gene IDs has
  STRING10_speciesFile <- 'https://raw.githubusercontent.com/iDEP-SDSU/idep/master/shinyapps/idep/STRING10_species.csv' 
 ``` 
 Parameters for reading data  
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_missingValue <- 'geneMedian'	#Missing values imputation method
  input_dataFileFormat <- 1	#1- read counts, 2 FKPM/RPKM or DNA microarray
  input_minCounts <- 0.5	#Min counts
@@ -54,7 +54,7 @@ Parameters for reading data
  input_countsLogStart <- 4	#Pseudo count for log CPM
  input_CountsTransform <- 1	#Methods for data transformation of counts. 1-EdgeR's logCPM 2-VST, 3-rlog 
 ```
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
 readMetadata.out <- readMetadata(gldsMetadataFile)
 library(knitr)   #  install if needed. for showing tables with kable
@@ -64,20 +64,20 @@ kable( readMetadata.out ) %>%
   scroll_box(width = "100%")
 ```
 
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  readData.out <- readData(inputFile) 
   
    kable( head(readData.out$data) ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  readSampleInfo.out <- readSampleInfo(sampleInfoFile) 
  kable( readSampleInfo.out ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  input_selectOrg ="NEW" 
  input_selectGO <- 'GOBP'	#Gene set category 
  input_noIDConversion = TRUE  
@@ -89,7 +89,7 @@ kable( readMetadata.out ) %>%
 ```
 
 ## 2. Pre-process 
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 # Read counts per library 
  parDefault = par() 
  par(mar=c(12,4,2,2)) 
@@ -104,7 +104,7 @@ kable( readMetadata.out ) %>%
 		col=col1,las=3, main="Total read counts (millions)")  
  readCountsBias()  # detecting bias in sequencing depth 
 ```
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
  # Box plot 
  x = readData.out$data 
@@ -112,32 +112,32 @@ kable( readMetadata.out ) %>%
     ylab='Transformed expression levels',
     main='Distribution of transformed data') 
 ```
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
  #Density plot 
  par(parDefault) 
  densityPlot()       
 ```
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
  # Scatter plot of the first two samples 
  plot(x[,1:2],xlab=colnames(x)[1],ylab=colnames(x)[2], 
     main='Scatter plot of first two samples') 
 ```
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
  ####plot gene or gene family
  input_selectOrg ="BestMatch" 
  input_geneSearch <- 'HOXA'	#Gene ID for searching 
  genePlot()  
 ```
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_useSD <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
  geneBarPlotError()       
 ```
 
 ## 3. Heatmap  
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  # hierarchical clustering tree
  x <- readData.out$data
  maxGene <- apply(x,1,max)
@@ -145,12 +145,12 @@ kable( readMetadata.out ) %>%
  x <- x[which(maxGene > quantile(maxGene)[1] ) ,] 
  plot(as.dendrogram(hclust2( dist2(t(x)))), ylab="1 - Pearson C.C.", type = "rectangle") 
 ```
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  #Correlation matrix
  input_labelPCC <- TRUE	#Show correlation coefficient? 
  correlationMatrix() 
 ```
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
  # Parameters for heatmap
  input_nGenes <- 1000	#Top genes for heatmap
@@ -169,12 +169,12 @@ kable( readMetadata.out ) %>%
  dev.off()  
 ```
   ![heatmap] (heatmap.png)   
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  heatmapPlotly() # interactive heatmap using Plotly 
 ```
 
 ## 4. K-means clustering   
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_nGenesKNN <- 2000	#Number of genes fro k-Means
  input_nClusters <- 4	#Number of clusters 
  maxGeneClustering = 12000
@@ -183,16 +183,16 @@ kable( readMetadata.out ) %>%
 
  distributionSD()  #Distribution of standard deviations 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  KmeansNclusters()  #Number of clusters 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
  Kmeans.out = Kmeans()   #Running K-means 
  KmeansHeatmap()   #Heatmap for k-Means 
  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
  #Read gene sets for enrichment analysis 
  sqlite  <- dbDriver('SQLite')
@@ -210,27 +210,27 @@ kable( readMetadata.out ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```     
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_seedTSNE <- 0	#Random seed for t-SNE
  input_colorGenes <- TRUE	#Color genes in t-SNE plot? 
  tSNEgenePlot()  #Plot genes using t-SNE 
 ```
 
 ## 5. PCA and beyond   
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_selectFactors <- 'Variety'	#Factor coded by color
  input_selectFactors2 <- 'Light'	#Factor coded by shape
  input_tsneSeed2 <- 0	#Random seed for t-SNE 
  #PCA, MDS and t-SNE plots
  PCAplot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  MDSplot() 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  tSNEplot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
  #Read gene sets for pathway analysis using PGSEA on principal components 
  input_selectGO6 <- 'GOBP' 
@@ -239,13 +239,13 @@ kable( readMetadata.out ) %>%
     c(input_minSetSize, input_maxSetSize)  )  
  PCApathway() # Run PGSEA analysis 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  cat( PCA2factor() )   #The correlation between PCs with factors 
 ```
 
 ## 6. DEG1   
-```{r, message=FALSE  } 
- input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
+```{r, message=FALSE, error=TRUE  } 
+ input_CountsDEGMethod <- 2	#DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval <- 0.1	#FDR cutoff
  input_limmaFC <- 2	#Fold-change cutoff
  input_selectModelComprions <- 'Gravity: Microgravity vs. Terrestrial'	#Selected comparisons
@@ -258,20 +258,20 @@ kable( readMetadata.out ) %>%
  DEG.data.out <- DEG.data()
  limma.out$comparisons 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  input_selectComparisonsVenn = limma.out$comparisons[1:3] # use first three comparisons
  input_UpDownRegulated <- FALSE	#Split up and down regulated genes 
  vennPlot() # Venn diagram 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   sigGeneStats() # number of DEGs as figure 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   sigGeneStatsTable() # number of DEGs as table 
 ```
 
 ## 7. DEG2   
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
  selectedHeatmap.data.out <- selectedHeatmap.data()
  selectedHeatmap()   # heatmap for DEGs in selected comparison
@@ -282,18 +282,18 @@ kable( readMetadata.out ) %>%
  write(AllGeneListsGMT() ,'AllGeneListsGMT.gmt')
  
 ```     
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_selectGO2 <- 'GOBP'	#Gene set category 
  geneListData.out <- geneListData()  
  volcanoPlot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   scatterPlot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   MAplot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   geneListGOTable.out <- geneListGOTable()  
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
@@ -312,7 +312,7 @@ STRING-db API access.
   First we try to guess the ID based on iDEP's database. Users can also skip this step and assign NCBI taxonomy id directly by
   findTaxonomyID.out = 10090 # mouse 10090, human 9606 etc.
 	
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
   
  STRING10_species = read.csv(STRING10_speciesFile)  
@@ -322,7 +322,7 @@ STRING-db API access.
  
 ``` 
 Enrichment analysis using STRING     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   STRINGdb_geneList.out <- STRINGdb_geneList() #convert gene lists
  input_STRINGdbGO <- 'Process'	#'Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro' 
  results <- stringDB_GO_enrichmentData()  # enrichment using STRING	
@@ -332,18 +332,18 @@ Enrichment analysis using STRING
   scroll_box(width = "100%") 
 ``` 
 PPI network retrieval and analysis    
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_nGenesPPI <- 100	#Number of top genes for PPI retrieval and analysis 
  stringDB_network1(1) #Show PPI network 
 ``` 
 Generating interactive PPI   
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  write(stringDB_network_link(), 'PPI_results.html') # write results to html file 
  browseURL('PPI_results.html') # open in browser 
 ```
 
 ## 8. Pathway analysis   
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_selectContrast1 <- 'Microgravity-Terrestrial'	#select Comparison 
  #input_selectContrast1 = limma.out$comparisons[3] # manually set
  input_selectGO <- 'GOBP'	#Gene set category 
@@ -368,17 +368,17 @@ Generating interactive PPI
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  pathwayListData.out = pathwayListData() 
  enrichmentPlot(pathwayListData.out, 25  ) 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   enrichmentNetwork(pathwayListData.out )  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   enrichmentNetworkPlotly(pathwayListData.out) 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
 
  input_pathwayMethod = 3  # 1  fgsea 
  fgseaPathwayData.out <- fgseaPathwayData() #Pathway analysis using fgsea 
@@ -388,22 +388,22 @@ Generating interactive PPI
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   pathwayListData.out = pathwayListData() 
  enrichmentPlot(pathwayListData.out, 25  ) 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   enrichmentNetwork(pathwayListData.out )  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   enrichmentNetworkPlotly(pathwayListData.out) 
 ```     
-```{r, message=FALSE,fig.width=9, fig.height=8  }  
+```{r, message=FALSE, error=TRUE,fig.width=9, fig.height=8  }  
    PGSEAplot() # pathway analysis using PGSEA 
 ```
 
 ## 9. Chromosome   
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_selectContrast2 <- 'Terrestrial-Microgravity'	#select Comparison 
  #input_selectContrast2 = limma.out$comparisons[3] # manually set
  input_limmaPvalViz <- 0.1	#FDR to filter genes
@@ -412,7 +412,7 @@ Generating interactive PPI
 ```
 
 ## 10. Biclustering   
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_nGenesBiclust <- 1000	#Top genes for biclustering
  input_biclustMethod <- 'BCCC()'	#Method: 'BCCC', 'QUBIC', 'runibic' ... 
  biclustering.out = biclustering()  # run analysis
@@ -420,7 +420,7 @@ Generating interactive PPI
  input_selectBicluster <- 1	#select a cluster 
  biclustHeatmap()   # heatmap for selected cluster 
 ```     
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_selectGO4 <- 'GOBP'	#Gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
@@ -434,21 +434,21 @@ Generating interactive PPI
 ```
 
 ## 11. Co-expression network    
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_mySoftPower <- 5	#SoftPower to cutoff
  input_nGenesNetwork <- 1000	#Number of top genes
  input_minModuleSize <- 20	#Module size minimum 
  wgcna.out = wgcna()   # run WGCNA  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
  softPower()  # soft power curve 
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   modulePlot()  # plot modules  
   listWGCNA.Modules.out = listWGCNA.Modules() #modules
  
 ```     
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_selectGO5 <- 'GOBP'	#Gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
@@ -460,7 +460,7 @@ Generating interactive PPI
  moduleNetwork()	# show network of top genes in selected module
  
 ```     
-```{r, message=FALSE  } 
+```{r, message=FALSE, error=TRUE  } 
  input_removeRedudantSets <- TRUE	#Remove redundant gene sets 
  results <- networkModuleGO()  #Enrichment analysis of selected module
  results$adj.Pval <- format( results$adj.Pval,digits=3 )

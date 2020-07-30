@@ -1,57 +1,20 @@
 "GLDS#","Path","Status","Notes",
-"GLDS7","GLDS7/iDEP_GLDS7.html","No Significant Differential Genes",,
-"GLDS17","GLDS17/iDEP_GLDS17.html","DESeqDataSetFromMatrix Error","Quitting from lines 248-260 (iDEP_GLDS17.Rmd) 
-Error in DESeqDataSetFromMatrix(countData = rawCounts, colData = colData,  : 
-  ncol(countData) == nrow(colData) is not TRUE
-Calls: <Anonymous> ... eval -> eval -> DESeqDataSetFromMatrix -> stopifnot
-Execution halted",
-"GLDS37","GLDS37/iDEP_GLDS37.html","No Errors",,
-"GLDS38","GLDS38/iDEP_GLDS38.html","No Errors",,
-"GLDS44","GLDS44/iDEP_GLDS44.html","No Significant Differential Genes",,
-"GLDS46","GLDS46/iDEP_GLDS46.html","Genewise Dispersion Error","Quitting from lines 248-260 (iDEP_GLDS46.Rmd) 
-Error in estimateDispersionsFit(object, fitType = fitType, quiet = quiet) : 
-  all gene-wise dispersion estimates are within 2 orders of magnitude
-  from the minimum value, and so the standard curve fitting techniques will not work.
-  One can instead use the gene-wise estimates as final estimates:
-  dds <- estimateDispersionsGeneEst(dds)
-  dispersions(dds) <- mcols(dds)$dispGeneEst
-  ...then continue with testing using nbinomWaldTest or nbinomLRT
-Calls: <Anonymous> ... estimateDispersions -> .local -> estimateDispersionsFit
-Execution halted",
-"GLDS120","GLDS120/iDEP_GLDS120.html","No Errors",,
-"GLDS121","GLDS121/iDEP_GLDS121.html","No Significant Differential Genes",,
-"GLDS136","GLDS136/iDEP_GLDS136.html","Genewise Dispersion Error","Quitting from lines 248-260 (iDEP_GLDS136.Rmd) 
-Error in estimateDispersionsFit(object, fitType = fitType, quiet = quiet) : 
-  all gene-wise dispersion estimates are within 2 orders of magnitude
-  from the minimum value, and so the standard curve fitting techniques will not work.
-  One can instead use the gene-wise estimates as final estimates:
-  dds <- estimateDispersionsGeneEst(dds)
-  dispersions(dds) <- mcols(dds)$dispGeneEst
-  ...then continue with testing using nbinomWaldTest or nbinomLRT
-Calls: <Anonymous> ... estimateDispersions -> .local -> estimateDispersionsFit
-Execution halted","Heatmap uses to 500 genes instead of top 1000"
-"GLDS147","GLDS147/iDEP_GLDS147.html","Genewise Dispersion Error","Quitting from lines 248-260 (iDEP_GLDS147.Rmd) 
-Error in estimateDispersionsFit(object, fitType = fitType, quiet = quiet) : 
-  all gene-wise dispersion estimates are within 2 orders of magnitude
-  from the minimum value, and so the standard curve fitting techniques will not work.
-  One can instead use the gene-wise estimates as final estimates:
-  dds <- estimateDispersionsGeneEst(dds)
-  dispersions(dds) <- mcols(dds)$dispGeneEst
-  ...then continue with testing using nbinomWaldTest or nbinomLRT
-Calls: <Anonymous> ... estimateDispersions -> .local -> estimateDispersionsFit
-Execution halted",
-"GLDS205","GLDS205/iDEP_GLDS205.html","No Significant Differential Genes",,
-"GLDS208_A","GLDS208_Array/iDEP_GLDS208_Array.html","Genewise Dispersion Error","Quitting from lines 248-260 (iDEP_GLDS208_Array.Rmd) 
-Error in estimateDispersionsFit(object, fitType = fitType, quiet = quiet) : 
-  all gene-wise dispersion estimates are within 2 orders of magnitude
-  from the minimum value, and so the standard curve fitting techniques will not work.
-  One can instead use the gene-wise estimates as final estimates:
-  dds <- estimateDispersionsGeneEst(dds)
-  dispersions(dds) <- mcols(dds)$dispGeneEst
-  ...then continue with testing using nbinomWaldTest or nbinomLRT
-Calls: <Anonymous> ... estimateDispersions -> .local -> estimateDispersionsFit
-Execution halted",
-"GLDS208_R","GLDS208_RNASEQ/iDEP_GLDS208.html","No DEG Heatmap","## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : 'data' must be of a vector type, was 'NULL'",
-"GLDS213","GLDS213/iDEP_GLDS213.html","DEG1 Error","Quitting from lines 248-260 (iDEP_GLDS213.Rmd)  Error in estimateDispersionsFit(object, fitType = fitType, quiet = quiet) :    all gene-wise dispersion estimates are within 2 orders of magnitude   from the minimum value, and so the standard curve fitting techniques will not work.   One can instead use the gene-wise estimates as final estimates:   dds <- estimateDispersionsGeneEst(dds)   dispersions(dds) <- mcols(dds)$dispGeneEst   ...then continue with testing using nbinomWaldTest or nbinomLRT Calls: <Anonymous> ... estimateDispersions -> .local -> estimateDispersionsFit Execution halted",
-"GLDS218","GLDS218/iDEP_GLDS218.html","No Errors",,
-"GLDS251","GLDS251/iDEP_GLDS251.html","No DEG Heatmap","## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : 'data' must be of a vector type, was 'NULL'",
+"GLDS7","GLDS7/iDEP_GLDS7.html","No Significant Differential Genes","## Error in findContrastSamples(input_selectContrast, colnames(convertedData.out), : object 'c.out' not found",
+"GLDS17","GLDS17/iDEP_GLDS17.html","DESeqDataSetFromMatrix Error","## Error in lmFit(y, design, block = block, correlation = correlation, weights = weights): row dimension of design doesn't match column dimension of data object",
+"GLDS37","GLDS37/iDEP_GLDS37.html","C.Out Error, Data null","## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : 'data' must be of a vector type, was 'NULL'
+## Error in findContrastSamples(input_selectContrast, colnames(convertedData.out), : object 'c.out' not found",
+"GLDS38","GLDS38/iDEP_GLDS38.html","C.Out Error","## Error in findContrastSamples(input_selectContrast, colnames(convertedData.out), : object 'c.out' not found",
+"GLDS44","GLDS44/iDEP_GLDS44.html","C.Out Error","## Error in findContrastSamples(input_selectContrast, colnames(convertedData.out), : object 'c.out' not found",
+"GLDS46","GLDS46/iDEP_GLDS46.html","C.Out Error, Data null","## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : 'data' must be of a vector type, was 'NULL'",
+"GLDS120","GLDS120/iDEP_GLDS120.html","C.Out Error","## Error in findContrastSamples(input_selectContrast, colnames(convertedData.out), : object 'c.out' not found",
+"GLDS121","GLDS121/iDEP_GLDS121.html","C.Out Error, Data null","## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : 'data' must be of a vector type, was 'NULL'",
+"GLDS136","GLDS136/iDEP_GLDS136.html","Limma Out Error","## Error in if (treatments[kp] == treatments[kk]) {: missing value where TRUE/FALSE needed)","Heatmap uses to 500 genes instead of top 1000"
+"GLDS147","GLDS147/iDEP_GLDS147.html","C.Out Error, Data null","## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : 'data' must be of a vector type, was 'NULL'
+## Error in findContrastSamples(input_selectContrast, colnames(convertedData.out), : object 'c.out' not found",
+"GLDS205","GLDS205/iDEP_GLDS205.html","C.Out Error, Data null","## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : 'data' must be of a vector type, was 'NULL'
+## Error in findContrastSamples(input_selectContrast, colnames(convertedData.out), : object 'c.out' not found",
+"GLDS208_A","GLDS208_Array/iDEP_GLDS208_Array.html","C,Out Error","## Error in findContrastSamples(input_selectContrast, colnames(convertedData.out), : object 'c.out' not found",
+"GLDS208_R","GLDS208_RNASEQ/iDEP_GLDS208.html","C,Out Error","## Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x), : 'data' must be of a vector type, was 'NULL'",
+"GLDS213","GLDS213/iDEP_GLDS213.html","Limma Out Error","## Error in if (treatments[kp] == treatments[kk]) {: missing value where TRUE/FALSE needed)",
+"GLDS218","GLDS218/iDEP_GLDS218.html","C.Out Error","## Error in findContrastSamples(input_selectContrast, colnames(convertedData.out), : object 'c.out' not found",
+"GLDS251","GLDS251/iDEP_GLDS251.html","Limma Out Error","## Error in makeContrasts(contrasts = comparisons[1], levels = design): The levels must by syntactically valid names in R, see help(make.names).  Non-valid names: 009G,018G,036G,057G,1G",

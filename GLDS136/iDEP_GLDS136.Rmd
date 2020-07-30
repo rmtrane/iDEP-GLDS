@@ -244,7 +244,7 @@ kable( readMetadata.out ) %>%
 
 ## 6. DEG1   
 ```{r, error=TRUE, message=FALSE  } 
- input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
+ input_CountsDEGMethod <- 2	#DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval <- 0.1	#FDR cutoff
  input_limmaFC <- 2	#Fold-change cutoff
  input_selectModelComprions <- 'Treatment.type: 50kPa_Low pressure vs. Ambient_pressure'	#Selected comparisons
@@ -453,7 +453,7 @@ Generating interactive PPI
  GeneSets.out <-readGeneSets( geneSetFile,
     convertedData.out, input_selectGO5,input_selectOrg,
     c(input_minSetSize, input_maxSetSize)  ) 
- input_selectWGCNA.Module <- NULL 	#Select a module
+ input_selectWGCNA.Module <- 'Entire network' 	#Select a module
  input_topGenesNetwork <- 10	#SoftPower to cutoff
  input_edgeThreshold <- 0.4	#Number of top genes 
  moduleNetwork()	# show network of top genes in selected module

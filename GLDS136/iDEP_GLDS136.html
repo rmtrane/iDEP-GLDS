@@ -2241,7 +2241,7 @@ Protein-chromophore linkage
 </div>
 <div id="deg1" class="section level2">
 <h2>6. DEG1</h2>
-<pre class="r"><code> input_CountsDEGMethod &lt;- 3 #DESeq2= 3,limma-voom=2,limma-trend=1 
+<pre class="r"><code> input_CountsDEGMethod &lt;- 2 #DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval &lt;- 0.1 #FDR cutoff
  input_limmaFC &lt;- 2 #Fold-change cutoff
  input_selectModelComprions &lt;- &#39;Treatment.type: 50kPa_Low pressure vs. Ambient_pressure&#39;    #Selected comparisons
@@ -2251,14 +2251,7 @@ Protein-chromophore linkage
  factorReferenceLevels.out &lt;- c(&#39;Treatment.type:50kPa_Low pressure&#39;) 
 
  limma.out &lt;- limma()</code></pre>
-<pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
-## design formula are characters, converting to factors</code></pre>
-<pre><code>## Error in estimateDispersionsFit(object, fitType = fitType, quiet = quiet): all gene-wise dispersion estimates are within 2 orders of magnitude
-##   from the minimum value, and so the standard curve fitting techniques will not work.
-##   One can instead use the gene-wise estimates as final estimates:
-##   dds &lt;- estimateDispersionsGeneEst(dds)
-##   dispersions(dds) &lt;- mcols(dds)$dispGeneEst
-##   ...then continue with testing using nbinomWaldTest or nbinomLRT</code></pre>
+<pre><code>## Error in if (treatments[kp] == treatments[kk]) {: missing value where TRUE/FALSE needed</code></pre>
 <pre class="r"><code> DEG.data.out &lt;- DEG.data()</code></pre>
 <pre><code>## Error in DEG.data(): object &#39;limma.out&#39; not found</code></pre>
 <pre class="r"><code> limma.out$comparisons </code></pre>
@@ -4777,14 +4770,14 @@ Photosynthetic electron transport chain
  GeneSets.out &lt;-readGeneSets( geneSetFile,
     convertedData.out, input_selectGO5,input_selectOrg,
     c(input_minSetSize, input_maxSetSize)  ) 
- input_selectWGCNA.Module &lt;- NULL   #Select a module
+ input_selectWGCNA.Module &lt;- &#39;Entire network&#39;   #Select a module
  input_topGenesNetwork &lt;- 10    #SoftPower to cutoff
  input_edgeThreshold &lt;- 0.4 #Number of top genes 
  moduleNetwork()    # show network of top genes in selected module</code></pre>
-<pre><code>## Error in strsplit(input_selectWGCNA.Module, &quot; &quot;): non-character argument</code></pre>
+<pre><code>## Error in moduleNetwork(): object &#39;wgcna.out&#39; not found</code></pre>
 <pre class="r"><code> input_removeRedudantSets &lt;- TRUE   #Remove redundant gene sets 
  results &lt;- networkModuleGO()  #Enrichment analysis of selected module</code></pre>
-<pre><code>## Error in strsplit(input_selectWGCNA.Module, &quot; &quot;): non-character argument</code></pre>
+<pre><code>## Error in networkModuleGO(): object &#39;wgcna.out&#39; not found</code></pre>
 <pre class="r"><code> results$adj.Pval &lt;- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %&gt;%
   kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;)) %&gt;%

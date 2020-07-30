@@ -245,7 +245,7 @@ kable( readMetadata.out ) %>%
 
 ## 6. DEG1   
 ```{r, message=FALSE, error=TRUE  }
- input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
+ input_CountsDEGMethod <- 2	#DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval <- 0.1	#FDR cutoff
  input_limmaFC <- 2	#Fold-change cutoff
  input_selectModelComprions <- c('Treatment.type: Treatment.typecontrol vs. Treatment.typeGamma','Treatment.type: Treatment.typecontrol vs. Treatment.typeHZE')	#Selected comparisons

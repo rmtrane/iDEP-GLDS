@@ -245,7 +245,7 @@ kable( readMetadata.out ) %>%
 
 ## 6. DEG1   
 ```{r, message=FALSE  } 
- input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
+ input_CountsDEGMethod <- 2	#DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval <- 0.1	#FDR cutoff
  input_limmaFC <- 2	#Fold-change cutoff
  input_selectModelComprions <- 'Gravity: Microgravity vs. Terrestrial'	#Selected comparisons
@@ -287,10 +287,10 @@ kable( readMetadata.out ) %>%
  geneListData.out <- geneListData()  
  volcanoPlot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   scatterPlot()  
 ```     
-```{r, message=FALSE  }  
+```{r, message=FALSE, error=TRUE  }  
   MAplot()  
 ```     
 ```{r, message=FALSE, error=TRUE  }  
@@ -398,7 +398,7 @@ Generating interactive PPI
 ```{r, message=FALSE  }  
   enrichmentNetworkPlotly(pathwayListData.out) 
 ```     
-```{r, message=FALSE,fig.width=9, fig.height=8  }  
+```{r, message=FALSE,fig.width=9, fig.height=8, error=TRUE  }  
    PGSEAplot() # pathway analysis using PGSEA 
 ```
 
