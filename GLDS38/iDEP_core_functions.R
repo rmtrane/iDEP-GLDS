@@ -124,7 +124,6 @@ library(flashClust,verbose=FALSE)
 # ------------------------------------
 
 
-Min_overlap <- 2
 minSetSize = 3; 
 mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
 mappingEdge = 0.5  # Top species has 50% more genes mapped
@@ -163,6 +162,7 @@ speciesChoice <- append( setNames( "BestMatch","Best matching species"), species
 # Read data and pre-process
 ################################################################
 
+# No big changes needed
 readMetadata <- function(inFile ){
   x <- read.csv(inFile,row.names=1,header=TRUE,colClasses="character")	# try CSV
   if(dim(x)[2] <= 2 )   # if less than 3 columns, try tab-deliminated
@@ -173,10 +173,11 @@ readMetadata <- function(inFile ){
   return(x)
 }
 
+
 readData <- function(inFile ) {
 
-				dataTypeWarning =0
-				dataType =c(TRUE)
+				dataTypeWarning = 0 # Book-keeping variable
+				dataType =c(TRUE) # Another book-keeping variable
 
 				#---------------Read file
 				x <- read.csv(inFile)	# try CSV
@@ -1442,7 +1443,7 @@ tSNEgenePlot <- function() {
 
 
 # Main function. Find a query set of genes enriched with functional category
-FindOverlap <- function (converted,gInfo, GO,selectOrg,minFDR, reduced = FALSE) {
+FindOverlap <- function (converted,gInfo, GO,selectOrg,minFDR, min_overlap = 2, reduced = FALSE) {
 	maxTerms =15 # max number of enriched terms
 	idNotRecognized = as.data.frame("ID not recognized!")
 	
@@ -1487,7 +1488,7 @@ FindOverlap <- function (converted,gInfo, GO,selectOrg,minFDR, reduced = FALSE) 
 	return( paste( tem2 ,collapse=" ",sep="") )}
 	
 	x0 = table(result$pathwayID)					
-	x0 = as.data.frame( x0[which(x0>=Min_overlap)] )# remove low overlaps
+	x0 = as.data.frame( x0[which(x0>=min_overlap)] )# remove low overlaps
 	if(dim(x0)[1] <= 5 ) return(idNotRecognized) # no data
 	colnames(x0)=c("pathwayID","overlap")
 	pathwayInfo <- dbGetQuery( pathway, paste( " select distinct id,n,Description from pathwayInfo where id IN ('", 
@@ -1538,7 +1539,7 @@ findOverlapGMT <- function ( query, geneSet, minFDR=.2 ,minSize=2,maxSize=10000 
 	#query <-  geneSets[['TF_MM_FRIARD_C-REL']] 
 	#query <- query[1:60]
 	total_elements = 30000
-	Min_overlap <- 1
+	min_overlap <- 1
 	maxTerms =10 # max number of enriched terms
 	noSig <- as.data.frame("No significant enrichment found!")
 	query <- cleanGeneSet(query)   # convert to upper case, unique()
@@ -1549,7 +1550,7 @@ findOverlapGMT <- function ( query, geneSet, minFDR=.2 ,minSize=2,maxSize=10000 
 	  geneSet <- geneSet[which(sapply(geneSet,length) < maxSize)]  # gene sets smaller than 1 is ignored!!!
 	result <- unlist( lapply(geneSet, function(x) length( intersect (query, x) ) ) )
 	result <- cbind(unlist( lapply(geneSet, length) ), result )
-	result <- result[ which(result[,2]>Min_overlap), ,drop=F]
+	result <- result[ which(result[,2]>min_overlap), ,drop=F]
 	if(dim(result)[1] == 0) return( noSig)
 	xx <- result[,2]
 	mm <- length(query)
