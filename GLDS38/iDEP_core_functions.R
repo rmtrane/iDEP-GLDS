@@ -123,11 +123,9 @@ library(flashClust,verbose=FALSE)
 
 # ------------------------------------
 
-
-minSetSize = 3; 
-mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
-mappingEdge = 0.5  # Top species has 50% more genes mapped
-PvalGeneInfo = 0.05; minGenes = 10 # min number of genes for ploting
+# mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
+# mappingEdge = 0.5  # Top species has 50% more genes mapped
+# PvalGeneInfo = 0.05; minGenes = 10 # min number of genes for ploting
 kurtosis.log = 50  # log transform is enforced when kurtosis is big
 kurtosis.warning = 10 # log transformation recommnded 
 minGenesEnrichment = 2 # perform GO or promoter analysis only if more than this many genes
