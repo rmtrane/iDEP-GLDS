@@ -124,7 +124,6 @@ library(flashClust,verbose=FALSE)
 # ------------------------------------
 
 
-input_goButton = 0    # if 1, use demo data file
 Min_overlap <- 2
 minSetSize = 3; 
 mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
@@ -353,12 +352,6 @@ readData <- function(inFile ) {
 				dataSize = dim(x);
 				if(!(dim(x)[1]>5 & dim(x)[2]>1)) 
 				stop ( "Data file not recognized. Please double check.")
-
-
-				
-				sampleInfoDemo=NULL
-				if( input_goButton >0)
-					sampleInfoDemo <- t( read.csv(demoDataFile2,row.names=1,header=T,colClasses="character") )
 
 					finalResult <- list(data = as.matrix(x), mean.kurtosis = mean.kurtosis, rawCounts = rawCounts, dataTypeWarning=dataTypeWarning, dataSize=c(dataSizeOriginal,dataSize),sampleInfoDemo=sampleInfoDemo, pvals =pvals )
 				return(finalResult)
