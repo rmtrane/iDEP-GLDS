@@ -123,22 +123,6 @@ library(flashClust,verbose=FALSE)
 
 # ------------------------------------
 
-<<<<<<< HEAD
-
-Min_overlap <- 2
-mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
-mappingEdge = 0.5  # Top species has 50% more genes mapped
-PvalGeneInfo = 0.05; minGenes = 10 # min number of genes for ploting
-kurtosis.log = 50  # log transform is enforced when kurtosis is big
-kurtosis.warning = 10 # log transformation recommnded 
-minGenesEnrichment = 2 # perform GO or promoter analysis only if more than this many genes
-PREDA_Permutations =1000
-maxGeneClustering = 12000  # max genes for hierarchical clustering and k-Means clustering. Slow if larger
-maxGeneWGCNA = 2000 # max genes for co-expression network
-maxFactors =6  # max number of factors in DESeq2 models
-redudantGeneSetsRatio = 0.9  # remove redundant genesets in enrichment analysis
-set.seed(2) # seed for random number generator
-=======
 # mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
 # mappingEdge = 0.5  # Top species has 50% more genes mapped
 # PvalGeneInfo = 0.05; minGenes = 10 # min number of genes for ploting
@@ -151,7 +135,6 @@ set.seed(2) # seed for random number generator
 # maxFactors =6  # max number of factors in DESeq2 models
 # redudantGeneSetsRatio = 0.9  # remove redundant genesets in enrichment analysis
 # set.seed(2) # seed for random number generator
->>>>>>> 09bf6a9b25aa7f578ece12281e366619bf9a31d5
 mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] # 20 colors for kNN clusters
 #Each row of this matrix represents a color scheme;
 
