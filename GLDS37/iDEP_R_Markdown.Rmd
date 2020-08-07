@@ -2,6 +2,7 @@
 title: 'GLDS-37 Analysis iDEP 0.91'
 author:  Hyun-seok Chang  
 date: Thu Jul 23 08:37:01 2020  
+#runtime: shiny
 output: html_document
 ---
 ```{r setup, include=FALSE}
@@ -18,7 +19,7 @@ Ge SX, Son EW, Yao R: iDEP: an integrated web application for differential expre
 ## 1. Read data  
 First we set up the working directory to where the files are saved.    
 ```{r, message=FALSE} 
- setwd('~/Documents/HTML_R/GLDS37')   # Needs to be changed  
+ setwd('~/Documents/GLDS-VIS/iDEP-GLDS/GLDS37')   # Needs to be changed  
 ```
 R packages and iDEP core Functions. 
 	Users can also download the iDEP_core_functions.R file. 

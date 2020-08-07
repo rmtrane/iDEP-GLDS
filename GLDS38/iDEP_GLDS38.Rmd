@@ -18,7 +18,8 @@ Ge SX, Son EW, Yao R: iDEP: an integrated web application for differential expre
 ## 1. Read data  
 First we set up the working directory to where the files are saved.    
 ```{r, message=FALSE} 
- setwd('~/Documents/HTML_R/GLDS38')
+ setwd('~/Documents/iDEP/iDEP-GLDS/GLDS38')
+ input_biclustMethod <- 'BCCC()' 
 ```
 R packages and iDEP core Functions. 
 	Users can also download the iDEP_core_functions.R file. 

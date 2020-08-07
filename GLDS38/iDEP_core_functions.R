@@ -125,7 +125,6 @@ library(flashClust,verbose=FALSE)
 
 
 Min_overlap <- 2
-minSetSize = 3; 
 mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
 mappingEdge = 0.5  # Top species has 50% more genes mapped
 PvalGeneInfo = 0.05; minGenes = 10 # min number of genes for ploting
@@ -353,7 +352,7 @@ readData <- function(inFile ) {
 				if(!(dim(x)[1]>5 & dim(x)[2]>1)) 
 				stop ( "Data file not recognized. Please double check.")
 
-					finalResult <- list(data = as.matrix(x), mean.kurtosis = mean.kurtosis, rawCounts = rawCounts, dataTypeWarning=dataTypeWarning, dataSize=c(dataSizeOriginal,dataSize),sampleInfoDemo=sampleInfoDemo, pvals =pvals )
+					finalResult <- list(data = as.matrix(x), mean.kurtosis = mean.kurtosis, rawCounts = rawCounts, dataTypeWarning=dataTypeWarning, dataSize=c(dataSizeOriginal,dataSize),sampleInfoDemo=NULL, pvals =pvals )
 				return(finalResult)
 
 	}

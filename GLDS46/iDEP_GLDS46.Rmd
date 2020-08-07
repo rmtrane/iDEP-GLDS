@@ -18,7 +18,7 @@ Ge SX, Son EW, Yao R: iDEP: an integrated web application for differential expre
 ## 1. Read data  
 First we set up the working directory to where the files are saved.    
 ```{r, message=FALSE} 
- setwd('~/Documents/HTML_R/GLDS46')
+ setwd('~/Documents/GLDS-VIS/iDEP-GLDS/GLDS46')
 ```
 R packages and iDEP core Functions. 
 	Users can also download the iDEP_core_functions.R file. 
@@ -245,7 +245,7 @@ kable( readMetadata.out ) %>%
 
 ## 6. DEG1   
 ```{r, message=FALSE, error=TRUE  }
- input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
+ input_CountsDEGMethod <- 2	#DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval <- 0.1	#FDR cutoff
  input_limmaFC <- 2	#Fold-change cutoff
  input_selectModelComprions <- c('Treatment.type: Treatment.typecontrol vs. Treatment.typeGamma','Treatment.type: Treatment.typecontrol vs. Treatment.typeHZE')	#Selected comparisons

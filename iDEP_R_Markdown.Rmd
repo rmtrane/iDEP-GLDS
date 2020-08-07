@@ -1,7 +1,7 @@
 ---
 title: 'Reproducing iDEP analyses with auto-generated R Markdown'
 author:  iDEP 0.91  http://ge-lab.org/idep/, originally by Steven Xijin.Ge@sdstate.edu  
-date: Sat Jul 25 05:05:26 2020  
+date: Thu Jul 30 02:58:16 2020  
 output: html_document
 ---
 ```{r setup, include=FALSE}
@@ -43,17 +43,18 @@ We are using the downloaded gene expression file where gene IDs has
 Parameters for reading data  
 ```{r, message=FALSE  } 
  input_missingValue <- 'geneMedian'	#Missing values imputation method
- input_dataFileFormat <- 1	#1- read counts, 2 FKPM/RPKM or DNA microarray
- input_minCounts <- 0.5	#Min counts
- input_NminSamples <- 1	#Minimum number of samples 
- input_countsLogStart <- 4	#Pseudo count for log CPM
- input_CountsTransform <- 1	#Methods for data transformation of counts. 1-EdgeR's logCPM 2-VST, 3-rlog 
+ input_dataFileFormat <- 2	#1- read counts, 2 FKPM/RPKM or DNA microarray
+ input_lowFilter <- -1000	#Min expression score for FPKM
+ input_NminSamples2 <- 1	#Minimum number of samples 
+ input_logStart <- 1	#Pseudo count for FPKM 
+ input_transform <- FALSE	#Log transformation 
 ```
 ```{r, message=FALSE  }  
 
  readData.out <- readData(inputFile) 
  library(knitr)   #  install if needed. for showing tables with kable 
  kable( head(readData.out$data) )    # show the first few rows of data 
+ textTransform()  
 ```
 ```{r, message=FALSE  }  
  readSampleInfo.out <- readSampleInfo(sampleInfoFile) 
@@ -67,7 +68,6 @@ Parameters for reading data
  converted.out = NULL 
  convertedData.out <- convertedData()	 
  nGenesFilter()  
- convertedCounts.out <- convertedCounts()  # converted counts, just for compatibility 
 ```
 
 ## 2. Pre-process 
@@ -75,16 +75,6 @@ Parameters for reading data
 # Read counts per library 
  parDefault = par() 
  par(mar=c(12,4,2,2)) 
- # barplot of total read counts
- x <- readData.out$rawCounts
- groups = as.factor( detectGroups(colnames(x ) ) )
- if(nlevels(groups)<=1 | nlevels(groups) >20 )  
-  col1 = 'green'  else
-  col1 = rainbow(nlevels(groups))[ groups ]				
-		 
- barplot( colSums(x)/1e6, 
-		col=col1,las=3, main="Total read counts (millions)")  
- readCountsBias()  # detecting bias in sequencing depth 
 ```
 ```{r, message=FALSE  }  
 
@@ -197,9 +187,9 @@ Parameters for reading data
 ```
 
 ## 5. PCA and beyond   
-```{r, message=FALSE  } 
- input_selectFactors <- 'Sample_Name'	#Factor coded by color
- input_selectFactors2 <- 'Gravity'	#Factor coded by shape
+```{r, message=FALSE  }  
+ input_selectFactors <- 'Sample_Name'  
+ input_selectFactors2 <- 'Sample_Name' 
  input_tsneSeed2 <- 0	#Random seed for t-SNE 
  #PCA, MDS and t-SNE plots
  PCAplot()  
@@ -228,11 +218,11 @@ Parameters for reading data
  input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
  input_limmaPval <- 0.1	#FDR cutoff
  input_limmaFC <- 2	#Fold-change cutoff
- input_selectModelComprions <- 'Gravity: Microgravity vs. Terrestrial'	#Selected comparisons
- input_selectFactorsModel <- 'Gravity'	#Selected comparisons
+ input_selectModelComprions <- NULL 	#Selected comparisons
+ input_selectFactorsModel <- NULL 	#Selected comparisons
  input_selectInteractions <- NULL 	#Selected comparisons
- input_selectBlockFactorsModel <- NULL 	#Selected comparisons
- factorReferenceLevels.out <- c('Gravity:Microgravity') 
+ input_selectBlockFactorsModel <- NULL 	#Selected comparisons 
+ factorReferenceLevels.out <- NULL 
 
  limma.out <- limma()
  DEG.data.out <- DEG.data()
@@ -252,7 +242,7 @@ Parameters for reading data
 
 ## 7. DEG2   
 ```{r, message=FALSE  } 
- input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
+ input_selectContrast <- 'Terrestrial-Microgravity'	#Selected comparisons 
  selectedHeatmap.data.out <- selectedHeatmap.data()
  selectedHeatmap()   # heatmap for DEGs in selected comparison
 
@@ -320,7 +310,7 @@ Generating interactive PPI
 
 ## 8. Pathway analysis   
 ```{r, message=FALSE  } 
- input_selectContrast1 <- 'Microgravity-Terrestrial'	#select Comparison 
+ input_selectContrast1 <- 'Terrestrial-Microgravity'	#select Comparison 
  #input_selectContrast1 = limma.out$comparisons[3] # manually set
  input_selectGO <- 'GOBP'	#Gene set category 
  #input_selectGO='custom' # if custom gmt file
@@ -375,8 +365,8 @@ Generating interactive PPI
 ```
 
 ## 9. Chromosome   
-```{r, message=FALSE  } 
- input_selectContrast2 <- 'Microgravity-Terrestrial'	#select Comparison 
+```{r, message=FALSE  }  
+ input_selectContrast2 = limma.out$comparisons[1] 
  #input_selectContrast2 = limma.out$comparisons[3] # manually set
  input_limmaPvalViz <- 0.1	#FDR to filter genes
  input_limmaFCViz <- 2	#FDR to filter genes 
@@ -389,11 +379,11 @@ Generating interactive PPI
  input_biclustMethod <- 'BCCC()'	#Method: 'BCCC', 'QUBIC', 'runibic' ... 
  biclustering.out = biclustering()  # run analysis
 
- input_selectBicluster <- 1	#select a cluster 
+ input_selectBicluster <- NULL 	#select a cluster 
  biclustHeatmap()   # heatmap for selected cluster 
 ```     
-```{r, message=FALSE  } 
- input_selectGO4 <- 'GOBP'	#Gene set category 
+```{r, message=FALSE  }  
+ input_selectGO4 = 'GOBP'  # gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
     convertedData.out, input_selectGO4,input_selectOrg,
@@ -418,13 +408,13 @@ Generating interactive PPI
   listWGCNA.Modules.out = listWGCNA.Modules() #modules
  
 ```     
-```{r, message=FALSE  } 
- input_selectGO5 <- 'GOBP'	#Gene set category 
+```{r, message=FALSE  }  
+ input_selectGO5 = 'GOBP'  # gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
     convertedData.out, input_selectGO5,input_selectOrg,
     c(input_minSetSize, input_maxSetSize)  ) 
- input_selectWGCNA.Module <- '1. turquoise (178 genes)'	#Select a module
+ input_selectWGCNA.Module <- NULL 	#Select a module
  input_topGenesNetwork <- 10	#SoftPower to cutoff
  input_edgeThreshold <- 0.4	#Number of top genes 
  moduleNetwork()	# show network of top genes in selected module
