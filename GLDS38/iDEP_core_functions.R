@@ -129,12 +129,12 @@ library(flashClust,verbose=FALSE)
 # kurtosis.log = 50  # log transform is enforced when kurtosis is big
 # kurtosis.warning = 10 # log transformation recommnded 
 # minGenesEnrichment = 2 # perform GO or promoter analysis only if more than this many genes
-PREDA_Permutations = 1000
-maxGeneClustering = 12000  # max genes for hierarchical clustering and k-Means clustering. Slow if larger
-maxGeneWGCNA = 2000 # max genes for co-expression network
-maxFactors =6  # max number of factors in DESeq2 models
-redudantGeneSetsRatio = 0.9  # remove redundant genesets in enrichment analysis
-set.seed(2) # seed for random number generator
+# PREDA_Permutations = 1000
+# maxGeneClustering = 12000  # max genes for hierarchical clustering and k-Means clustering. Slow if larger
+# maxGeneWGCNA = 2000 # max genes for co-expression network
+# maxFactors =6  # max number of factors in DESeq2 models
+# redudantGeneSetsRatio = 0.9  # remove redundant genesets in enrichment analysis
+# set.seed(2) # seed for random number generator
 mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] # 20 colors for kNN clusters
 #Each row of this matrix represents a color scheme;
 
@@ -1330,7 +1330,7 @@ KmeansNclusters <- function() { # Kmeans clustering
 	
 }
  
-Kmeans <- function() { # Kmeans clustering
+Kmeans <- function(maxGeneClustering = 12000 ) { # Kmeans clustering
 
     x <- convertedData.out
 	#x <- readData.out
@@ -4151,7 +4151,7 @@ genomePlot <- function(){
 }
 
 # pre-calculating PREDA, so that changing FDR cutoffs does not trigger entire calculation
-genomePlotDataPre <- function( ){
+genomePlotDataPre <- function( PREDA_Permutations = 1000 ){
 	if (is.null(input_selectContrast2 ) ) return(NULL)
 	
 	if( length(limma.out$topGenes) == 0 ) return(NULL)
@@ -4342,7 +4342,7 @@ geneListBclustGO <- function(minGenesEnrichment = 2 ){
 # Co-expression network
 ################################################################
 
-wgcna <- function ( ){
+wgcna <- function (maxGeneWGCNA = 2000 ){
 			#http://pklab.med.harvard.edu/scw2014/WGCNA.html
 
 			x <- convertedData.out
