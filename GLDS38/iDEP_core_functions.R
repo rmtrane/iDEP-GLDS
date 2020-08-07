@@ -356,7 +356,7 @@ readData <- function(inFile, kurtosis.log=50 ) {
 				if(!(dim(x)[1]>5 & dim(x)[2]>1)) 
 				stop ( "Data file not recognized. Please double check.")
 
-					finalResult <- list(data = as.matrix(x), mean.kurtosis = mean.kurtosis, rawCounts = rawCounts, dataTypeWarning=dataTypeWarning, dataSize=c(dataSizeOriginal,dataSize),sampleInfoDemo=sampleInfoDemo, pvals =pvals )
+					finalResult <- list(data = as.matrix(x), mean.kurtosis = mean.kurtosis, rawCounts = rawCounts, dataTypeWarning=dataTypeWarning, dataSize=c(dataSizeOriginal,dataSize),sampleInfoDemo=NULL, pvals =pvals )
 				return(finalResult)
 
 	}
@@ -1369,11 +1369,15 @@ Kmeans <- function(maxGeneClustering = 12000 ) { # Kmeans clustering
   } 
 
 
-myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL,sideColors=mycolors ) {
+myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=NULL, mycolors) {
 	# number of genes to show
 	ngenes = as.character( table(bar))
 	if(length(bar) >n && n != -1) {ix = sort( sample(1:length(bar),n) ); bar = bar[ix]; x = x[ix,]  }
-
+	
+	if(! is.null(bar) )
+	  if(is.null(sideColors))
+	    sideColors = mycolors
+	
 	# this will cutoff very large values, which could skew the color 
 	x=as.matrix(x)-apply(x,1,mean)
 	cutoff = median(unlist(x)) + 3*sd (unlist(x)) 
@@ -1414,11 +1418,11 @@ myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL,sideColors=m
 
 KmeansHeatmap <- function() { # Kmeans clustering
 
-	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=input_heatColors1)
+	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=input_heatColors1,mycolors=mycolors)
 }
  
 
-tSNEgenePlot <- function(mycolors=mycolors) {
+tSNEgenePlot <- function() {
 			Cluster <- Kmeans.out$bar
 			train <- as.data.frame( cbind(Cluster,Kmeans.out$x) )
 
@@ -2512,10 +2516,10 @@ findContrastSamples <- function(selectContrast, allSampleNames,sampleInfo=NULL, 
 
 selectedHeatmap <- function() {
 
-		 bar = selectedHeatmap.data.out$bar +2;
+		 bar = selectedHeatmap.data.out$bar + 2;
 		 bar[bar==3] =2
 
-	  	 myheatmap2( selectedHeatmap.data.out$genes,bar,200,mycolor=input_heatColors1,c("Down","Up") )
+	  	 myheatmap2( selectedHeatmap.data.out$genes,bar,200,mycolor=input_heatColors1,c("Down","Up"),mycolors=mycolors )
 	 
 }
 
@@ -2870,7 +2874,7 @@ geneListGO <- function() {
 #Down regulated	2.55E-57	135	NcRNA metabolic process	23	Nsun5 Nhp2 Rrp15 Emg1 Ddx56 Rsl1d1 enrichmentPlot <- function( enrichedTerms){
 # Up or down regulation is color-coded
 # gene set size if represented by the size of marker
-enrichmentPlot <- function( enrichedTerms, rightMargin=33, mycolors=mycolors) {
+enrichmentPlot <- function( enrichedTerms, rightMargin=33, mycolors) {
   if(class(enrichedTerms) != "data.frame") return(NULL)
   
   geneLists = lapply(enrichedTerms$Genes, function(x) unlist( strsplit(as.character(x)," " )   ) )
