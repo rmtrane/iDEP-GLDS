@@ -126,10 +126,10 @@ library(flashClust,verbose=FALSE)
 # mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
 # mappingEdge = 0.5  # Top species has 50% more genes mapped
 # PvalGeneInfo = 0.05; minGenes = 10 # min number of genes for ploting
-kurtosis.log = 50  # log transform is enforced when kurtosis is big
-kurtosis.warning = 10 # log transformation recommnded 
-minGenesEnrichment = 2 # perform GO or promoter analysis only if more than this many genes
-PREDA_Permutations =1000
+# kurtosis.log = 50  # log transform is enforced when kurtosis is big
+# kurtosis.warning = 10 # log transformation recommnded 
+# minGenesEnrichment = 2 # perform GO or promoter analysis only if more than this many genes
+PREDA_Permutations = 1000
 maxGeneClustering = 12000  # max genes for hierarchical clustering and k-Means clustering. Slow if larger
 maxGeneWGCNA = 2000 # max genes for co-expression network
 maxFactors =6  # max number of factors in DESeq2 models
@@ -172,7 +172,7 @@ readMetadata <- function(inFile ){
 }
 
 
-readData <- function(inFile ) {
+readData <- function(inFile, kurtosis.log=50 ) {
 
 				dataTypeWarning = 0 # Book-keeping variable
 				dataType =c(TRUE) # Another book-keeping variable
@@ -400,7 +400,7 @@ readSampleInfo <- function(inFile){
 				
 }
 
-textTransform <- function () { 
+textTransform <- function (kurtosis.log=50, kurtosis.warning=10) { 
 		k.value =  readData.out$mean.kurtosis	  
 		tem = paste( "Mean Kurtosis =  ", round(k.value,2), ".\n",sep = "")
 		if( k.value > kurtosis.log) tem = paste(tem, " Detected extremely large values. \n  When kurtosis >", kurtosis.log,
@@ -2805,7 +2805,7 @@ MAplot <- function ( ) {
 }
 
 
-geneListGOTable <- function() {		
+geneListGOTable <- function(minGenesEnrichment = 2) {		
 		NoSig=NULL
 		# using expression data
 		genes <- selectedHeatmap.data.out$genes
@@ -3151,7 +3151,7 @@ STRINGDB_mapping_stat <- function( ) {
 }
 
 
-stringDB_GO_enrichmentData <- function() {
+stringDB_GO_enrichmentData <- function(minGenesEnrichment = 2) {
 						   
 		tem = input_STRINGdbGO
 		taxonomyID = findTaxonomyID.out
@@ -4298,7 +4298,7 @@ biclustHeatmap <- function ( ){
 }
 
 
-geneListBclustGO <- function( ){		
+geneListBclustGO <- function(minGenesEnrichment = 2 ){		
 		
 			res = biclustering.out$res
 			if( res@Number == 0 ) return(as.data.frame("No clusters found!") ) 
@@ -4526,7 +4526,7 @@ moduleNetwork <- function(){
 }
 
 
-networkModuleGO <- function(){		
+networkModuleGO <- function(minGenesEnrichment = 2){		
 
 	
 			#module = gsub(".* ","",input_selectWGCNA.Module)
