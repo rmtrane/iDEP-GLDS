@@ -138,15 +138,17 @@ library(flashClust,verbose=FALSE)
 # redudantGeneSetsRatio = 0.9  # NO USE remove redundant genesets in enrichment analysis
 # set.seed(2) # NO USE seed for random number generator
 
+
+# Graph color schemes, changed several times throughout program
 mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] # 20 colors for kNN clusters
 
 #Each row of this matrix represents a color scheme;
-
 hmcols <- colorRampPalette(rev(c("#D73027", "#FC8D59", "#FEE090", "#FFFFBF",
 "#E0F3F8", "#91BFDB", "#4575B4")))(75)
 heatColors = rbind(      greenred(75),     bluered(75),     colorpanel(75,"green","black","magenta"),colorpanel(75,"blue","yellow","red"),hmcols )
 rownames(heatColors) = c("Green-Black-Red","Blue-White-Red","Green-Black-Magenta","Blue-Yellow-Red","Blue-white-brown")
 colorChoices = setNames(1:dim(heatColors)[1],rownames(heatColors)) # for pull down menu
+
 
 # Create a list for Select Input options
 speciesChoice = list()
@@ -165,7 +167,7 @@ speciesChoice <- append( setNames( "BestMatch","Best matching species"), species
 ################################################################
 
 # No big changes needed
-readMetadata <- function(inFile ){
+readMetadata <- function(inFile){
   x <- read.csv(inFile,row.names=1,header=TRUE,colClasses="character")	# try CSV
   if(dim(x)[2] <= 2 )   # if less than 3 columns, try tab-deliminated
     x <- read.table(inFile, row.names=1,sep="\t",header=TRUE,colClasses="character")
@@ -568,10 +570,9 @@ nGenesFilter <- function() {
  }
 
   # EDA plots -------------------------------------
- densityPlot <- function() {
-set.seed(2) # seed for random number generator
-mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] # 20 colors for kNN clusters
-#Each row of this matrix represents a color scheme;
+ densityPlot <- function(mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] ) {
+
+	#Each row of this matrix represents a color scheme;
 	
     x <- readData.out$data
 
@@ -1370,13 +1371,10 @@ Kmeans <- function(maxGeneClustering = 12000 ) { # Kmeans clustering
   } 
 
 
-myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL,sideColors=NULL ) {
+myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL,sideColors=mycolors ) {
 	# number of genes to show
 	ngenes = as.character( table(bar))
 	if(length(bar) >n && n != -1) {ix = sort( sample(1:length(bar),n) ); bar = bar[ix]; x = x[ix,]  }
-	if(! is.null(bar) )
-		if(is.null(sideColors) ) 
-			sideColors = mycolors
 
 	# this will cutoff very large values, which could skew the color 
 	x=as.matrix(x)-apply(x,1,mean)
@@ -1422,7 +1420,7 @@ KmeansHeatmap <- function() { # Kmeans clustering
 }
  
 
-tSNEgenePlot <- function() {
+tSNEgenePlot <- function(mycolors=mycolors) {
 			Cluster <- Kmeans.out$bar
 			train <- as.data.frame( cbind(Cluster,Kmeans.out$x) )
 
@@ -2874,7 +2872,7 @@ geneListGO <- function() {
 #Down regulated	2.55E-57	135	NcRNA metabolic process	23	Nsun5 Nhp2 Rrp15 Emg1 Ddx56 Rsl1d1 enrichmentPlot <- function( enrichedTerms){
 # Up or down regulation is color-coded
 # gene set size if represented by the size of marker
-enrichmentPlot <- function( enrichedTerms, rightMargin=33) {
+enrichmentPlot <- function( enrichedTerms, rightMargin=33, mycolors=mycolors) {
   if(class(enrichedTerms) != "data.frame") return(NULL)
   
   geneLists = lapply(enrichedTerms$Genes, function(x) unlist( strsplit(as.character(x)," " )   ) )
@@ -3644,7 +3642,7 @@ selectedPathwayData <- function( ){
 	return( x )
 }
 
-selectedPathwayHeatmap <- function() {
+selectedPathwayHeatmap <- function(mycolors=mycolors) {
 
 	x = selectedPathwayData.out
 	if(dim(x)[1]<=2 | dim(x)[2]<=2 ) return(NULL)
