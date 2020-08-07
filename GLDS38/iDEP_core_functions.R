@@ -123,6 +123,7 @@ library(flashClust,verbose=FALSE)
 
 # ------------------------------------
 
+<<<<<<< HEAD
 
 Min_overlap <- 2
 mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
@@ -137,6 +138,20 @@ maxGeneWGCNA = 2000 # max genes for co-expression network
 maxFactors =6  # max number of factors in DESeq2 models
 redudantGeneSetsRatio = 0.9  # remove redundant genesets in enrichment analysis
 set.seed(2) # seed for random number generator
+=======
+# mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
+# mappingEdge = 0.5  # Top species has 50% more genes mapped
+# PvalGeneInfo = 0.05; minGenes = 10 # min number of genes for ploting
+# kurtosis.log = 50  # log transform is enforced when kurtosis is big
+# kurtosis.warning = 10 # log transformation recommnded 
+# minGenesEnrichment = 2 # perform GO or promoter analysis only if more than this many genes
+# PREDA_Permutations = 1000
+# maxGeneClustering = 12000  # max genes for hierarchical clustering and k-Means clustering. Slow if larger
+# maxGeneWGCNA = 2000 # max genes for co-expression network
+# maxFactors =6  # max number of factors in DESeq2 models
+# redudantGeneSetsRatio = 0.9  # remove redundant genesets in enrichment analysis
+# set.seed(2) # seed for random number generator
+>>>>>>> 09bf6a9b25aa7f578ece12281e366619bf9a31d5
 mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] # 20 colors for kNN clusters
 #Each row of this matrix represents a color scheme;
 
@@ -162,6 +177,7 @@ speciesChoice <- append( setNames( "BestMatch","Best matching species"), species
 # Read data and pre-process
 ################################################################
 
+# No big changes needed
 readMetadata <- function(inFile ){
   x <- read.csv(inFile,row.names=1,header=TRUE,colClasses="character")	# try CSV
   if(dim(x)[2] <= 2 )   # if less than 3 columns, try tab-deliminated
@@ -172,10 +188,11 @@ readMetadata <- function(inFile ){
   return(x)
 }
 
-readData <- function(inFile ) {
 
-				dataTypeWarning =0
-				dataType =c(TRUE)
+readData <- function(inFile, kurtosis.log=50 ) {
+
+				dataTypeWarning = 0 # Book-keeping variable
+				dataType =c(TRUE) # Another book-keeping variable
 
 				#---------------Read file
 				x <- read.csv(inFile)	# try CSV
@@ -400,7 +417,7 @@ readSampleInfo <- function(inFile){
 				
 }
 
-textTransform <- function () { 
+textTransform <- function (kurtosis.log=50, kurtosis.warning=10) { 
 		k.value =  readData.out$mean.kurtosis	  
 		tem = paste( "Mean Kurtosis =  ", round(k.value,2), ".\n",sep = "")
 		if( k.value > kurtosis.log) tem = paste(tem, " Detected extremely large values. \n  When kurtosis >", kurtosis.log,
@@ -1330,7 +1347,7 @@ KmeansNclusters <- function() { # Kmeans clustering
 	
 }
  
-Kmeans <- function() { # Kmeans clustering
+Kmeans <- function(maxGeneClustering = 12000 ) { # Kmeans clustering
 
     x <- convertedData.out
 	#x <- readData.out
@@ -1441,7 +1458,7 @@ tSNEgenePlot <- function() {
 
 
 # Main function. Find a query set of genes enriched with functional category
-FindOverlap <- function (converted,gInfo, GO,selectOrg,minFDR, reduced = FALSE) {
+FindOverlap <- function (converted,gInfo, GO,selectOrg,minFDR, min_overlap = 2, reduced = FALSE) {
 	maxTerms =15 # max number of enriched terms
 	idNotRecognized = as.data.frame("ID not recognized!")
 	
@@ -1486,7 +1503,7 @@ FindOverlap <- function (converted,gInfo, GO,selectOrg,minFDR, reduced = FALSE) 
 	return( paste( tem2 ,collapse=" ",sep="") )}
 	
 	x0 = table(result$pathwayID)					
-	x0 = as.data.frame( x0[which(x0>=Min_overlap)] )# remove low overlaps
+	x0 = as.data.frame( x0[which(x0>=min_overlap)] )# remove low overlaps
 	if(dim(x0)[1] <= 5 ) return(idNotRecognized) # no data
 	colnames(x0)=c("pathwayID","overlap")
 	pathwayInfo <- dbGetQuery( pathway, paste( " select distinct id,n,Description from pathwayInfo where id IN ('", 
@@ -1537,7 +1554,7 @@ findOverlapGMT <- function ( query, geneSet, minFDR=.2 ,minSize=2,maxSize=10000 
 	#query <-  geneSets[['TF_MM_FRIARD_C-REL']] 
 	#query <- query[1:60]
 	total_elements = 30000
-	Min_overlap <- 1
+	min_overlap <- 1
 	maxTerms =10 # max number of enriched terms
 	noSig <- as.data.frame("No significant enrichment found!")
 	query <- cleanGeneSet(query)   # convert to upper case, unique()
@@ -1548,7 +1565,7 @@ findOverlapGMT <- function ( query, geneSet, minFDR=.2 ,minSize=2,maxSize=10000 
 	  geneSet <- geneSet[which(sapply(geneSet,length) < maxSize)]  # gene sets smaller than 1 is ignored!!!
 	result <- unlist( lapply(geneSet, function(x) length( intersect (query, x) ) ) )
 	result <- cbind(unlist( lapply(geneSet, length) ), result )
-	result <- result[ which(result[,2]>Min_overlap), ,drop=F]
+	result <- result[ which(result[,2]>min_overlap), ,drop=F]
 	if(dim(result)[1] == 0) return( noSig)
 	xx <- result[,2]
 	mm <- length(query)
@@ -2805,7 +2822,7 @@ MAplot <- function ( ) {
 }
 
 
-geneListGOTable <- function() {		
+geneListGOTable <- function(minGenesEnrichment = 2) {		
 		NoSig=NULL
 		# using expression data
 		genes <- selectedHeatmap.data.out$genes
@@ -3151,7 +3168,7 @@ STRINGDB_mapping_stat <- function( ) {
 }
 
 
-stringDB_GO_enrichmentData <- function() {
+stringDB_GO_enrichmentData <- function(minGenesEnrichment = 2) {
 						   
 		tem = input_STRINGdbGO
 		taxonomyID = findTaxonomyID.out
@@ -4151,7 +4168,7 @@ genomePlot <- function(){
 }
 
 # pre-calculating PREDA, so that changing FDR cutoffs does not trigger entire calculation
-genomePlotDataPre <- function( ){
+genomePlotDataPre <- function( PREDA_Permutations = 1000 ){
 	if (is.null(input_selectContrast2 ) ) return(NULL)
 	
 	if( length(limma.out$topGenes) == 0 ) return(NULL)
@@ -4298,7 +4315,7 @@ biclustHeatmap <- function ( ){
 }
 
 
-geneListBclustGO <- function( ){		
+geneListBclustGO <- function(minGenesEnrichment = 2 ){		
 		
 			res = biclustering.out$res
 			if( res@Number == 0 ) return(as.data.frame("No clusters found!") ) 
@@ -4342,7 +4359,7 @@ geneListBclustGO <- function( ){
 # Co-expression network
 ################################################################
 
-wgcna <- function ( ){
+wgcna <- function (maxGeneWGCNA = 2000 ){
 			#http://pklab.med.harvard.edu/scw2014/WGCNA.html
 
 			x <- convertedData.out
@@ -4526,7 +4543,7 @@ moduleNetwork <- function(){
 }
 
 
-networkModuleGO <- function(){		
+networkModuleGO <- function(minGenesEnrichment = 2){		
 
 	
 			#module = gsub(".* ","",input_selectWGCNA.Module)
