@@ -118,7 +118,7 @@ We are using the downloaded gene expression file where gene IDs has
 Parameters for reading data  
 ```{r, message=FALSE  } 
  input_missingValue_ <- 'geneMedian'	#Missing values imputation method
- input_dataFileFormat <- 1	#1- read counts, 2 FKPM/RPKM or DNA microarray
+ input_dataFileFormat <- 1	#1- read counts, 2 FKPM/RPKM or DNA microarray (Brake up function?)
  input_minCounts <- 0.5	#Min counts
  input_NminSamples <- 1	#Minimum number of samples 
  input_countsLogStart <- 4	#Pseudo count for log CPM
@@ -135,7 +135,7 @@ kable( readMetadata.out ) %>%
 ```
 
 ```{r, message=FALSE  }  
- readData.out <- readData(inputFile, input_missingValue=input_missingValue_) 
+ readData.out <- readData(inputFile, input_missingValue=input_missingValue_, input_minCounts=input_minCounts_) 
   
    kable( head(readData.out$data) ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
