@@ -137,7 +137,6 @@ readMetadata <- function(inFile){
   return(x)
 }
 
-
 readData <- function(inFile, kurtosis.log=50 ) {
 
 				dataTypeWarning = 0 # Book-keeping variable
