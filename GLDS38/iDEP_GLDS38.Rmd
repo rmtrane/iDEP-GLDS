@@ -79,9 +79,7 @@ library(biclust,verbose=FALSE)
 if(input_biclustMethod == "BCQU()" )
 	library(QUBIC,verbose=FALSE) # have trouble installing on Linux
 if(input_biclustMethod == "BCUnibic()" )
-	library(runibic,verbose=FALSE) 
-
-# Test biclustMethod dependant qubic runibic
+	library(runibic,verbose=FALSE) # Test biclustMethod dependant qubic runibic
 
 # wgcna
 library(WGCNA)
