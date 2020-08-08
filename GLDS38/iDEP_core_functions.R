@@ -1373,9 +1373,9 @@ myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=
 		}
 }
 
-KmeansHeatmap <- function() { # Kmeans clustering
+KmeansHeatmap <- function(.mycolors, .heatColors) { # Kmeans clustering
 
-	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=input_heatColors1,mycolors=mycolors, heatColors=heatColors)
+	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=input_heatColors1, .mycolors=mycolors, .heatColors=heatColors)
 }
  
 
@@ -2469,12 +2469,12 @@ findContrastSamples <- function(selectContrast, allSampleNames,sampleInfo=NULL, 
 
 
 
-selectedHeatmap <- function() {
+selectedHeatmap <- function(.mycolors, .heatColors) {
 
 		 bar = selectedHeatmap.data.out$bar + 2;
 		 bar[bar==3] =2
 
-	  	 myheatmap2( selectedHeatmap.data.out$genes,bar,200,mycolor=input_heatColors1,c("Down","Up"),mycolors=mycolors, heatColors=heatColors )
+	  	 myheatmap2( selectedHeatmap.data.out$genes,bar,200,mycolor=input_heatColors1,c("Down","Up"),mycolors = .mycolors, heatColors = .heatColors )
 	 
 }
 
