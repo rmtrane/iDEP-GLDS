@@ -762,7 +762,7 @@ staticHeatmap <- function (heatColors) {
 
 	#Interactive heatmap via Plotly plot ----------------------------------------------
 	# interactive heatmap with plotly
-heatmapPlotly <- function (heatColors, geneBarPlotError) { 	
+heatmapPlotly <- function (heatColors, allGeneInfo.out) { 	
 	input_nGenesPlotly= 50
 
 	   x <- convertedData.out

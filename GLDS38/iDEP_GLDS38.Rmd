@@ -201,7 +201,7 @@ kable( readMetadata.out ) %>%
 ```
 ```{r, message=FALSE  } 
  input_useSD <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
- geneBarPlotError(geneBarPlotError)       
+ geneBarPlotError(allGeneInfo.out_)       
 ```
 
 ## 3. Heatmap  
@@ -238,7 +238,7 @@ kable( readMetadata.out ) %>%
 ```
   ![heatmap] (heatmap.png)   
 ```{r, message=FALSE  }  
- heatmapPlotly(heatColors, geneBarPlotError) # interactive heatmap using Plotly 
+ heatmapPlotly(heatColors, allGeneInfo.out=allGeneInfo.out_) # interactive heatmap using Plotly 
 ```
 
 ## 4. K-means clustering   
