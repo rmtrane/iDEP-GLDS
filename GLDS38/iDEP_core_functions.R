@@ -68,7 +68,7 @@ readMetadata <- function(inFile){
 }
 
 
-readData <- function(inFile, kurtosis.log=50, input_missingValue='geneMedian', input_minCounts=0.5, input_NminSamples=1, input_countsLogStart = 4, input_CountsTransform = 1 ) {
+readData <- function(inFile, kurtosis.log=50, input_missingValue='geneMedian', input_dataFileFormat = 1,input_minCounts=0.5, input_NminSamples=1, input_countsLogStart = 4, input_CountsTransform = 1 ) {
 
 				dataTypeWarning = 0 # Book-keeping variable
 				dataType = c(TRUE) # Another book-keeping variable

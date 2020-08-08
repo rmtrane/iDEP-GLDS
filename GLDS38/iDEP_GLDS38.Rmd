@@ -133,7 +133,7 @@ kable( readMetadata.out ) %>%
 ```
 
 ```{r, message=FALSE  }  
- readData.out <- readData(inputFile, input_missingValue=input_missingValue_, input_dataFileFormat = input_dataFileFormat, input_minCounts=input_minCounts_, input_minCounts=input_NminSamples_, input_countsLogStart=input_countsLogStart_, input_CountsTransform = input_CountsTransform_) 
+ readData.out <- readData(inputFile, input_missingValue=input_missingValue_, input_dataFileFormat = input_dataFileFormat, input_minCounts=input_minCounts_, input_NminSamples = input_NminSamples_, input_countsLogStart=input_countsLogStart_, input_CountsTransform = input_CountsTransform_) 
   
    kable( head(readData.out$data) ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
