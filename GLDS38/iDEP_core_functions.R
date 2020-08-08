@@ -303,8 +303,8 @@ readSampleInfo <- function(inFile, readData.out){
 				} else retrun(NULL)				
 }
 
-# START HERE ---------
-textTransform <- function (kurtosis.log=50, kurtosis.warning=10) { 
+# Is This function even used? - Can't figure out what it does.
+textTransform <- function (readData.out, kurtosis.log=50, kurtosis.warning=10) { 
 		k.value =  readData.out$mean.kurtosis	  
 		tem = paste( "Mean Kurtosis =  ", round(k.value,2), ".\n",sep = "")
 		if( k.value > kurtosis.log) tem = paste(tem, " Detected extremely large values. \n  When kurtosis >", kurtosis.log,
@@ -319,13 +319,14 @@ textTransform <- function (kurtosis.log=50, kurtosis.warning=10) {
 }
 
 
-# Clean up gene sets. Remove spaces and other control characters from gene names  
+# Clean up gene sets. Remove spaces and other control characters from gene names 
 cleanGeneSet <- function (x){
   # remove duplicate; upper case; remove special characters
   x <- unique( toupper( gsub("\n| ","",x) ) )
   x <- x[which( nchar(x)>1) ]  # genes should have at least two characters
   return(x)
 }
+
 findSpeciesById <- function (speciesID){ # find species name use id
   return( orgInfo[which(orgInfo$id == speciesID),]  )
 }
@@ -367,17 +368,24 @@ convertID <- function (query,selectOrg, selectGO) {
 # retrieve detailed info on genes
 geneInfo <- function (fileName = NULL){
 
-	if(!is.null(fileName))  # if only one file           #WBGene0000001 some ensembl gene ids in lower case
-	{ x = read.csv(as.character(fileName) ); x[,1]= toupper(x[,1]) } else # read in the chosen file 
-	{ return(as.data.frame("No file.") )   }
+	if(!is.null(fileName)) {  # if only one file           #WBGene0000001 some ensembl gene ids in lower case
+    	x = read.csv(as.character(fileName) ); x[,1]= toupper(x[,1]) 
+	} 
+	else { # read in the chosen file 
+	    return(as.data.frame("No file.") )
+	}
 	Set=rep("List",nrow(x))
+	
 	return( cbind(x,Set) )
  }
 
-convertedData <- function() {
-		if( is.null(converted.out ) ) return( readData.out$data) # if id or species is not recognized use original data.
-			
-				if(input_noIDConversion) return( readData.out$data )
+convertedData <- function(converted.out=NULL, readData.out=readData.out, input_noIDConversion=TRUE) {
+		if( is.null(converted.out ) ) {
+			return(readData.out$data) # if id or species is not recognized use original data.
+		} #implicit else
+				if(input_noIDConversion) { 
+					return(readData.out$data )
+				}
 				
 				mapping <- converted.out$conversionTable
 				# cat (paste( "\nData:",input_selectOrg) )
@@ -402,7 +410,6 @@ convertedData <- function() {
 				tem = apply(x1,1,sd)
 				x1 = x1[order(-tem),]  # sort again by SD
 				return(x1)
-
 	}
 
 convertedCounts <- function() {
