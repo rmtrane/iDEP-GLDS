@@ -119,7 +119,7 @@ Parameters for reading data
 ```{r, message=FALSE  } 
  input_missingValue_ <- 'geneMedian'	#Missing values imputation method
  input_dataFileFormat <- 1	#1- read counts, 2 FKPM/RPKM or DNA microarray (Brake up function?)
- input_minCounts <- 0.5	#Min counts
+ input_minCounts_ <- 0.5	#Min counts
  input_NminSamples <- 1	#Minimum number of samples 
  input_countsLogStart <- 4	#Pseudo count for log CPM
  input_CountsTransform <- 1	#Methods for data transformation of counts. 1-EdgeR's logCPM 2-VST, 3-rlog 
