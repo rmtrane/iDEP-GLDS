@@ -68,7 +68,7 @@ readMetadata <- function(inFile){
 }
 
 
-readData <- function(inFile, kurtosis.log=50, input_missingValue='geneMedian', input_minCounts=0.5) {
+readData <- function(inFile, kurtosis.log=50, input_missingValue='geneMedian', input_minCounts=0.5, input_NminSamples=1, input_countsLogStart = 4, input_CountsTransform = 1 ) {
 
 				dataTypeWarning = 0 # Book-keeping variable
 				dataType = c(TRUE) # Another book-keeping variable
@@ -2082,7 +2082,7 @@ DEG.DESeq2 <- function (  rawCounts,maxP_limma=.05, minFC_limma=2, selectedCompa
 }
 
 # main function
-limma <- function() {  
+limma <- function(input_dataFileFormat = 1, input_countsLogStart = 4) {  
 	if(input_dataFileFormat == 1 ) {  # if count data
 		 if(input_CountsDEGMethod == 3 ) {    # if DESeq2 method
 				# rawCounts = read.csv("exampleData/airway_GSE52778.csv", row.names=1)
