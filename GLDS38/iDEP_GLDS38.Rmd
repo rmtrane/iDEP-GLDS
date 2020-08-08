@@ -341,11 +341,11 @@ kable( readMetadata.out ) %>%
 ## 7. DEG2   
 ```{r, message=FALSE  } 
  input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
- selectedHeatmap.data.out <- selectedHeatmap.data()
+ selectedHeatmap.data.out <- selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_)
  selectedHeatmap(.mycolors = mycolors, .heatColors = heatColors)   # heatmap for DEGs in selected comparison
 
  # Save gene lists and data into files
- write.csv( selectedHeatmap.data()$genes, 'heatmap.data.csv') 
+ write.csv( selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_)$genes, 'heatmap.data.csv') 
  write.csv(DEG.data(),'DEG.data.csv' )
  write(AllGeneListsGMT() ,'AllGeneListsGMT.gmt')
  
@@ -359,7 +359,7 @@ kable( readMetadata.out ) %>%
   scatterPlot()  
 ```     
 ```{r, message=FALSE  }  
-  MAplot()  
+  MAplot(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_)  
 ```     
 ```{r, message=FALSE  }  
   geneListGOTable.out <- geneListGOTable()  
@@ -525,7 +525,7 @@ Generating interactive PPI
  input_selectWGCNA.Module <- 'Entire network'	#Select a module
  input_topGenesNetwork <- 10	#SoftPower to cutoff
  input_edgeThreshold <- 0.4	#Number of top genes 
- moduleNetwork()	# show network of top genes in selected module
+ moduleNetwork(input_noIDConversion=input_noIDConversion_)	# show network of top genes in selected module
  
 ```     
 ```{r, message=FALSE  } 

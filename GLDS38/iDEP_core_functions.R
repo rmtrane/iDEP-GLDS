@@ -2408,7 +2408,7 @@ selectedHeatmap <- function(.mycolors, .heatColors) {
 
 
 
-selectedHeatmap.data <- function(){
+selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion){
 
 		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
@@ -2451,7 +2451,7 @@ selectedHeatmap.data <- function(){
 		 bar = bar[bar!=0]
 
 		 # retreive related data		 
-		 genes = convertedData()[iy,iz,drop=FALSE]
+		 genes = convertedData(converted.out=.converted.out, readData.out=.readData.out, input_noIDConversion=.input_noIDConversion)[iy,iz,drop=FALSE]
 		 
 		 genes = genes[order(bar),,drop=FALSE] # needs to be sorted because myheatmap2 does not reorder genes
 		 bar = sort(bar)
@@ -2644,7 +2644,7 @@ scatterPlot <- function( ){
 }
 
 
-MAplot <- function ( ) {
+MAplot <- function (.converted.out, .readData.out, .input_noIDConversion) {
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -2675,7 +2675,7 @@ MAplot <- function ( ) {
 	 
 
 
-		average1 <- as.data.frame( apply( convertedData()[,iz],1,mean) )
+		average1 <- as.data.frame( apply( convertedData(converted.out=.converted.out, readData.out=.readData.out, input_noIDConversion=.input_noIDConversion)[,iz],1,mean) )
 		colnames(average1) = "Average"
 		rownames(average1) = rownames(convertedData.out)
 		
@@ -4350,7 +4350,7 @@ listWGCNA.Modules <- function(){
 }
 
 
-moduleNetwork <- function(){
+moduleNetwork <- function(input_noIDConversion){
 
 		outfile <- tempfile(fileext='.txt')
 	
