@@ -199,7 +199,7 @@ kable( readMetadata.out ) %>%
 ```{r, message=FALSE  }  
 
  Kmeans.out = Kmeans()   #Running K-means 
- KmeansHeatmap(.mycolors = mycolors, .heatColors = .heatColors)   #Heatmap for k-Means 
+ KmeansHeatmap(.mycolors = mycolors, .heatColors = heatColors)   #Heatmap for k-Means 
  
 ```     
 ```{r, message=FALSE  }  

@@ -122,16 +122,6 @@ library(flashClust,verbose=FALSE)
 
 # ------------------------------------
 
-# Graph color schemes, changed several times throughout program
-mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] # 20 colors for kNN clusters
-#Each row of this matrix represents a color scheme;
-hmcols <- colorRampPalette(rev(c("#D73027", "#FC8D59", "#FEE090", "#FFFFBF",
-"#E0F3F8", "#91BFDB", "#4575B4")))(75)
-heatColors = rbind(      greenred(75),     bluered(75),     colorpanel(75,"green","black","magenta"),colorpanel(75,"blue","yellow","red"),hmcols )
-rownames(heatColors) = c("Green-Black-Red","Blue-White-Red","Green-Black-Magenta","Blue-Yellow-Red","Blue-white-brown")
-
-
-
 ################################################################
 # Read data and pre-process
 ################################################################
@@ -1375,7 +1365,7 @@ myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=
 
 KmeansHeatmap <- function(.mycolors, .heatColors) { # Kmeans clustering
 
-	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=input_heatColors1, .mycolors=mycolors, .heatColors=heatColors)
+	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=input_heatColors1, mycolors=.mycolors, heatColors=.heatColors)
 }
  
 
