@@ -68,10 +68,10 @@ readMetadata <- function(inFile){
 }
 
 
-readData <- function(inFile, kurtosis.log=50 ) {
+readData <- function(inFile, kurtosis.log=50, input_missingValue='geneMedian' ) {
 
 				dataTypeWarning = 0 # Book-keeping variable
-				dataType =c(TRUE) # Another book-keeping variable
+				dataType = c(TRUE) # Another book-keeping variable
 
 				#---------------Read file
 				x <- read.csv(inFile)	# try CSV
