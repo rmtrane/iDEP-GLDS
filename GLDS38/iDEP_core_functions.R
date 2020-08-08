@@ -148,12 +148,6 @@ rownames(heatColors) = c("Green-Black-Red","Blue-White-Red","Green-Black-Magenta
 colorChoices = setNames(1:dim(heatColors)[1],rownames(heatColors)) # for pull down menu
 
 
-# Create a list for Select Input options
-speciesChoice = list()
-speciesChoice <- append( setNames( "NEW","**NEW SPECIES**"), speciesChoice  )
-speciesChoice <- append( setNames( "BestMatch","Best matching species"), speciesChoice  )
-
-
 
 
 
@@ -183,20 +177,27 @@ readData <- function(inFile, kurtosis.log=50 ) {
 
 				#---------------Read file
 				x <- read.csv(inFile)	# try CSV
-				if(dim(x)[2] <= 2 )   # if less than 3 columns, try tab-deliminated
-					x <- read.table(inFile, sep="\t",header=TRUE)	
+
+				if(dim(x)[2] <= 2 ){   # if less than 3 columns, try tab-deliminated
+					x <- read.table(inFile, sep="\t",header=TRUE)
+				}
 				#-------Remove non-numeric columns, except the first column
 				
-				for(i in 2:dim(x)[2])
-					dataType = c( dataType, is.numeric(x[,i]) )
-				if(sum(dataType) <=2) return (NULL)  # only less than 2 columns are numbers
+				for (i in 2:dim(x)[2]) {
+					dataType = c( dataType, is.numeric(x[,i]) ) 
+				}
+
+				if(sum(dataType) <=2){
+					return (NULL)  # only less than 2 columns are numbers
+				}
+
 				x <- x[,dataType]  # only keep numeric columns
 				
 				# rows with all missing values
 				ix = which( apply(x[,-1],1, function(y) sum( is.na(y) ) ) != dim(x)[2]-1 )
 				x <- x[ix,]
 				
-				dataSizeOriginal = dim(x); dataSizeOriginal[2] = dataSizeOriginal[2] -1
+				dataSizeOriginal = dim(x); dataSizeOriginal[2] = dataSizeOriginal[2]-1
 				
 				x[,1] <- toupper(x[,1])
 				x[,1] <- gsub(" ","",x[,1]) # remove spaces in gene ids
@@ -208,11 +209,10 @@ readData <- function(inFile, kurtosis.log=50 ) {
 				# remove "-" or "." from sample names
 				colnames(x) = gsub("-","",colnames(x))
 				colnames(x) = gsub("\\.","",colnames(x))
-
 				
 				#cat("\nhere",dim(x))
 				# missng value for median value
-				if(sum(is.na(x))>0) {# if there is missing values
+				if(sum(is.na(x))>0) { # if there is missing values
 					if(input_missingValue =="geneMedian") { 
 						rowMedians <- apply(x,1, function (y)  median(y,na.rm=T))
 						for( i in 1:dim(x)[2] ) {
@@ -229,8 +229,9 @@ readData <- function(inFile, kurtosis.log=50 ) {
 							rowMedians <- apply(x[,samples, drop=F],1, function (y)  median(y,na.rm=T))
 							for( i in  samples ) { 
 								ix = which(is.na(x[ ,i] ) )	
-								if(length(ix) >0 )
+								if(length(ix) >0 ) {
 									x[ix, i  ]  <- rowMedians[ix]
+								}
 							}										
 						}
 						
@@ -441,28 +442,14 @@ convertID <- function (query,selectOrg, selectGO) {
 	# querySet is ensgene data for example, ENSG00000198888, ENSG00000198763, ENSG00000198804
 	querySTMT <- paste( "select distinct id,ens,species from mapping where id IN ('", paste(querySet,collapse="', '"),"')",sep="")
 	result <- dbGetQuery(convert, querySTMT)
-	if( dim(result)[1] == 0  ) return(NULL)
-	if(selectOrg == speciesChoice[[1]]) {
-		comb = paste( result$species,result$idType)
-		sortedCounts = sort(table(comb),decreasing=T)
-		recognized =names(sortedCounts[1])
-		result <- result[which(comb == recognized),]
-		speciesMatched=sortedCounts
-		names(speciesMatched )= sapply(as.numeric(gsub(" .*","",names(sortedCounts) ) ), findSpeciesByIdName  ) 
-		speciesMatched <- as.data.frame( speciesMatched )
-		if(length(sortedCounts) == 1) { # if only  one species matched
-		speciesMatched[1,1] <-paste( rownames(speciesMatched), "(",speciesMatched[1,1],")",sep="")
-		} else {# if more than one species matched
-			speciesMatched[,1] <- as.character(speciesMatched[,1])
-			speciesMatched[,1] <- paste( speciesMatched[,1]," (",speciesMatched[,2], ")", sep="") 
-			speciesMatched[1,1] <- paste( speciesMatched[1,1],"   ***Used in mapping***  To change, select from above and resubmit query.") 	
-			speciesMatched <- as.data.frame(speciesMatched[,1])
-		}
-	} else { # if species is selected
-		result <- result[which(result$species == selectOrg ) ,]
-		if( dim(result)[1] == 0  ) return(NULL) #stop("ID not recognized!")
-		speciesMatched <- as.data.frame(paste("Using selected species ", findSpeciesByIdName(selectOrg) )  )
+	if( dim(result)[1] == 0  ){ 
+		return(NULL)
 	}
+
+	result <- result[which(result$species == selectOrg ) ,]
+	if( dim(result)[1] == 0  ) return(NULL) #stop("ID not recognized!")
+	speciesMatched <- as.data.frame(paste("Using selected species ", findSpeciesByIdName(selectOrg) )  )
+
 	result <- result[which(!duplicated(result[,2]) ),] # remove duplicates in ensembl_gene_id
 	result <- result[which(!duplicated(result[,1]) ),] # remove duplicates in user ID
 	colnames(speciesMatched) = c("Matched Species (genes)" ) 
@@ -1463,11 +1450,9 @@ FindOverlap <- function (converted,gInfo, GO,selectOrg,minFDR, min_overlap = 2, 
 	if (length(ix) == 0 ) {return(idNotRecognized )}
 	
 	# If selected species is not the default "bestMatch", use that species directly
-	if(selectOrg != speciesChoice[[1]]) {  
-		ix = grep(findSpeciesById(selectOrg)[1,1], gmtFiles )
-		if (length(ix) == 0 ) {return(idNotRecognized )}
-		totalGenes <- orgInfo[which(orgInfo$id == as.numeric(selectOrg)),7]
-	}
+	ix = grep(findSpeciesById(selectOrg)[1,1], gmtFiles )
+	if (length(ix) == 0 ) {return(idNotRecognized )}
+	totalGenes <- orgInfo[which(orgInfo$id == as.numeric(selectOrg)),7]
 	pathway <- dbConnect(sqlite,gmtFiles[ix],flags=SQLITE_RO)
 	
 		
@@ -3109,10 +3094,9 @@ findTaxonomyID <- function( speciesName = "mmusculus") {
 	   { # if no species is entered, try to resolve species using existing info 	
 			codedNames = sapply(STRING10_species$compact_name,shortSpeciesNames )
 			ix = match(speciesName , codedNames)
-			if(input_selectOrg != speciesChoice[[1]]) {  # if species is entered
-				selectedSpecies = findSpeciesById(input_selectOrg)[1,1]
-				ix = match( gsub("_.*","", selectedSpecies ), codedNames)				
-			}
+
+			selectedSpecies = findSpeciesById(input_selectOrg)[1,1]
+			ix = match( gsub("_.*","", selectedSpecies ), codedNames)				
 
 		} else return(NULL) 
  
@@ -3715,12 +3699,11 @@ keggPathwayID <- function (pathwayDescription, Species, GO,selectOrg) {
 
 	if (length(ix) == 0 ) {return(NULL)}
 	
-	# If selected species is not the default "bestMatch", use that species directly
-	if(selectOrg != speciesChoice[[1]]) {  
-		ix = grep(findSpeciesById(selectOrg)[1,1], gmtFiles )
-		if (length(ix) == 0 ) {return(NULL )}
-		totalGenes <- orgInfo[which(orgInfo$id == as.numeric(selectOrg)),7]
-	}
+	# If selected species is not the default "bestMatch", use that species directly 
+	ix = grep(findSpeciesById(selectOrg)[1,1], gmtFiles )
+	if (length(ix) == 0 ) {return(NULL )}
+	totalGenes <- orgInfo[which(orgInfo$id == as.numeric(selectOrg)),7]
+	
 	pathway <- dbConnect(sqlite,gmtFiles[ix],flags=SQLITE_RO)
 	
 	# change Parkinson's disease to Parkinson\'s disease    otherwise SQL 
