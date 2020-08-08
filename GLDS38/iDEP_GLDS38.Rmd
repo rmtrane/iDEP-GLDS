@@ -20,12 +20,6 @@ First we set up the working directory to where the files are saved.
 ```{r, message=FALSE} 
  setwd('~/Documents/iDEP/iDEP-GLDS/GLDS38')
  input_biclustMethod <- 'BCCC()' 
-
-#Each row of this matrix represents a color scheme;
-hmcols <- colorRampPalette(rev(c("#D73027", "#FC8D59", "#FEE090", "#FFFFBF",
-"#E0F3F8", "#91BFDB", "#4575B4")))(75)
-heatColors = rbind(      greenred(75),     bluered(75),     colorpanel(75,"green","black","magenta"),colorpanel(75,"blue","yellow","red"),hmcols )
-rownames(heatColors) = c("Green-Black-Red","Blue-White-Red","Green-Black-Magenta","Blue-Yellow-Red","Blue-white-brown")
 ```
 R packages and iDEP core Functions. 
 	Users can also download the iDEP_core_functions.R file. 
@@ -40,6 +34,13 @@ R packages and iDEP core Functions.
 	source('iDEP_core_functions.R') else 
     source('https://raw.githubusercontent.com/iDEP-SDSU/idep/master/shinyapps/idep/iDEP_core_functions.R') 
 ```  
+```{r, message=FALSE}
+#Each row of this matrix represents a color scheme;
+hmcols <- colorRampPalette(rev(c("#D73027", "#FC8D59", "#FEE090", "#FFFFBF",
+"#E0F3F8", "#91BFDB", "#4575B4")))(75)
+heatColors = rbind(      greenred(75),     bluered(75),     colorpanel(75,"green","black","magenta"),colorpanel(75,"blue","yellow","red"),hmcols )
+rownames(heatColors) = c("Green-Black-Red","Blue-White-Red","Green-Black-Magenta","Blue-Yellow-Red","Blue-white-brown")
+```
 We are using the downloaded gene expression file where gene IDs has 
 	been converted to Ensembl gene IDs. This is because the ID conversion database is too large
 	to download. You can use your original file if your file uses Ensembl ID, or you do not want 
