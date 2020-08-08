@@ -151,7 +151,7 @@ kable( readMetadata.out ) %>%
  input_noIDConversion_ = TRUE  
  allGeneInfo.out <- geneInfo(geneInfoFile) 
  converted.out_ = NULL 
- convertedData.out <- convertedData(converted.out=converted.out_, readData.out=readData.out_, input_noIDConversion=input_noIDConversion_)	 
+ convertedData.out <- convertedData(converted.out=converted.out_, readData.out=readData.out, input_noIDConversion=input_noIDConversion_)	 
  nGenesFilter()  
  convertedCounts.out <- convertedCounts()  # converted counts, just for compatibility 
 ```
