@@ -412,7 +412,7 @@ convertedData <- function(converted.out=NULL, readData.out=readData.out, input_n
 				return(x1)
 	}
 
-convertedCounts <- function() {
+convertedCounts <- function(readData.out, converted.out) {
 		      if( is.null(converted.out ) ) return( readData.out$rawCounts)
 				mapping <- converted.out$conversionTable
 

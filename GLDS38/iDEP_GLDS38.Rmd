@@ -153,7 +153,7 @@ kable( readMetadata.out ) %>%
  converted.out_ = NULL 
  convertedData.out <- convertedData(converted.out=converted.out_, readData.out=readData.out, input_noIDConversion=input_noIDConversion_)	 
  nGenesFilter(readData.out=readData.out, converted.out=converted.out_, convertedData.out=convertedData.out, input_noIDConversion=input_noIDConversion_)  
- convertedCounts.out <- convertedCounts()  # converted counts, just for compatibility 
+ convertedCounts.out <- convertedCounts(readData.out=readData.out, converted.out=converted.out_)  # converted counts, just for compatibility 
 ```
 
 ## 2. Pre-process 
