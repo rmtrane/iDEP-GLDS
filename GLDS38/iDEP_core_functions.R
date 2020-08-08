@@ -479,7 +479,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
    
 }
 
- genePlot <- function() {
+ genePlot <- function(allGeneInfo.out) {
     x <- convertedData.out
 	
 	Symbols <- rownames(x)
@@ -521,7 +521,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
 	}	
 
 	
-geneBarPlotError <- function() {
+geneBarPlotError <- function(allGeneInfo.out) {
    x <- convertedData.out
 	
 	Symbols <- rownames(x)
@@ -762,7 +762,7 @@ staticHeatmap <- function (heatColors) {
 
 	#Interactive heatmap via Plotly plot ----------------------------------------------
 	# interactive heatmap with plotly
-heatmapPlotly <- function (heatColors) { 	
+heatmapPlotly <- function (heatColors, geneBarPlotError) { 	
 	input_nGenesPlotly= 50
 
 	   x <- convertedData.out
@@ -2157,7 +2157,7 @@ limma <- function(input_dataFileFormat = 1, input_countsLogStart = 4) {
 }
 
 	
-DEG.data <- function() {
+DEG.data <- function(allGeneInfo.out) {
 
 		  genes = limma.out$results
 		  genes = as.data.frame( genes[which( rowSums( abs (genes) ) != 0 ),] )
@@ -2463,7 +2463,7 @@ selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConve
 
 
 
-DEG.data <- function(){
+DEG.data <- function(allGeneInfo.out){
 
 	genes = limma.out$results
 	genes = as.data.frame( genes[which( rowSums(genes) != 0 ),] )
@@ -2505,7 +2505,7 @@ AllGeneListsGMT <- function() {
 
 
 
-geneListData <- function( ) {
+geneListData <- function(allGeneInfo.out) {
 		
 		noSig = as.data.frame("No significant genes find!")
 		if( is.null(input_selectContrast) ) return(NULL)
@@ -3503,7 +3503,8 @@ ReactomePAPathwayData <- function( ){
 	 return( top1)
 }
 
-selectedPathwayData <- function( ){
+# Function possibly not used
+selectedPathwayData <- function(allGeneInfo.out){
  
     if(input_sigPathways == "All") return (NULL) 
 	ix <- which(names(GeneSets.out ) == input_sigPathways   ) # find the gene set
@@ -3690,7 +3691,7 @@ KeggImage <- function(){
 }
 
 # list of pathways with details
-pathwayListData  <- function(){
+pathwayListData  <- function(allGeneInfo.out){
     
 	pathways = NULL
 	if( input_pathwayMethod == 1)  
@@ -3779,7 +3780,7 @@ pathwayListData  <- function(){
 # Genome-wide view
 ################################################################
  
-genomePlotly <- function( ){
+genomePlotly <- function(allGeneInfo.out ){
 		# default plot
 		fake = data.frame(a=1:3,b=1:3)
 		p <- ggplot(fake, aes(x = a, y = b)) +
@@ -3904,8 +3905,8 @@ genomePlotly <- function( ){
 		ggplotly(p)
 }
 
-# results from PREDA
-genomePlotData <- function( ){
+# results from PREDA, not used
+genomePlotData <- function(allGeneInfo.out ){
  	if (is.null(input_selectContrast2 ) ) return(NULL)
 	
 	if( length(limma.out$topGenes) == 0 ) return(NULL)
@@ -4036,7 +4037,7 @@ genomePlot <- function(){
 }
 
 # pre-calculating PREDA, so that changing FDR cutoffs does not trigger entire calculation
-genomePlotDataPre <- function( PREDA_Permutations = 1000 ){
+genomePlotDataPre <- function(allGeneInfo.out, PREDA_Permutations = 1000 ){
 	if (is.null(input_selectContrast2 ) ) return(NULL)
 	
 	if( length(limma.out$topGenes) == 0 ) return(NULL)
@@ -4350,7 +4351,7 @@ listWGCNA.Modules <- function(){
 }
 
 
-moduleNetwork <- function(input_noIDConversion){
+moduleNetwork <- function(input_noIDConversion, allGeneInfo.out){
 
 		outfile <- tempfile(fileext='.txt')
 	

@@ -149,7 +149,7 @@ kable( readMetadata.out ) %>%
  input_selectOrg ="NEW" 
  input_selectGO <- 'GOBP'	#Gene set category 
  input_noIDConversion_ = TRUE  
- allGeneInfo.out <- geneInfo(geneInfoFile) 
+ allGeneInfo.out_ <- geneInfo(geneInfoFile) 
  converted.out_ = NULL 
  convertedData.out <- convertedData(converted.out=converted.out_, readData.out=readData.out, input_noIDConversion=input_noIDConversion_)	 
  nGenesFilter(readData.out=readData.out, converted.out=converted.out_, convertedData.out=convertedData.out, input_noIDConversion=input_noIDConversion_)  
@@ -197,11 +197,11 @@ kable( readMetadata.out ) %>%
  ####plot gene or gene family
  input_selectOrg ="BestMatch" 
  input_geneSearch <- 'HOXA'	#Gene ID for searching 
- genePlot()  
+ genePlot(allGeneInfo.out_)  
 ```
 ```{r, message=FALSE  } 
  input_useSD <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
- geneBarPlotError()       
+ geneBarPlotError(geneBarPlotError)       
 ```
 
 ## 3. Heatmap  
@@ -238,7 +238,7 @@ kable( readMetadata.out ) %>%
 ```
   ![heatmap] (heatmap.png)   
 ```{r, message=FALSE  }  
- heatmapPlotly(heatColors) # interactive heatmap using Plotly 
+ heatmapPlotly(heatColors, geneBarPlotError) # interactive heatmap using Plotly 
 ```
 
 ## 4. K-means clustering   
@@ -323,7 +323,7 @@ kable( readMetadata.out ) %>%
  factorReferenceLevels.out <- c('Gravity:Terrestrial') 
 
  limma.out <- limma(input_dataFileFormat = input_dataFileFormat, input_countsLogStart = input_countsLogStart_)
- DEG.data.out <- DEG.data()
+ DEG.data.out <- DEG.data(allGeneInfo.out_)
  limma.out$comparisons 
 ```     
 ```{r, message=FALSE  }  
@@ -346,13 +346,13 @@ kable( readMetadata.out ) %>%
 
  # Save gene lists and data into files
  write.csv( selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_)$genes, 'heatmap.data.csv') 
- write.csv(DEG.data(),'DEG.data.csv' )
+ write.csv(DEG.data(allGeneInfo.out_),'DEG.data.csv' )
  write(AllGeneListsGMT() ,'AllGeneListsGMT.gmt')
  
 ```     
 ```{r, message=FALSE  } 
  input_selectGO2 <- 'GOBP'	#Gene set category 
- geneListData.out <- geneListData()  
+ geneListData.out <- geneListData(allGeneInfo.out_)  
  volcanoPlot()  
 ```     
 ```{r, message=FALSE  }  
@@ -437,7 +437,7 @@ Generating interactive PPI
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
- pathwayListData.out = pathwayListData() 
+ pathwayListData.out = pathwayListData(allGeneInfo.out_) 
  enrichmentPlot(pathwayListData.out, 25  ) 
 ```     
 ```{r, message=FALSE  }  
@@ -457,7 +457,7 @@ Generating interactive PPI
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
-  pathwayListData.out = pathwayListData() 
+  pathwayListData.out = pathwayListData(allGeneInfo.out_) 
   enrichmentPlot(pathwayListData.out, 25, mycolors) 
 ```     
 ```{r, message=FALSE  }  
@@ -476,7 +476,7 @@ Generating interactive PPI
  #input_selectContrast2 = limma.out$comparisons[3] # manually set
  input_limmaPvalViz <- 0.1	#FDR to filter genes
  input_limmaFCViz <- 2	#FDR to filter genes 
- genomePlotly() # shows fold-changes on the genome 
+ genomePlotly(allGeneInfo.out_) # shows fold-changes on the genome 
 ```
 
 ## 10. Biclustering   
@@ -525,7 +525,7 @@ Generating interactive PPI
  input_selectWGCNA.Module <- 'Entire network'	#Select a module
  input_topGenesNetwork <- 10	#SoftPower to cutoff
  input_edgeThreshold <- 0.4	#Number of top genes 
- moduleNetwork(input_noIDConversion=input_noIDConversion_)	# show network of top genes in selected module
+ moduleNetwork(input_noIDConversion=input_noIDConversion_, allGeneInfo.out=allGeneInfo.out_)	# show network of top genes in selected module
  
 ```     
 ```{r, message=FALSE  } 
