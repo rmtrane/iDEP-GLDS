@@ -67,10 +67,11 @@ readMetadata <- function(inFile){
   return(x)
 }
 
-readData <- function(inFile, kurtosis.log=50 ) {
+
+readData <- function(inFile, kurtosis.log=50, input_missingValue='geneMedian', input_minCounts=0.5) {
 
 				dataTypeWarning = 0 # Book-keeping variable
-				dataType =c(TRUE) # Another book-keeping variable
+				dataType = c(TRUE) # Another book-keeping variable
 
 				#---------------Read file
 				x <- read.csv(inFile)	# try CSV
@@ -78,13 +79,14 @@ readData <- function(inFile, kurtosis.log=50 ) {
 				if(dim(x)[2] <= 2 ){   # if less than 3 columns, try tab-deliminated
 					x <- read.table(inFile, sep="\t",header=TRUE)
 				}
+
 				#-------Remove non-numeric columns, except the first column
 				
 				for (i in 2:dim(x)[2]) {
 					dataType = c( dataType, is.numeric(x[,i]) ) 
 				}
 
-				if(sum(dataType) <=2){
+				if(sum(dataType) <= 2){
 					return (NULL)  # only less than 2 columns are numbers
 				}
 
@@ -147,6 +149,7 @@ readData <- function(inFile, kurtosis.log=50 ) {
 				mean.kurtosis = mean(apply(x,2, kurtosis),na.rm=T)
 				rawCounts = NULL
 				pvals= NULL
+		
 				if (input_dataFileFormat == 2 ) {  # if FPKM, microarray
 
 					if ( is.integer(x) ) dataTypeWarning = 1;  # Data appears to be read counts

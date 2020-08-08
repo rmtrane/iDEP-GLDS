@@ -104,6 +104,7 @@ We are using the downloaded gene expression file where gene IDs has
 	been converted to Ensembl gene IDs. This is because the ID conversion database is too large
 	to download. You can use your original file if your file uses Ensembl ID, or you do not want 
 	to use the pathway files available in iDEP (or it is not available).  
+
 ```{r, message=FALSE  }  
  inputFile <- 'GLDS38_Expression.csv'
  sampleInfoFile <- 'GLDS38_Sampleinfo.csv' 
@@ -114,9 +115,9 @@ We are using the downloaded gene expression file where gene IDs has
 ``` 
 Parameters for reading data  
 ```{r, message=FALSE  } 
- input_missingValue <- 'geneMedian'	#Missing values imputation method
- input_dataFileFormat <- 1	#1- read counts, 2 FKPM/RPKM or DNA microarray
- input_minCounts <- 0.5	#Min counts
+ input_missingValue_ <- 'geneMedian'	#Missing values imputation method
+ input_dataFileFormat <- 1	#1- read counts, 2 FKPM/RPKM or DNA microarray (Brake up function?)
+ input_minCounts_ <- 0.5	#Min counts
  input_NminSamples <- 1	#Minimum number of samples 
  input_countsLogStart <- 4	#Pseudo count for log CPM
  input_CountsTransform <- 1	#Methods for data transformation of counts. 1-EdgeR's logCPM 2-VST, 3-rlog 
@@ -132,7 +133,7 @@ kable( readMetadata.out ) %>%
 ```
 
 ```{r, message=FALSE  }  
- readData.out <- readData(inputFile) 
+ readData.out <- readData(inputFile, input_missingValue=input_missingValue_, input_minCounts=input_minCounts_) 
   
    kable( head(readData.out$data) ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
