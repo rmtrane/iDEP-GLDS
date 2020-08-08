@@ -142,7 +142,7 @@ kable( readMetadata.out ) %>%
   scroll_box(width = "100%") 
 ```
 ```{r, message=FALSE  }  
- readSampleInfo.out <- readSampleInfo(sampleInfoFile) 
+ readSampleInfo.out <- readSampleInfo(sampleInfoFile, readData.out) 
  kable( readSampleInfo.out ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 

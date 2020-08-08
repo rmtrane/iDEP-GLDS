@@ -67,7 +67,7 @@ readMetadata <- function(inFile){
   return(x)
 }
 
-
+# ReadData Function completed
 readData <- function(inFile, kurtosis.log=50, input_missingValue='geneMedian', input_minCounts=0.5, input_NminSamples=1, input_countsLogStart = 4, input_CountsTransform = 1 ) {
 
 				dataTypeWarning = 0 # Book-keeping variable
@@ -262,7 +262,8 @@ readData <- function(inFile, kurtosis.log=50, input_missingValue='geneMedian', i
 
 	}
 
-readSampleInfo <- function(inFile){
+# Read Sample Info Completed
+readSampleInfo <- function(inFile, readData.out){
 
 				dataTypeWarning =0
 				dataType =c(TRUE)
@@ -300,11 +301,10 @@ readSampleInfo <- function(inFile){
 						x <- tem2				
 					}
 					return(t( x ) )			
-				} else retrun(NULL)
-							
-				
+				} else retrun(NULL)				
 }
 
+# START HERE ---------
 textTransform <- function (kurtosis.log=50, kurtosis.warning=10) { 
 		k.value =  readData.out$mean.kurtosis	  
 		tem = paste( "Mean Kurtosis =  ", round(k.value,2), ".\n",sep = "")
