@@ -438,7 +438,7 @@ convertedCounts <- function() {
 					return(x1)
 } # here
 
-nGenesFilter <- function() { 
+nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_noIDConversion) { 
 		tem = readData.out$dataSize
 		ix = match( toupper( rownames(convertedData.out)), toupper(converted.out$conversionTable$ensembl_gene_id  ) )
 		nMatched = sum( !is.na(ix) )
