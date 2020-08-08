@@ -684,12 +684,6 @@ dist3 <- function(x, ...)   # distance function = 1-abs(PCC) (Pearson's correlat
   
  distFuns <- list(Correlation=dist2, Euclidean=dist,AbsolutePCC=dist3) 
   # hierarchical clustering tree ----------------------------------------
-
-hmcols <- colorRampPalette(rev(c("#D73027", "#FC8D59", "#FEE090", "#FFFFBF",
-"#E0F3F8", "#91BFDB", "#4575B4")))(75)
-heatColors = rbind(      greenred(75),     bluered(75),     colorpanel(75,"green","black","magenta"),colorpanel(75,"blue","yellow","red"),hmcols )
-rownames(heatColors) = c("Green-Black-Red","Blue-White-Red","Green-Black-Magenta","Blue-Yellow-Red","Blue-white-brown")
-
 # adding sample legends to heatmap; this is for the main heatmap
 # https://stackoverflow.com/questions/3932038/plot-a-legend-outside-of-the-plotting-area-in-base-graphics
 add_legend <- function(...) {
@@ -740,7 +734,7 @@ correlationMatrix <- function( ) {
 		 
 }		 
 
-staticHeatmap <- function () { 
+staticHeatmap <- function (heatColors=heatColors) { 
 	 x <- readData.out$data   # x = read.csv("expression1.csv")
 
 	n=input_nGenes
@@ -840,7 +834,7 @@ staticHeatmap <- function () {
 
 	#Interactive heatmap via Plotly plot ----------------------------------------------
 	# interactive heatmap with plotly
-heatmapPlotly <- function () { 	
+heatmapPlotly <- function (heatColors=heatColors) { 	
 	input_nGenesPlotly= 50
 	
 	
@@ -1334,7 +1328,7 @@ Kmeans <- function(maxGeneClustering = 12000 ) { # Kmeans clustering
   } 
 
 
-myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=NULL, mycolors) {
+myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=NULL, mycolors, heatColors=heatColors) {
 	# number of genes to show
 	ngenes = as.character( table(bar))
 	if(length(bar) >n && n != -1) {ix = sort( sample(1:length(bar),n) ); bar = bar[ix]; x = x[ix,]  }
@@ -3606,7 +3600,7 @@ selectedPathwayData <- function( ){
 	return( x )
 }
 
-selectedPathwayHeatmap <- function(mycolors=mycolors) {
+selectedPathwayHeatmap <- function(mycolors=mycolors, heatColors=heatColors) {
 
 	x = selectedPathwayData.out
 	if(dim(x)[1]<=2 | dim(x)[2]<=2 ) return(NULL)
@@ -4233,7 +4227,7 @@ biclustering <- function( ){
 }
 
 
-biclustHeatmap <- function ( ){
+biclustHeatmap <- function (heatColors=heatColors ){
 			res = biclustering()$res
 			if( res@Number == 0 ) { plot.new(); text(0.5,0.5, "No cluster found!")} else {
 		
