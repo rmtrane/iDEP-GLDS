@@ -734,7 +734,7 @@ correlationMatrix <- function( ) {
 		 
 }		 
 
-staticHeatmap <- function (heatColors=heatColors) { 
+staticHeatmap <- function (heatColors) { 
 	 x <- readData.out$data   # x = read.csv("expression1.csv")
 
 	n=input_nGenes
@@ -834,10 +834,8 @@ staticHeatmap <- function (heatColors=heatColors) {
 
 	#Interactive heatmap via Plotly plot ----------------------------------------------
 	# interactive heatmap with plotly
-heatmapPlotly <- function (heatColors=heatColors) { 	
+heatmapPlotly <- function (heatColors) { 	
 	input_nGenesPlotly= 50
-	
-	
 
 	   x <- convertedData.out
 
@@ -1328,7 +1326,7 @@ Kmeans <- function(maxGeneClustering = 12000 ) { # Kmeans clustering
   } 
 
 
-myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=NULL, mycolors, heatColors=heatColors) {
+myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=NULL, mycolors, heatColors) {
 	# number of genes to show
 	ngenes = as.character( table(bar))
 	if(length(bar) >n && n != -1) {ix = sort( sample(1:length(bar),n) ); bar = bar[ix]; x = x[ix,]  }
@@ -1375,9 +1373,9 @@ myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=
 		}
 }
 
-KmeansHeatmap <- function() { # Kmeans clustering
+KmeansHeatmap <- function(heatColors=heatColors, mycolors=mycolors) { # Kmeans clustering
 
-	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=input_heatColors1,mycolors=mycolors)
+	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=input_heatColors1,mycolors=mycolors, heatColors=heatColors)
 }
  
 
@@ -2471,12 +2469,12 @@ findContrastSamples <- function(selectContrast, allSampleNames,sampleInfo=NULL, 
 
 
 
-selectedHeatmap <- function() {
+selectedHeatmap <- function(heatColors=heatColors, mycolors=mycolors) {
 
 		 bar = selectedHeatmap.data.out$bar + 2;
 		 bar[bar==3] =2
 
-	  	 myheatmap2( selectedHeatmap.data.out$genes,bar,200,mycolor=input_heatColors1,c("Down","Up"),mycolors=mycolors )
+	  	 myheatmap2( selectedHeatmap.data.out$genes,bar,200,mycolor=input_heatColors1,c("Down","Up"),mycolors=mycolors, heatColors=heatColors )
 	 
 }
 
@@ -3600,7 +3598,7 @@ selectedPathwayData <- function( ){
 	return( x )
 }
 
-selectedPathwayHeatmap <- function(mycolors=mycolors, heatColors=heatColors) {
+selectedPathwayHeatmap <- function(mycolors=mycolors, heatColors) {
 
 	x = selectedPathwayData.out
 	if(dim(x)[1]<=2 | dim(x)[2]<=2 ) return(NULL)
@@ -4227,7 +4225,7 @@ biclustering <- function( ){
 }
 
 
-biclustHeatmap <- function (heatColors=heatColors ){
+biclustHeatmap <- function (heatColors ){
 			res = biclustering()$res
 			if( res@Number == 0 ) { plot.new(); text(0.5,0.5, "No cluster found!")} else {
 		

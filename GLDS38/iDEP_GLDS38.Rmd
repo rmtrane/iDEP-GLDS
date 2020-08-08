@@ -20,6 +20,12 @@ First we set up the working directory to where the files are saved.
 ```{r, message=FALSE} 
  setwd('~/Documents/iDEP/iDEP-GLDS/GLDS38')
  input_biclustMethod <- 'BCCC()' 
+
+#Each row of this matrix represents a color scheme;
+hmcols <- colorRampPalette(rev(c("#D73027", "#FC8D59", "#FEE090", "#FFFFBF",
+"#E0F3F8", "#91BFDB", "#4575B4")))(75)
+heatColors = rbind(      greenred(75),     bluered(75),     colorpanel(75,"green","black","magenta"),colorpanel(75,"blue","yellow","red"),hmcols )
+rownames(heatColors) = c("Green-Black-Red","Blue-White-Red","Green-Black-Magenta","Blue-Yellow-Red","Blue-white-brown")
 ```
 R packages and iDEP core Functions. 
 	Users can also download the iDEP_core_functions.R file. 
@@ -166,12 +172,12 @@ kable( readMetadata.out ) %>%
  input_heatColors1 <- 1	#Colors
  input_selectFactorsHeatmap <- 'Gravity'	#Sample coloring factors 
  png('heatmap.png', width = 10, height = 15, units = 'in', res = 300) 
- staticHeatmap() 
+ staticHeatmap(heatColors) 
  dev.off()  
 ```
   ![heatmap] (heatmap.png)   
 ```{r, message=FALSE  }  
- heatmapPlotly() # interactive heatmap using Plotly 
+ heatmapPlotly(heatColors) # interactive heatmap using Plotly 
 ```
 
 ## 4. K-means clustering   
@@ -420,7 +426,7 @@ Generating interactive PPI
  biclustering.out = biclustering()  # run analysis
 
  input_selectBicluster <- 1	#select a cluster 
- biclustHeatmap()   # heatmap for selected cluster 
+ biclustHeatmap(heatColors)   # heatmap for selected cluster 
 ```     
 ```{r, message=FALSE  } 
  input_selectGO4 <- 'GOBP'	#Gene set category 
