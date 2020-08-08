@@ -120,23 +120,7 @@ if(input_biclustMethod == "BCUnibic()" )
 library(WGCNA)
 library(flashClust,verbose=FALSE)
 
-
 # ------------------------------------
-
-# mappingCoverage = 0.60 # 60% percent genes has to be mapped for confident mapping
-# mappingEdge = 0.5  # Top species has 50% more genes mapped
-# PvalGeneInfo = 0.05; minGenes = 10 # min number of genes for ploting
-# kurtosis.log = 50  # log transform is enforced when kurtosis is big
-# kurtosis.warning = 10 # log transformation recommnded 
-# minGenesEnrichment = 2 # perform GO or promoter analysis only if more than this many genes
-# PREDA_Permutations = 1000
-# maxGeneClustering = 12000  # max genes for hierarchical clustering and k-Means clustering. Slow if larger
-# maxGeneWGCNA = 2000 # max genes for co-expression network
-
-# maxFactors =6  # NO USE max number of factors in DESeq2 models
-# redudantGeneSetsRatio = 0.9  # NO USE remove redundant genesets in enrichment analysis
-# set.seed(2) # NO USE seed for random number generator
-
 
 # Graph color schemes, changed several times throughout program
 mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] # 20 colors for kNN clusters
@@ -145,12 +129,6 @@ hmcols <- colorRampPalette(rev(c("#D73027", "#FC8D59", "#FEE090", "#FFFFBF",
 "#E0F3F8", "#91BFDB", "#4575B4")))(75)
 heatColors = rbind(      greenred(75),     bluered(75),     colorpanel(75,"green","black","magenta"),colorpanel(75,"blue","yellow","red"),hmcols )
 rownames(heatColors) = c("Green-Black-Red","Blue-White-Red","Green-Black-Magenta","Blue-Yellow-Red","Blue-white-brown")
-colorChoices = setNames(1:dim(heatColors)[1],rownames(heatColors)) # for pull down menu
-
-
-
-
-
 
 
 
@@ -711,7 +689,7 @@ hmcols <- colorRampPalette(rev(c("#D73027", "#FC8D59", "#FEE090", "#FFFFBF",
 "#E0F3F8", "#91BFDB", "#4575B4")))(75)
 heatColors = rbind(      greenred(75),     bluered(75),     colorpanel(75,"green","black","magenta"),colorpanel(75,"blue","yellow","red"),hmcols )
 rownames(heatColors) = c("Green-Black-Red","Blue-White-Red","Green-Black-Magenta","Blue-Yellow-Red","Blue-white-brown")
-colorChoices = setNames(1:dim(heatColors)[1],rownames(heatColors)) # for pull down menu
+
 # adding sample legends to heatmap; this is for the main heatmap
 # https://stackoverflow.com/questions/3932038/plot-a-legend-outside-of-the-plotting-area-in-base-graphics
 add_legend <- function(...) {
