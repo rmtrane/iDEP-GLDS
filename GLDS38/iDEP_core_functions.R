@@ -523,7 +523,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
 }	
 
 	
-geneBarPlotError <- function(allGeneInfo.out, input_selectOrg, input_geneSearch) {
+geneBarPlotError <- function(allGeneInfo.out, input_selectOrg, input_geneSearch, input_useSD='FALSE') {
    x <- convertedData.out
 	
 	Symbols <- rownames(x)

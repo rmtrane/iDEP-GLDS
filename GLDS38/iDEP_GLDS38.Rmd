@@ -201,7 +201,7 @@ kable( readMetadata.out_ ) %>%
 ```
 ```{r, message=FALSE  } 
  input_useSD <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
- geneBarPlotError(allGeneInfo.out_, input_selectOrg_, input_geneSearch_)       
+ geneBarPlotError(allGeneInfo.out_, input_selectOrg_, input_geneSearch_, input_useSD)       
 ```
 
 ## 3. Heatmap  
