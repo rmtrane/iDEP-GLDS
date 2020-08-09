@@ -200,8 +200,8 @@ kable( readMetadata.out_ ) %>%
  genePlot(allGeneInfo.out_, convertedData.out=convertedData.out, input_selectOrg=input_selectOrg_, input_geneSearch=input_geneSearch_)  
 ```
 ```{r, message=FALSE  } 
- input_useSD <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
- geneBarPlotError(allGeneInfo.out_, input_selectOrg_, input_geneSearch_, input_useSD)       
+ input_useSD_ <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
+ geneBarPlotError(allGeneInfo.out_, input_selectOrg_, input_geneSearch_, input_useSD_)       
 ```
 
 ## 3. Heatmap  
@@ -215,8 +215,8 @@ kable( readMetadata.out_ ) %>%
 ```
 ```{r, message=FALSE  }  
  #Correlation matrix
- input_labelPCC <- TRUE	#Show correlation coefficient? 
- correlationMatrix() 
+ input_labelPCC_ <- TRUE	#Show correlation coefficient? 
+ correlationMatrix(input_labelPCC = input_labelPCC_) 
 ```
 ```{r, message=FALSE  }  
 

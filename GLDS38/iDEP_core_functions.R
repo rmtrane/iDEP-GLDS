@@ -624,7 +624,7 @@ add_legend <- function(...) {
   legend(...)
 }
 
-correlationMatrix <- function( ) {
+correlationMatrix <- function(input_labelPCC=TRUE) {
 	# heatmap of correlation matrix
 	x <- readData.out$data
 	maxGene <- apply(x,1,max)
