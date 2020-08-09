@@ -457,7 +457,7 @@ Generating interactive PPI
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
-  pathwayListData.out = pathwayListData(allGeneInfo.out_) 
+  pathwayListData.out = pathwayListData(allGeneInfo.out_, input_selectOrg=input_selectOrg_) 
   enrichmentPlot(pathwayListData.out, 25, mycolors) 
 ```     
 ```{r, message=FALSE  }  
