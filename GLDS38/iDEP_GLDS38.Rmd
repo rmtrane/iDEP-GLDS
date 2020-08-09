@@ -106,12 +106,12 @@ We are using the downloaded gene expression file where gene IDs has
 	to use the pathway files available in iDEP (or it is not available).  
 
 ```{r, message=FALSE  }  
- inputFile <- 'GLDS38_Expression.csv'
- sampleInfoFile <- 'GLDS38_Sampleinfo.csv' 
- gldsMetadataFile <- 'GLDS38_Metadata.csv'
- geneInfoFile <- 'Arabidopsis_thaliana__athaliana_eg_gene_GeneInfo.csv' #Gene symbols, location etc. 
- geneSetFile <- 'Arabidopsis_thaliana__athaliana_eg_gene.db'  # pathway database in SQL; can be GMT format 
- STRING10_speciesFile <- 'https://raw.githubusercontent.com/iDEP-SDSU/idep/master/shinyapps/idep/STRING10_species.csv' 
+ inputFile_ <- 'GLDS38_Expression.csv'
+ sampleInfoFile_ <- 'GLDS38_Sampleinfo.csv' 
+ gldsMetadataFile_ <- 'GLDS38_Metadata.csv'
+ geneInfoFile_ <- 'Arabidopsis_thaliana__athaliana_eg_gene_GeneInfo.csv' #Gene symbols, location etc. 
+ geneSetFile_ <- 'Arabidopsis_thaliana__athaliana_eg_gene.db'  # pathway database in SQL; can be GMT format 
+ STRING10_speciesFile_ <- 'https://raw.githubusercontent.com/iDEP-SDSU/idep/master/shinyapps/idep/STRING10_species.csv' 
 ``` 
 Parameters for reading data  
 ```{r, message=FALSE  } 
@@ -124,32 +124,32 @@ Parameters for reading data
 ```
 ```{r, message=FALSE  }  
 
-readMetadata.out <- readMetadata(gldsMetadataFile)
+readMetadata.out <- readMetadata(gldsMetadataFile_)
 library(knitr)   #  install if needed. for showing tables with kable
 library(kableExtra)
-kable( readMetadata.out ) %>%
+kable( readMetadata.out_ ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
 
 ```{r, message=FALSE  }  
- readData.out <- readData(inputFile, input_missingValue=input_missingValue_, input_dataFileFormat = input_dataFileFormat_, input_minCounts=input_minCounts_, input_NminSamples = input_NminSamples_, input_countsLogStart=input_countsLogStart_, input_CountsTransform = input_CountsTransform_) 
+ readData.out <- readData(inputFile_, input_missingValue=input_missingValue_, input_dataFileFormat = input_dataFileFormat_, input_minCounts=input_minCounts_, input_NminSamples = input_NminSamples_, input_countsLogStart=input_countsLogStart_, input_CountsTransform = input_CountsTransform_) 
   
    kable( head(readData.out$data) ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```
 ```{r, message=FALSE  }  
- readSampleInfo.out <- readSampleInfo(sampleInfoFile, readData.out) 
+ readSampleInfo.out <- readSampleInfo(sampleInfoFile_, readData.out) 
  kable( readSampleInfo.out ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```
 ```{r, message=FALSE  }  
  input_selectOrg_ ="NEW" 
- input_selectGO <- 'GOBP'	#Gene set category 
+ input_selectGO_ <- 'GOBP'	#Gene set category 
  input_noIDConversion_ = TRUE  
- allGeneInfo.out_ <- geneInfo(geneInfoFile) 
+ allGeneInfo.out_ <- geneInfo(geneInfoFile_) 
  converted.out_ = NULL 
  convertedData.out <- convertedData(converted.out=converted.out_, readData.out=readData.out, input_noIDConversion=input_noIDConversion_)	 
  nGenesFilter(readData.out=readData.out, converted.out=converted.out_, convertedData.out=convertedData.out, input_noIDConversion=input_noIDConversion_)  
@@ -267,7 +267,7 @@ kable( readMetadata.out ) %>%
  input_selectGO3 <- 'GOBP'	#Gene set category
  input_minSetSize <- 15	#Min gene set size
  input_maxSetSize <- 2000	#Max gene set size 
- GeneSets.out <-readGeneSets( geneSetFile,
+ GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO3,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  )  
  # Alternatively, users can use their own GMT files by
@@ -302,7 +302,7 @@ kable( readMetadata.out ) %>%
 
  #Read gene sets for pathway analysis using PGSEA on principal components 
  input_selectGO6 <- 'GOBP' 
- GeneSets.out <-readGeneSets( geneSetFile,
+ GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO6,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  )  
  PCApathway(convertedData.out=convertedData.out, GeneSets.out=GeneSets.out) # Run PGSEA analysis 
@@ -364,7 +364,7 @@ kable( readMetadata.out ) %>%
 ```{r, message=FALSE  }  
   geneListGOTable.out <- geneListGOTable()  
  # Read pathway data again 
- GeneSets.out <-readGeneSets( geneSetFile,
+ GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO2,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  ) 
  input_removeRedudantSets <- TRUE	#Remove highly redundant gene sets? 
@@ -383,7 +383,7 @@ STRING-db API access.
 ```{r, message=FALSE  }  
 
   
- STRING10_species = read.csv(STRING10_speciesFile)  
+ STRING10_species = read.csv(STRING10_speciesFile_)  
  ix = grep('Arabidopsis thaliana', STRING10_species$official_name ) 
  findTaxonomyID.out <- STRING10_species[ix,1] # find taxonomyID
  findTaxonomyID.out  
@@ -414,13 +414,13 @@ Generating interactive PPI
 ```{r, message=FALSE  } 
  input_selectContrast1 <- 'Microgravity-Terrestrial'	#select Comparison 
  #input_selectContrast1 = limma.out$comparisons[3] # manually set
- input_selectGO <- 'GOBP'	#Gene set category 
+ input_selectGO_ <- 'GOBP'	#Gene set category 
  #input_selectGO='custom' # if custom gmt file
  input_minSetSize <- 15	#Min size for gene set
  input_maxSetSize <- 2000	#Max size for gene set 
  # Read pathway data again 
- GeneSets.out <-readGeneSets( geneSetFile,
-    convertedData.out, input_selectGO,input_selectOrg_,
+ GeneSets.out <-readGeneSets( geneSetFile_,
+    convertedData.out, input_selectGO_,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  ) 
  input_pathwayPvalCutoff <- 0.2	#FDR cutoff
  input_nPathwayShow <- 30	#Top pathways to show
@@ -491,7 +491,7 @@ Generating interactive PPI
 ```{r, message=FALSE  } 
  input_selectGO4 <- 'GOBP'	#Gene set category 
  # Read pathway data again 
- GeneSets.out <-readGeneSets( geneSetFile,
+ GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO4,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  )  
  results <- geneListBclustGO()  #Enrichment analysis for k-Means clusters	
@@ -519,7 +519,7 @@ Generating interactive PPI
 ```{r, message=FALSE  } 
  input_selectGO5 <- 'GOBP'	#Gene set category 
  # Read pathway data again 
- GeneSets.out <-readGeneSets( geneSetFile,
+ GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO5,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  ) 
  input_selectWGCNA.Module <- 'Entire network'	#Select a module
