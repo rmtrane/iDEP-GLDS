@@ -2590,7 +2590,7 @@ volcanoPlot <- function( ) {
 	 
 }
 
-scatterPlot <- function(input_dataFileFormat) ){
+scatterPlot <- function(input_dataFileFormat){
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
