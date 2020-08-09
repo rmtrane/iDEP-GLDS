@@ -170,7 +170,7 @@ kable( readMetadata.out ) %>%
 		 
  barplot( colSums(x)/1e6, 
 		col=col1,las=3, main="Total read counts (millions)")  
- readCountsBias()  # detecting bias in sequencing depth 
+ readCountsBias(readData.out=readData.out, readSampleInfo.out=readSampleInfo.out)  # detecting bias in sequencing depth 
 ```
 ```{r, message=FALSE  }  
 
@@ -184,7 +184,7 @@ kable( readMetadata.out ) %>%
 
  #Density plot 
  par(parDefault) 
- densityPlot()       
+ densityPlot(readData.out = readData.out, mycolors)       
 ```
 ```{r, message=FALSE  }  
 
@@ -197,7 +197,7 @@ kable( readMetadata.out ) %>%
  ####plot gene or gene family
  input_selectOrg ="BestMatch" 
  input_geneSearch <- 'HOXA'	#Gene ID for searching 
- genePlot(allGeneInfo.out_)  
+ genePlot(allGeneInfo.out_, convertedData.out=convertedData.out, input_selectOrg=input_selectOrg, input_geneSearch=input_geneSearch)  
 ```
 ```{r, message=FALSE  } 
  input_useSD <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
@@ -305,10 +305,10 @@ kable( readMetadata.out ) %>%
  GeneSets.out <-readGeneSets( geneSetFile,
     convertedData.out, input_selectGO6,input_selectOrg,
     c(input_minSetSize, input_maxSetSize)  )  
- PCApathway() # Run PGSEA analysis 
+ PCApathway(convertedData.out=convertedData.out, GeneSets.out=GeneSets.out) # Run PGSEA analysis 
 ```     
 ```{r, message=FALSE  }  
- cat( PCA2factor() )   #The correlation between PCs with factors 
+ cat( PCA2factor(readData.out, readSampleInfo.out=readSampleInfo.out) )   #The correlation between PCs with factors 
 ```
 
 ## 6. DEG1   

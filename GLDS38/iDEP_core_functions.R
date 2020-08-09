@@ -461,7 +461,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
  }
 
   # EDA plots -------------------------------------
- densityPlot <- function(mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] ) {
+ densityPlot <- function(readData.out, mycolors = sort(rainbow(20))[c(1,20,10,11,2,19,3,12,4,13,5,14,6,15,7,16,8,17,9,18)] ) {
 
 	#Each row of this matrix represents a color scheme;
 	
@@ -479,7 +479,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
    
 }
 
- genePlot <- function(allGeneInfo.out) {
+ genePlot <- function(allGeneInfo.out, convertedData.out, input_selectOrg='BestMatch', input_geneSearch='HOXA') {
     x <- convertedData.out
 	
 	Symbols <- rownames(x)
@@ -495,12 +495,14 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
 	# matching from the beginning of symbol
 	ix = which(regexpr(  paste("^" , toupper(input_geneSearch),sep="")   ,toupper(x$Genes)) > 0)
 	
-	if(grepl(" ", input_geneSearch)  )  # if there is space character, do exact match
+	if(grepl(" ", input_geneSearch)  ) { # if there is space character, do exact match
 		ix = match(gsub(" ","", toupper(input_geneSearch)),x$Genes)
+	}
 	
 	# too few or too many genes found
-	if(length(ix) == 0 | length(ix) > 50 ) return(NULL)
-	  # no genes found
+	if(length(ix) == 0 | length(ix) > 50 ) {}
+		return(NULL) # no genes found
+    }
 	 	 
 	mdf = melt(x[ix,],id.vars="Genes", value.name="value", variable.name="samples")
 
@@ -1058,7 +1060,7 @@ myPGSEA  <- function (exprs, cl, range = c(25, 500), ref = NULL, center = TRUE,
     return(list(results = results, p.results = p.results, means = mean.results, size=Setsize, mean2=mean2, meanSD=meanSD))
 }
 
-PCApathway<- function () {  # pathway
+PCApathway<- function (convetedData.out, GeneSets.out) {  # pathway
 	x <- convertedData.out;
 	pca.object <- prcomp(t(x))
 	pca = 100*pca.object$rotation 
@@ -1087,7 +1089,7 @@ PCApathway<- function () {  # pathway
 	rowids = gsub(" .*","",names(selected))
 	rowids = as.numeric( gsub("PC","",rowids) )
 	pvals = p.matrix[ cbind(selected,rowids) ]
-	a=sprintf("%-1.0e",pvals)
+	a = sprintf("%-1.0e",pvals)
 	tem = pg$result[selected,]
 	rownames(tem) = paste(a,names(selected)); #colnames(tem)= paste("PC",colnames(tem),sep="")
 	
@@ -1097,10 +1099,10 @@ PCApathway<- function () {  # pathway
 
 	smcPlot(tem,scale =  c(-max(tem), max(tem)), show.grid = T, margins = c(3,1, 6, 23), col = .rwb,cex.lab=0.5, main="Pathways analysis on PCA")
 	
-	 }
+	}
 
 # correlation PCA with factors  
-PCA2factor <- function( ){
+PCA2factor <- function(readData.out, readSampleInfo.out=NULL){
 
 	if(is.null(readSampleInfo.out)) return(NULL)
 	npc = 5 # number of Principal components
@@ -1128,13 +1130,16 @@ PCA2factor <- function( ){
 					" is correlated with ", colnames(pvals)[j],
 					" (p=",   sprintf("%-3.2e",pvals[i,j]),").\n")
 	}
-	if(nchar(a) == nchar0 ) return(NULL) else 
+	if(nchar(a) == nchar0 ) {
+	  return(NULL)
+	}
+	else{ 
 	  return( a )
-		  
+	}	  
 } 
 
 # detecting sequencing depth bias
-readCountsBias <- function( ){
+readCountsBias <- function(readData.out, readSampleInfo.out){
 
 	totalCounts = colSums(readData.out$rawCounts) 
 	groups = as.factor( detectGroups(colnames(readData.out$rawCounts ) ) )
