@@ -500,9 +500,9 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
 	}
 	
 	# too few or too many genes found
-	if(length(ix) == 0 | length(ix) > 50 ) {}
+	if(length(ix) == 0 | length(ix) > 50 ) {
 		return(NULL) # no genes found
-    }
+  }
 	 	 
 	mdf = melt(x[ix,],id.vars="Genes", value.name="value", variable.name="samples")
 
@@ -1060,7 +1060,7 @@ myPGSEA  <- function (exprs, cl, range = c(25, 500), ref = NULL, center = TRUE,
     return(list(results = results, p.results = p.results, means = mean.results, size=Setsize, mean2=mean2, meanSD=meanSD))
 }
 
-PCApathway<- function (convetedData.out, GeneSets.out) {  # pathway
+PCApathway<- function (convertedData.out, GeneSets.out) {  # pathway
 	x <- convertedData.out;
 	pca.object <- prcomp(t(x))
 	pca = 100*pca.object$rotation 
