@@ -124,7 +124,7 @@ Parameters for reading data
 ```
 ```{r, message=FALSE  }  
 
-readMetadata.out <- readMetadata(gldsMetadataFile_)
+readMetadata.out_ <- readMetadata(gldsMetadataFile_)
 library(knitr)   #  install if needed. for showing tables with kable
 library(kableExtra)
 kable( readMetadata.out_ ) %>%
