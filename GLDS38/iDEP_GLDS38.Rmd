@@ -238,7 +238,8 @@ kable( readMetadata.out_ ) %>%
 ```
   ![heatmap] (heatmap.png)   
 ```{r, message=FALSE  }  
- heatmapPlotly(heatColors, allGeneInfo.out=allGeneInfo.out_, input_geneCentering=input_geneCentering_, input_sampleCentering = input_sampleCentering_, input_geneNormalize = input_geneNormalize_, input_sampleNormalize = input_sampleNormalize_, ) # interactive heatmap using Plotly 
+ heatmapPlotly(heatColors, allGeneInfo.out_, input_geneCentering_, input_sampleCentering_, input_geneNormalize_, input_sampleNormalize_)
+ # interactive heatmap using Plotly 
 ```
 
 ## 4. K-means clustering   
