@@ -523,7 +523,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
 }	
 
 	
-geneBarPlotError <- function(allGeneInfo.out, input_selectOrg, input_geneSearch) {
+geneBarPlotError <- function(allGeneInfo.out, input_selectOrg, input_geneSearch, input_useSD='FALSE') {
    x <- convertedData.out
 	
 	Symbols <- rownames(x)
@@ -624,7 +624,7 @@ add_legend <- function(...) {
   legend(...)
 }
 
-correlationMatrix <- function( ) {
+correlationMatrix <- function(input_labelPCC=TRUE) {
 	# heatmap of correlation matrix
 	x <- readData.out$data
 	maxGene <- apply(x,1,max)
@@ -664,7 +664,7 @@ correlationMatrix <- function( ) {
 		 
 }		 
 
-staticHeatmap <- function (heatColors) { 
+staticHeatmap <- function (heatColors, input_nGenes=1000, input_geneCentering=TRUE, input_sampleCentering=FALSE, input_geneNormalize=FALSE, input_sampleNormalize=FALSE) { 
 	 x <- readData.out$data   # x = read.csv("expression1.csv")
 
 	n=input_nGenes
@@ -764,7 +764,7 @@ staticHeatmap <- function (heatColors) {
 
 	#Interactive heatmap via Plotly plot ----------------------------------------------
 	# interactive heatmap with plotly
-heatmapPlotly <- function (heatColors, allGeneInfo.out) { 	
+heatmapPlotly <- function (heatColors, allGeneInfo.out, input_geneCentering=TRUE, input_sampleCentering=FALSE, input_geneNormalize=FALSE, input_sampleNormalize=FALSE) { 	
 	input_nGenesPlotly= 50
 
 	   x <- convertedData.out
