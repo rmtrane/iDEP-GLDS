@@ -664,7 +664,7 @@ correlationMatrix <- function(input_labelPCC=TRUE) {
 		 
 }		 
 
-staticHeatmap <- function (heatColors, input_nGenes=1000, input_geneCentering=TRUE, input_sampleCentering=FALSE, input_geneNormalize=FALSE, input_sampleNormalize=FALSE, input_noSampleClustering=FALSE, input_heatmapCutoff=4, input_distFunctions=1, input_hclustFunctions=1, input_heatcolors1=1, input_selectFactorsHeatmap='Gravity') { 
+staticHeatmap <- function (heatColors, input_nGenes=1000, input_geneCentering=TRUE, input_sampleCentering=FALSE, input_geneNormalize=FALSE, input_sampleNormalize=FALSE, input_noSampleClustering=FALSE, input_heatmapCutoff=4, input_distFunctions=1, input_hclustFunctions=1, input_heatColors1=1, input_selectFactorsHeatmap='Gravity') { 
 	 x <- readData.out$data   # x = read.csv("expression1.csv")
 
 	n=input_nGenes
@@ -1306,7 +1306,7 @@ myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=
 		}
 }
 
-KmeansHeatmap <- function(.mycolors, .heatColors, .input_heatColors1) { # Kmeans clustering
+KmeansHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) { # Kmeans clustering
 
 	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=.input_heatColors1, mycolors=.mycolors, heatColors=.heatColors)
 }
@@ -4159,7 +4159,7 @@ biclustering <- function( ){
 }
 
 
-biclustHeatmap <- function (heatColors, input_heatColors1 ){
+biclustHeatmap <- function (heatColors, input_heatColors1=1){
 			res = biclustering()$res
 			if( res@Number == 0 ) { plot.new(); text(0.5,0.5, "No cluster found!")} else {
 		
