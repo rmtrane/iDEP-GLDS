@@ -523,7 +523,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
 }	
 
 	
-geneBarPlotError <- function(allGeneInfo.out) {
+geneBarPlotError <- function(allGeneInfo.out, input_selectOrg) {
    x <- convertedData.out
 	
 	Symbols <- rownames(x)
@@ -2510,7 +2510,7 @@ AllGeneListsGMT <- function() {
 
 
 
-geneListData <- function(allGeneInfo.out) {
+geneListData <- function(allGeneInfo.out, input_selectOrg) {
 		
 		noSig = as.data.frame("No significant genes find!")
 		if( is.null(input_selectContrast) ) return(NULL)
@@ -2989,7 +2989,7 @@ shortSpeciesNames <- function(tem){
 	 return( tolower( paste0(substr(tem2[[1]][1],1,1), tem2[[1]][2]  ) ) )
 }
 
-findTaxonomyID <- function( speciesName = "mmusculus") {
+findTaxonomyID <- function( speciesName = "mmusculus", input_selectOrg) {
 	
     if(!is.null(input_speciesName) ) { # if species name is entered
 	   ix = match(input_speciesName, STRING10_species$official_name)
@@ -3377,7 +3377,7 @@ PGSEApathway <- function (converted,convertedData, selectOrg,GO,gmt, myrange,Pva
     }
  }
 
-PGSEAplot <- function(){
+PGSEAplot <- function(input_selectOrg){
 
 	if(input_selectGO == "ID not recognized!" ) return( NULL)
 
@@ -3400,7 +3400,7 @@ if (is.null(input_selectContrast1 ) ) return(NULL)
 	
 	subtype = detectGroups(colnames(genes )) 
     if(length( GeneSets.out )  == 0)  { plot.new(); text(0.5,0.5, "No gene sets!")} else {
-	result = PGSEApathway(converted.out,genes, input_selectOrg,input_selectGO,
+	result = PGSEApathway(converted.out,genes, .input_selectOrg,input_selectGO,
 	             GeneSets.out,  myrange, input_pathwayPvalCutoff, input_nPathwayShow 	)
 					 
 	if( is.null(result$pg3) ) { plot.new(); text(0.5,1, "No significant pathway found!")} else 
@@ -3509,7 +3509,7 @@ ReactomePAPathwayData <- function( ){
 }
 
 # Function possibly not used
-selectedPathwayData <- function(allGeneInfo.out){
+selectedPathwayData <- function(allGeneInfo.out, input_selectOrg){
  
     if(input_sigPathways == "All") return (NULL) 
 	ix <- which(names(GeneSets.out ) == input_sigPathways   ) # find the gene set
@@ -3624,7 +3624,7 @@ keggPathwayID <- function (pathwayDescription, Species, GO,selectOrg) {
 	return( gsub("_.*","",tem) )
 }
 
-KeggImage <- function(){
+KeggImage <- function(input_selectOrg){
 
    # First generate a blank image. Otherwise return(NULL) gives us errors.
     outfile <- tempfile(fileext='.png')
@@ -3696,7 +3696,7 @@ KeggImage <- function(){
 }
 
 # list of pathways with details
-pathwayListData  <- function(allGeneInfo.out){
+pathwayListData  <- function(allGeneInfo.out, input_selectOrg){
     
 	pathways = NULL
 	if( input_pathwayMethod == 1)  
@@ -4356,7 +4356,7 @@ listWGCNA.Modules <- function(){
 }
 
 
-moduleNetwork <- function(input_noIDConversion, allGeneInfo.out){
+moduleNetwork <- function(input_noIDConversion, allGeneInfo.out, input_selectOrg){
 
 		outfile <- tempfile(fileext='.txt')
 	

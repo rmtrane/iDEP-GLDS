@@ -146,7 +146,7 @@ kable( readMetadata.out ) %>%
   scroll_box(width = "100%") 
 ```
 ```{r, message=FALSE  }  
- input_selectOrg ="NEW" 
+ input_selectOrg_ ="NEW" 
  input_selectGO <- 'GOBP'	#Gene set category 
  input_noIDConversion_ = TRUE  
  allGeneInfo.out_ <- geneInfo(geneInfoFile) 
@@ -195,13 +195,13 @@ kable( readMetadata.out ) %>%
 ```{r, message=FALSE  }  
 
  ####plot gene or gene family
- input_selectOrg ="BestMatch" 
+ input_selectOrg_ ="BestMatch" 
  input_geneSearch <- 'HOXA'	#Gene ID for searching 
- genePlot(allGeneInfo.out_, convertedData.out=convertedData.out, input_selectOrg=input_selectOrg, input_geneSearch=input_geneSearch)  
+ genePlot(allGeneInfo.out_, convertedData.out=convertedData.out, input_selectOrg=input_selectOrg_, input_geneSearch=input_geneSearch)  
 ```
 ```{r, message=FALSE  } 
  input_useSD <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
- geneBarPlotError(allGeneInfo.out_)       
+ geneBarPlotError(allGeneInfo.out_, input_selectOrg_)       
 ```
 
 ## 3. Heatmap  
@@ -268,7 +268,7 @@ kable( readMetadata.out ) %>%
  input_minSetSize <- 15	#Min gene set size
  input_maxSetSize <- 2000	#Max gene set size 
  GeneSets.out <-readGeneSets( geneSetFile,
-    convertedData.out, input_selectGO3,input_selectOrg,
+    convertedData.out, input_selectGO3,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  )  
  # Alternatively, users can use their own GMT files by
  #GeneSets.out <- readGMTRobust('somefile.GMT')  
@@ -303,7 +303,7 @@ kable( readMetadata.out ) %>%
  #Read gene sets for pathway analysis using PGSEA on principal components 
  input_selectGO6 <- 'GOBP' 
  GeneSets.out <-readGeneSets( geneSetFile,
-    convertedData.out, input_selectGO6,input_selectOrg,
+    convertedData.out, input_selectGO6,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  )  
  PCApathway(convertedData.out=convertedData.out, GeneSets.out=GeneSets.out) # Run PGSEA analysis 
 ```     
@@ -352,7 +352,7 @@ kable( readMetadata.out ) %>%
 ```     
 ```{r, message=FALSE  } 
  input_selectGO2 <- 'GOBP'	#Gene set category 
- geneListData.out <- geneListData(allGeneInfo.out_)  
+ geneListData.out <- geneListData(allGeneInfo.out_, input_selectOrg_)  
  volcanoPlot()  
 ```     
 ```{r, message=FALSE  }  
@@ -365,7 +365,7 @@ kable( readMetadata.out ) %>%
   geneListGOTable.out <- geneListGOTable()  
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
-    convertedData.out, input_selectGO2,input_selectOrg,
+    convertedData.out, input_selectGO2,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  ) 
  input_removeRedudantSets <- TRUE	#Remove highly redundant gene sets? 
  results <- geneListGO()  #Enrichment analysis
@@ -420,7 +420,7 @@ Generating interactive PPI
  input_maxSetSize <- 2000	#Max size for gene set 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
-    convertedData.out, input_selectGO,input_selectOrg,
+    convertedData.out, input_selectGO,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  ) 
  input_pathwayPvalCutoff <- 0.2	#FDR cutoff
  input_nPathwayShow <- 30	#Top pathways to show
@@ -437,7 +437,7 @@ Generating interactive PPI
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
- pathwayListData.out = pathwayListData(allGeneInfo.out_) 
+ pathwayListData.out = pathwayListData(allGeneInfo.out_, input_selectOrg_) 
  enrichmentPlot(pathwayListData.out, 25  ) 
 ```     
 ```{r, message=FALSE  }  
@@ -467,7 +467,7 @@ Generating interactive PPI
   enrichmentNetworkPlotly(pathwayListData.out) 
 ```     
 ```{r, message=FALSE,fig.width=9, fig.height=8  }  
-   PGSEAplot() # pathway analysis using PGSEA 
+   PGSEAplot(input_selectOrg = input_selectOrg_) # pathway analysis using PGSEA 
 ```
 
 ## 9. Chromosome   
@@ -492,7 +492,7 @@ Generating interactive PPI
  input_selectGO4 <- 'GOBP'	#Gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
-    convertedData.out, input_selectGO4,input_selectOrg,
+    convertedData.out, input_selectGO4,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  )  
  results <- geneListBclustGO()  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
@@ -520,12 +520,12 @@ Generating interactive PPI
  input_selectGO5 <- 'GOBP'	#Gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile,
-    convertedData.out, input_selectGO5,input_selectOrg,
+    convertedData.out, input_selectGO5,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  ) 
  input_selectWGCNA.Module <- 'Entire network'	#Select a module
  input_topGenesNetwork <- 10	#SoftPower to cutoff
  input_edgeThreshold <- 0.4	#Number of top genes 
- moduleNetwork(input_noIDConversion=input_noIDConversion_, allGeneInfo.out=allGeneInfo.out_)	# show network of top genes in selected module
+ moduleNetwork(input_noIDConversion=input_noIDConversion_, allGeneInfo.out=allGeneInfo.out_, input_selectOrg_)	# show network of top genes in selected module
  
 ```     
 ```{r, message=FALSE  } 
