@@ -226,19 +226,19 @@ kable( readMetadata.out_ ) %>%
  input_sampleCentering_ <- FALSE	#Center by sample?
  input_geneNormalize_ <- FALSE	#Normalize by gene?
  input_sampleNormalize_ <- FALSE	#Normalize by sample?
- input_noSampleClustering <- FALSE	#Use original sample order
- input_heatmapCutoff <- 4	#Remove outliers beyond number of SDs 
- input_distFunctions <- 1	#which distant funciton to use
- input_hclustFunctions <- 1	#Linkage type
- input_heatColors1 <- 1	#Colors
- input_selectFactorsHeatmap <- 'Gravity'	#Sample coloring factors 
+ input_noSampleClustering_ <- FALSE	#Use original sample order
+ input_heatmapCutoff_ <- 4	#Remove outliers beyond number of SDs 
+ input_distFunctions_ <- 1	#which distant funciton to use
+ input_hclustFunctions_ <- 1	#Linkage type
+ input_heatColors1_ <- 1	#Colors
+ input_selectFactorsHeatmap_ <- 'Gravity'	#Sample coloring factors 
  png('heatmap.png', width = 10, height = 15, units = 'in', res = 300) 
- staticHeatmap(heatColors, input_nGenes_, input_geneCentering_, input_sampleCentering_, input_geneNormalize_, input_sampleNormalize_) 
+ staticHeatmap(heatColors, input_nGenes_, input_geneCentering_, input_sampleCentering_, input_geneNormalize_, input_sampleNormalize_, input_noSampleClustering=input_noSampleClustering_, input_heatmapCutoff=input_heatmapCutoff_, input_distFunction=input_distFunction_, input_hclustFunctions=input_hclustFunctions_, input_heatColors1 = input_heatColors1_, input_selectFactorsHeatmap=input_selectFactorsHeatmap_) 
  dev.off()  
 ```
   ![heatmap] (heatmap.png)   
 ```{r, message=FALSE  }  
- heatmapPlotly(heatColors, allGeneInfo.out=allGeneInfo.out_, input_geneCentering=input_geneCentering_, input_sampleCentering = input_sampleCentering_, input_geneNormalize = input_geneNormalize_, input_sampleNormalize = input_sampleNormalize_, ) # interactive heatmap using Plotly 
+ heatmapPlotly(heatColors, allGeneInfo.out=allGeneInfo.out_, input_geneCentering=input_geneCentering_, input_sampleCentering = input_sampleCentering_, input_geneNormalize = input_geneNormalize_, input_sampleNormalize = input_sampleNormalize_, input_heatColors1=input_heatColors1_) # interactive heatmap using Plotly 
 ```
 
 ## 4. K-means clustering   
