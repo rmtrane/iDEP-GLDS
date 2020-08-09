@@ -116,7 +116,7 @@ We are using the downloaded gene expression file where gene IDs has
 Parameters for reading data  
 ```{r, message=FALSE  } 
  input_missingValue_ <- 'geneMedian'	#Missing values imputation method
- input_dataFileFormat <- 1	#1- read counts, 2 FKPM/RPKM or DNA microarray (Brake up function?)
+ input_dataFileFormat_ <- 1	#1- read counts, 2 FKPM/RPKM or DNA microarray (Brake up function?)
  input_minCounts_ <- 0.5	#Min counts
  input_NminSamples_ <- 1	#Minimum number of samples 
  input_countsLogStart_ <- 4	#Pseudo count for log CPM
@@ -133,7 +133,7 @@ kable( readMetadata.out ) %>%
 ```
 
 ```{r, message=FALSE  }  
- readData.out <- readData(inputFile, input_missingValue=input_missingValue_, input_dataFileFormat = input_dataFileFormat, input_minCounts=input_minCounts_, input_NminSamples = input_NminSamples_, input_countsLogStart=input_countsLogStart_, input_CountsTransform = input_CountsTransform_) 
+ readData.out <- readData(inputFile, input_missingValue=input_missingValue_, input_dataFileFormat = input_dataFileFormat_, input_minCounts=input_minCounts_, input_NminSamples = input_NminSamples_, input_countsLogStart=input_countsLogStart_, input_CountsTransform = input_CountsTransform_) 
   
    kable( head(readData.out$data) ) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -322,7 +322,7 @@ kable( readMetadata.out ) %>%
  input_selectBlockFactorsModel <- NULL 	#Selected comparisons
  factorReferenceLevels.out <- c('Gravity:Terrestrial') 
 
- limma.out <- limma(input_dataFileFormat = input_dataFileFormat, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_)
+ limma.out <- limma(input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_)
  DEG.data.out <- DEG.data(allGeneInfo.out_)
  limma.out$comparisons 
 ```     
@@ -341,7 +341,7 @@ kable( readMetadata.out ) %>%
 ## 7. DEG2   
 ```{r, message=FALSE  } 
  input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
- selectedHeatmap.data.out <- selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_)
+ selectedHeatmap.data.out <- selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_)
  selectedHeatmap(.mycolors = mycolors, .heatColors = heatColors)   # heatmap for DEGs in selected comparison
 
  # Save gene lists and data into files
@@ -356,10 +356,10 @@ kable( readMetadata.out ) %>%
  volcanoPlot()  
 ```     
 ```{r, message=FALSE  }  
-  scatterPlot()  
+  scatterPlot(input_dataFileFormat=input_dataFileFormat_)  
 ```     
 ```{r, message=FALSE  }  
-  MAplot(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_)  
+  MAplot(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_)  
 ```     
 ```{r, message=FALSE  }  
   geneListGOTable.out <- geneListGOTable()  
@@ -467,7 +467,7 @@ Generating interactive PPI
   enrichmentNetworkPlotly(pathwayListData.out) 
 ```     
 ```{r, message=FALSE,fig.width=9, fig.height=8  }  
-   PGSEAplot(input_selectOrg = input_selectOrg_) # pathway analysis using PGSEA 
+   PGSEAplot(input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_) # pathway analysis using PGSEA 
 ```
 
 ## 9. Chromosome   

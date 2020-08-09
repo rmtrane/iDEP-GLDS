@@ -2268,7 +2268,7 @@ sigGeneStatsTable <- function( ) {
 }
 
 
-selectedHeatmap.data <- function() {
+selectedHeatmap.data <- function(input_dataFileFormat) {
  		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
 		  if(!grepl("I:", input_selectContrast) ) {  # if not interaction term
@@ -2413,7 +2413,7 @@ selectedHeatmap <- function(.mycolors, .heatColors) {
 
 
 
-selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion){
+selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat){
 
 		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
@@ -2590,7 +2590,7 @@ volcanoPlot <- function( ) {
 	 
 }
 
-scatterPlot <- function( ){
+scatterPlot <- function(input_dataFileFormat) ){
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -2649,7 +2649,7 @@ scatterPlot <- function( ){
 }
 
 
-MAplot <- function (.converted.out, .readData.out, .input_noIDConversion) {
+MAplot <- function (.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat) {
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -3377,7 +3377,7 @@ PGSEApathway <- function (converted,convertedData, selectOrg,GO,gmt, myrange,Pva
     }
  }
 
-PGSEAplot <- function(input_selectOrg){
+PGSEAplot <- function(input_selectOrg, input_dataFileFormat){
 
 	if(input_selectGO == "ID not recognized!" ) return( NULL)
 
@@ -3509,7 +3509,7 @@ ReactomePAPathwayData <- function( ){
 }
 
 # Function possibly not used
-selectedPathwayData <- function(allGeneInfo.out, input_selectOrg){
+selectedPathwayData <- function(allGeneInfo.out, input_selectOrg, input_dataFileFormat){
  
     if(input_sigPathways == "All") return (NULL) 
 	ix <- which(names(GeneSets.out ) == input_sigPathways   ) # find the gene set
