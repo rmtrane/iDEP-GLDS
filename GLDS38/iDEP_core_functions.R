@@ -500,7 +500,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
 	}
 	
 	# too few or too many genes found
-	if(length(ix) == 0 | length(ix) > 50 ) {}
+	if(length(ix) == 0 | length(ix) > 50 ) {
 		return(NULL) # no genes found
     }
 	 	 
@@ -520,7 +520,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
 	theme(legend.text=element_text(size=12))	
 	
 	p1	
-	}	
+}	
 
 	
 geneBarPlotError <- function(allGeneInfo.out) {
@@ -2093,7 +2093,7 @@ DEG.DESeq2 <- function (  rawCounts,maxP_limma=.05, minFC_limma=2, selectedCompa
 }
 
 # main function
-limma <- function(input_dataFileFormat = 1, input_countsLogStart = 4) {  
+limma <- function(input_dataFileFormat = 1, input_countsLogStart = 4, convertedCounts.out=convertedCounts.out) {  
 	if(input_dataFileFormat == 1 ) {  # if count data
 		 if(input_CountsDEGMethod == 3 ) {    # if DESeq2 method
 				# rawCounts = read.csv("exampleData/airway_GSE52778.csv", row.names=1)
