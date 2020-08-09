@@ -221,11 +221,11 @@ kable( readMetadata.out_ ) %>%
 ```{r, message=FALSE  }  
 
  # Parameters for heatmap
- input_nGenes <- 1000	#Top genes for heatmap
- input_geneCentering <- TRUE	#centering genes ?
- input_sampleCentering <- FALSE	#Center by sample?
- input_geneNormalize <- FALSE	#Normalize by gene?
- input_sampleNormalize <- FALSE	#Normalize by sample?
+ input_nGenes_ <- 1000	#Top genes for heatmap
+ input_geneCentering_ <- TRUE	#centering genes ?
+ input_sampleCentering_ <- FALSE	#Center by sample?
+ input_geneNormalize_ <- FALSE	#Normalize by gene?
+ input_sampleNormalize_ <- FALSE	#Normalize by sample?
  input_noSampleClustering <- FALSE	#Use original sample order
  input_heatmapCutoff <- 4	#Remove outliers beyond number of SDs 
  input_distFunctions <- 1	#which distant funciton to use
@@ -233,12 +233,12 @@ kable( readMetadata.out_ ) %>%
  input_heatColors1 <- 1	#Colors
  input_selectFactorsHeatmap <- 'Gravity'	#Sample coloring factors 
  png('heatmap.png', width = 10, height = 15, units = 'in', res = 300) 
- staticHeatmap(heatColors) 
+ staticHeatmap(heatColors, input_nGenes_, input_geneCentering_, input_sampleCentering_, input_geneNormalize_, input_sampleNormalize_) 
  dev.off()  
 ```
   ![heatmap] (heatmap.png)   
 ```{r, message=FALSE  }  
- heatmapPlotly(heatColors, allGeneInfo.out=allGeneInfo.out_) # interactive heatmap using Plotly 
+ heatmapPlotly(heatColors, allGeneInfo.out=allGeneInfo.out_, input_geneCentering=input_geneCentering_, input_sampleCentering = input_sampleCentering_, input_geneNormalize = input_geneNormalize_, input_sampleNormalize = input_sampleNormalize_, ) # interactive heatmap using Plotly 
 ```
 
 ## 4. K-means clustering   
