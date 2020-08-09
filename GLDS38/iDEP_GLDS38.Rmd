@@ -437,7 +437,7 @@ Generating interactive PPI
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
- pathwayListData.out = pathwayListData(allGeneInfo.out_, input_selectOrg_) 
+ pathwayListData.out = pathwayListData(allGeneInfo.out_, input_selectOrg_, input_selectGO_) 
  enrichmentPlot(pathwayListData.out, 25  ) 
 ```     
 ```{r, message=FALSE  }  
@@ -457,7 +457,7 @@ Generating interactive PPI
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
-  pathwayListData.out = pathwayListData(allGeneInfo.out_, input_selectOrg=input_selectOrg_) 
+  pathwayListData.out = pathwayListData(allGeneInfo.out_, input_selectOrg=input_selectOrg_, input_selectGO=input_selectGO_) 
   enrichmentPlot(pathwayListData.out, 25, mycolors) 
 ```     
 ```{r, message=FALSE  }  
@@ -467,7 +467,7 @@ Generating interactive PPI
   enrichmentNetworkPlotly(pathwayListData.out) 
 ```     
 ```{r, message=FALSE,fig.width=9, fig.height=8  }  
-   PGSEAplot(input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_) # pathway analysis using PGSEA 
+   PGSEAplot(input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_) # pathway analysis using PGSEA 
 ```
 
 ## 9. Chromosome   

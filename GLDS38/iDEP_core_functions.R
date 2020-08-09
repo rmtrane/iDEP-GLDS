@@ -3377,7 +3377,7 @@ PGSEApathway <- function (converted,convertedData, selectOrg,GO,gmt, myrange,Pva
     }
  }
 
-PGSEAplot <- function(input_selectOrg, input_dataFileFormat){
+PGSEAplot <- function(input_selectOrg, input_dataFileFormat, input_selectGO){
 
 	if(input_selectGO == "ID not recognized!" ) return( NULL)
 
@@ -3696,7 +3696,7 @@ KeggImage <- function(input_selectOrg){
 }
 
 # list of pathways with details
-pathwayListData  <- function(allGeneInfo.out, input_selectOrg){
+pathwayListData  <- function(allGeneInfo.out, input_selectOrg, input_selectGO){
     
 	pathways = NULL
 	if( input_pathwayMethod == 1)  
