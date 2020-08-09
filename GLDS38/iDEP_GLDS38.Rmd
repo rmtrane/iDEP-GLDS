@@ -196,12 +196,12 @@ kable( readMetadata.out_ ) %>%
 
  ####plot gene or gene family
  input_selectOrg_ ="BestMatch" 
- input_geneSearch <- 'HOXA'	#Gene ID for searching 
- genePlot(allGeneInfo.out_, convertedData.out=convertedData.out, input_selectOrg=input_selectOrg_, input_geneSearch=input_geneSearch)  
+ input_geneSearch_ <- 'HOXA'	#Gene ID for searching 
+ genePlot(allGeneInfo.out_, convertedData.out=convertedData.out, input_selectOrg=input_selectOrg_, input_geneSearch=input_geneSearch_)  
 ```
 ```{r, message=FALSE  } 
  input_useSD <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
- geneBarPlotError(allGeneInfo.out_, input_selectOrg_)       
+ geneBarPlotError(allGeneInfo.out_, input_selectOrg_, input_geneSearch_)       
 ```
 
 ## 3. Heatmap  
