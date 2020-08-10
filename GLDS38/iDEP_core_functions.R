@@ -1173,7 +1173,7 @@ readCountsBias <- function(readData.out, readSampleInfo.out){
 ################################################################
 	 
   #Distribution of SDs 
-distributionSD <- function() {
+distributionSD <- function(input_nGenesKNN=2000) {
 
 		SDs=apply(convertedData.out,1,sd)
 		maxSD = mean(SDs)+ 4*sd(SDs)
@@ -1197,7 +1197,7 @@ distributionSD <- function() {
 
 
 # Decide number of clusters
-KmeansNclusters <- function() { # Kmeans clustering
+KmeansNclusters <- function(input_nGenesKNN=2000) { # Kmeans clustering
 
     x <- convertedData.out
 	#x <- readData.out
@@ -1223,7 +1223,7 @@ KmeansNclusters <- function() { # Kmeans clustering
 	
 }
  
-Kmeans <- function(maxGeneClustering = 12000 ) { # Kmeans clustering
+Kmeans <- function(maxGeneClustering = 12000, input_nGenesKNN=2000, input_nClusters=4, input_kmeansNormalization='geneMean', input_KmeansReRun=0) { # Kmeans clustering
 
     x <- convertedData.out
 	#x <- readData.out
@@ -1462,7 +1462,7 @@ findOverlapGMT <- function ( query, geneSet, minFDR=.2 ,minSize=2,maxSize=10000 
 	return( result)
 }
 
-KmeansGO <- function() {
+KmeansGO <- function(input_nClusters) {
 		pp=0
 		minFDR = 0.01
 

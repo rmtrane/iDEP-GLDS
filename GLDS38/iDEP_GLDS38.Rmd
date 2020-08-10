@@ -243,20 +243,20 @@ kable( readMetadata.out_ ) %>%
 
 ## 4. K-means clustering   
 ```{r, message=FALSE  } 
- input_nGenesKNN <- 2000	#Number of genes fro k-Means
- input_nClusters <- 4	#Number of clusters 
- maxGeneClustering = 12000
- input_kmeansNormalization <- 'geneMean'	#Normalization
- input_KmeansReRun <- 0	#Random seed 
+ input_nGenesKNN_ <- 2000	#Number of genes fro k-Means
+ input_nClusters_ <- 4	#Number of clusters 
+ maxGeneClustering_ = 12000
+ input_kmeansNormalization_ <- 'geneMean'	#Normalization
+ input_KmeansReRun_ <- 0	#Random seed 
 
- distributionSD()  #Distribution of standard deviations 
+ distributionSD(input_nGenesKNN_)  #Distribution of standard deviations 
 ```     
 ```{r, message=FALSE  }  
- KmeansNclusters()  #Number of clusters 
+ KmeansNclusters(input_nGenesKNN_)  #Number of clusters 
 ```     
 ```{r, message=FALSE  }  
 
- Kmeans.out = Kmeans()   #Running K-means 
+ Kmeans.out = Kmeans(maxGeneClustering=maxGeneClustering_, input_nGenesKNN=input_nGenesKNN_, input_nClusters=input_nClusters_, input_kmeansNormalization=input_kmeansNormalization_, input_KmeansReRun=input_KmeansReRun_)   #Running K-means 
  KmeansHeatmap(.mycolors = mycolors, .heatColors = heatColors)   #Heatmap for k-Means 
  
 ```     
@@ -272,7 +272,7 @@ kable( readMetadata.out_ ) %>%
     c(input_minSetSize, input_maxSetSize)  )  
  # Alternatively, users can use their own GMT files by
  #GeneSets.out <- readGMTRobust('somefile.GMT')  
- results <- KmeansGO()  #Enrichment analysis for k-Means clusters	
+ results <- KmeansGO(input_nClusters=input_nClusters_)  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
