@@ -941,7 +941,7 @@ readGMTRobust <- function (file1) {   # size restriction
 	}
 
 
-readGeneSets <- function (fileName, convertedData, GO,selectOrg, myrange) {
+readGeneSets <- function (fileName, convertedData, GO,selectOrg, myrange, sqlite=dbDriver('SQLite')) {
 
 	pathway <- dbConnect(sqlite,fileName)
 	
@@ -1335,7 +1335,8 @@ tSNEgenePlot <- function() {
 
 
 # Main function. Find a query set of genes enriched with functional category
-FindOverlap <- function (converted,gInfo, GO,selectOrg,minFDR, min_overlap = 2, reduced = FALSE) {
+# Not used
+FindOverlap <- function (converted,gInfo, GO,selectOrg,minFDR, min_overlap = 2, reduced = FALSE, sqlite=dbDriver('SQLite')) {
 	maxTerms =15 # max number of enriched terms
 	idNotRecognized = as.data.frame("ID not recognized!")
 	
@@ -3178,7 +3179,7 @@ stringDB_network_link <- function(){
 # Pathway analysis
 ################################################################
 
-gagePathwayData <- function( ){	
+gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000){	 
 
 
 
@@ -3243,7 +3244,7 @@ gagePathwayData <- function( ){
 		  return( top1)
 }
 
-fgseaPathwayData <- function() {
+fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000) {
 
 	noSig = as.data.frame("No significant pathway found.")
 	if( length(limma.out$topGenes) == 0 ) return(noSig)
@@ -3377,7 +3378,7 @@ PGSEApathway <- function (converted,convertedData, selectOrg,GO,gmt, myrange,Pva
     }
  }
 
-PGSEAplot <- function(input_selectOrg, input_dataFileFormat, input_selectGO){
+PGSEAplot <- function(input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000){
 
 	if(input_selectGO == "ID not recognized!" ) return( NULL)
 
@@ -3428,7 +3429,8 @@ convertEnsembl2Entrez <- function (query,Species) {
   
 }
 
-ReactomePAPathwayData <- function( ){
+# Not Used
+ReactomePAPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000){
  
 	ensemblSpecies <- c("hsapiens_gene_ensembl","rnorvegicus_gene_ensembl", "mmusculus_gene_ensembl",
 		               "celegans_gene_ensembl","scerevisiae_gene_ensembl", "drerio_gene_ensembl", "dmelanogaster_gene_ensembl")
@@ -3598,7 +3600,8 @@ convertEnsembl2KEGG <- function (query,Species) {  # not working
 	return(tem)  
 }
 
-keggPathwayID <- function (pathwayDescription, Species, GO,selectOrg) {
+# No Used
+keggPathwayID <- function (pathwayDescription, Species, GO,selectOrg, sqlite=dbDriver('SQLite')) {
 	ix = grep(Species,gmtFiles)
 
 	if (length(ix) == 0 ) {return(NULL)}
@@ -3624,6 +3627,7 @@ keggPathwayID <- function (pathwayDescription, Species, GO,selectOrg) {
 	return( gsub("_.*","",tem) )
 }
 
+#not used
 KeggImage <- function(input_selectOrg){
 
    # First generate a blank image. Otherwise return(NULL) gives us errors.

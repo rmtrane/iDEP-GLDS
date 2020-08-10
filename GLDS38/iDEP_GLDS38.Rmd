@@ -264,12 +264,12 @@ kable( readMetadata.out_ ) %>%
 ```{r, message=FALSE  }  
 
  #Read gene sets for enrichment analysis 
- sqlite  <- dbDriver('SQLite')
- input_selectGO3 <- 'GOBP'	#Gene set category
- input_minSetSize <- 15	#Min gene set size
- input_maxSetSize <- 2000	#Max gene set size 
+ sqlite_  <- dbDriver('SQLite') #sqlite changed to default in most functions
+ input_selectGO3_ <- 'GOBP'	#Gene set category
+ input_minSetSize_ <- 15	#Min gene set size
+ input_maxSetSize_ <- 2000	#Max gene set size 
  GeneSets.out <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO3,input_selectOrg_,
+    convertedData.out, input_selectGO3_,input_selectOrg_,
     c(input_minSetSize, input_maxSetSize)  )  
  # Alternatively, users can use their own GMT files by
  #GeneSets.out <- readGMTRobust('somefile.GMT')  
@@ -429,7 +429,7 @@ Generating interactive PPI
  input_GenePvalCutoff <- 1	#FDR to remove genes 
 
  input_pathwayMethod = 1  # 1  GAGE
- gagePathwayData.out <- gagePathwayData()  # pathway analysis using GAGE  
+ gagePathwayData.out <- gagePathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_)  # pathway analysis using GAGE  
    
  results <- gagePathwayData.out  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
@@ -450,7 +450,7 @@ Generating interactive PPI
 ```{r, message=FALSE  }  
 
  input_pathwayMethod = 3  # 1  fgsea 
- fgseaPathwayData.out <- fgseaPathwayData() #Pathway analysis using fgsea 
+ fgseaPathwayData.out <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_) #Pathway analysis using fgsea 
  results <- fgseaPathwayData.out  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
@@ -468,7 +468,7 @@ Generating interactive PPI
   enrichmentNetworkPlotly(pathwayListData.out) 
 ```     
 ```{r, message=FALSE,fig.width=9, fig.height=8  }  
-   PGSEAplot(input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_) # pathway analysis using PGSEA 
+   PGSEAplot(input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_) # pathway analysis using PGSEA 
 ```
 
 ## 9. Chromosome   
