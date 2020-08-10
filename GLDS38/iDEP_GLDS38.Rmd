@@ -280,9 +280,9 @@ kable( readMetadata.out_ ) %>%
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  } 
- input_seedTSNE <- 0	#Random seed for t-SNE
- input_colorGenes <- TRUE	#Color genes in t-SNE plot? 
- tSNEgenePlot()  #Plot genes using t-SNE 
+ input_seedTSNE_ <- 0	#Random seed for t-SNE
+ input_colorGenes_ <- TRUE	#Color genes in t-SNE plot? 
+ tSNEgenePlot(input_seedTSNE=input_seedTSNE_, input_colorGenes=input_colorGenes_)  #Plot genes using t-SNE 
 ```
 
 ## 5. PCA and beyond   

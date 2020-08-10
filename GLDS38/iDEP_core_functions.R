@@ -1312,7 +1312,7 @@ KmeansHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) { # Kmea
 }
  
 
-tSNEgenePlot <- function() {
+tSNEgenePlot <- function(input_seedTSNE=0, input_colorGenes=TRUE) {
 			Cluster <- Kmeans.out$bar
 			train <- as.data.frame( cbind(Cluster,Kmeans.out$x) )
 
