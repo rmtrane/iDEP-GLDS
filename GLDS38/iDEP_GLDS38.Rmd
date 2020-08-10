@@ -233,7 +233,8 @@ kable( readMetadata.out_ ) %>%
  input_heatColors1_ <- 1	#Colors
  input_selectFactorsHeatmap_ <- 'Gravity'	#Sample coloring factors 
  png('heatmap.png', width = 10, height = 15, units = 'in', res = 300) 
- staticHeatmap(heatColors, input_nGenes_, input_geneCentering_, input_sampleCentering_, input_geneNormalize_, input_sampleNormalize_, input_noSampleClustering=input_noSampleClustering_, input_heatmapCutoff=input_heatmapCutoff_, input_distFunction=input_distFunction_, input_hclustFunctions=input_hclustFunctions_, input_heatColors1 = input_heatColors1_, input_selectFactorsHeatmap=input_selectFactorsHeatmap_) 
+ staticHeatmap(heatColors, input_nGenes_, input_geneCentering_, input_sampleCentering_, input_geneNormalize_, input_sampleNormalize_, input_noSampleClustering=input_noSampleClustering_, input_heatmapCutoff=input_heatmapCutoff_, input_distFunctions=input_distFunctions_, input_hclustFunctions=input_hclustFunctions_, input_heatColors1=input_heatColors1_, input_selectFactorsHeatmap=input_selectFactorsHeatmap_) 
+
  dev.off()  
 ```
   ![heatmap] (heatmap.png)   
@@ -257,7 +258,7 @@ kable( readMetadata.out_ ) %>%
 ```{r, message=FALSE  }  
 
  Kmeans.out = Kmeans(maxGeneClustering=maxGeneClustering_, input_nGenesKNN=input_nGenesKNN_, input_nClusters=input_nClusters_, input_kmeansNormalization=input_kmeansNormalization_, input_KmeansReRun=input_KmeansReRun_)   #Running K-means 
- KmeansHeatmap(.mycolors = mycolors, .heatColors = heatColors)   #Heatmap for k-Means 
+ KmeansHeatmap(.mycolors = mycolors, .heatColors = heatColors, .input_heatColors1=input_heatColors1_)   #Heatmap for k-Means 
  
 ```     
 ```{r, message=FALSE  }  
@@ -486,7 +487,7 @@ Generating interactive PPI
  biclustering.out = biclustering()  # run analysis
 
  input_selectBicluster <- 1	#select a cluster 
- biclustHeatmap(heatColors)   # heatmap for selected cluster 
+ biclustHeatmap(heatColors, input_heatColors1=input_heatColors1_)   # heatmap for selected cluster 
 ```     
 ```{r, message=FALSE  } 
  input_selectGO4 <- 'GOBP'	#Gene set category 
