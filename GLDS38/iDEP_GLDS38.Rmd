@@ -384,9 +384,9 @@ STRING-db API access.
 ```{r, message=FALSE  }  
 
   
- STRING10_species = read.csv(STRING10_speciesFile_)  
- ix = grep('Arabidopsis thaliana', STRING10_species$official_name ) 
- findTaxonomyID.out <- STRING10_species[ix,1] # find taxonomyID
+ STRING10_species_ = read.csv(STRING10_speciesFile_)  
+ ix = grep('Arabidopsis thaliana', STRING10_species_$official_name ) 
+ findTaxonomyID.out <- STRING10_species_[ix,1] # find taxonomyID
  findTaxonomyID.out  
  
 ``` 
@@ -413,23 +413,23 @@ Generating interactive PPI
 
 ## 8. Pathway analysis   
 ```{r, message=FALSE  } 
- input_selectContrast1 <- 'Microgravity-Terrestrial'	#select Comparison 
+ input_selectContrast1_ <- 'Microgravity-Terrestrial'	#select Comparison 
  #input_selectContrast1 = limma.out$comparisons[3] # manually set
  input_selectGO_ <- 'GOBP'	#Gene set category 
  #input_selectGO='custom' # if custom gmt file
- input_minSetSize <- 15	#Min size for gene set
- input_maxSetSize <- 2000	#Max size for gene set 
+ input_minSetSize_ <- 15	#Min size for gene set
+ input_maxSetSize_ <- 2000	#Max size for gene set 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO_,input_selectOrg_,
-    c(input_minSetSize, input_maxSetSize)  ) 
- input_pathwayPvalCutoff <- 0.2	#FDR cutoff
- input_nPathwayShow <- 30	#Top pathways to show
- input_absoluteFold <- FALSE	#Use absolute values of fold-change?
- input_GenePvalCutoff <- 1	#FDR to remove genes 
+    c(input_minSetSize_, input_maxSetSize_)  ) 
+ input_pathwayPvalCutoff_ <- 0.2	#FDR cutoff
+ input_nPathwayShow_ <- 30	#Top pathways to show
+ input_absoluteFold_ <- FALSE	#Use absolute values of fold-change?
+ input_GenePvalCutoff_ <- 1	#FDR to remove genes 
 
- input_pathwayMethod = 1  # 1  GAGE
- gagePathwayData.out <- gagePathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_)  # pathway analysis using GAGE  
+ input_pathwayMethod_ = 1  # 1  GAGE
+ gagePathwayData.out <- gagePathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff_, input_nPathwayShow_, input_absoluteFold_, input_GenePvalCutoff_)  # pathway analysis using GAGE  
    
  results <- gagePathwayData.out  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
@@ -438,19 +438,19 @@ Generating interactive PPI
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
- pathwayListData.out = pathwayListData(allGeneInfo.out_, input_selectOrg_, input_selectGO_) 
- enrichmentPlot(pathwayListData.out, 25  ) 
+ pathwayListData.out_ = pathwayListData(allGeneInfo.out_, input_selectOrg_, input_selectGO_, input_pathwayMethod_) 
+ enrichmentPlot(pathwayListData.out_, 25  ) 
 ```     
 ```{r, message=FALSE  }  
-  enrichmentNetwork(pathwayListData.out )  
+  enrichmentNetwork(pathwayListData.out_ )  
 ```     
 ```{r, message=FALSE  }  
-  enrichmentNetworkPlotly(pathwayListData.out) 
+  enrichmentNetworkPlotly(pathwayListData.out_) 
 ```     
 ```{r, message=FALSE  }  
 
  input_pathwayMethod = 3  # 1  fgsea 
- fgseaPathwayData.out <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_) #Pathway analysis using fgsea 
+ fgseaPathwayData.out <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_nPathwayShow=input_nPathwayShow_, input_GenePvalCutoff=input_GenePvalCutoff_) #Pathway analysis using fgsea 
  results <- fgseaPathwayData.out  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
@@ -458,17 +458,17 @@ Generating interactive PPI
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
-  pathwayListData.out = pathwayListData(allGeneInfo.out_, input_selectOrg=input_selectOrg_, input_selectGO=input_selectGO_) 
-  enrichmentPlot(pathwayListData.out, 25, mycolors) 
+  pathwayListData.out_ = pathwayListData(allGeneInfo.out_, input_selectOrg=input_selectOrg_, input_selectGO=input_selectGO_, input_pathwayMethod_) 
+  enrichmentPlot(pathwayListData.out_, 25, mycolors) 
 ```     
 ```{r, message=FALSE  }  
-  enrichmentNetwork(pathwayListData.out )  
+  enrichmentNetwork(pathwayListData.out_ )  
 ```     
 ```{r, message=FALSE  }  
-  enrichmentNetworkPlotly(pathwayListData.out) 
+  enrichmentNetworkPlotly(pathwayListData.out_) 
 ```     
 ```{r, message=FALSE,fig.width=9, fig.height=8  }  
-   PGSEAplot(input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_) # pathway analysis using PGSEA 
+   PGSEAplot(input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_nPathwayShow_) # pathway analysis using PGSEA 
 ```
 
 ## 9. Chromosome   
@@ -494,7 +494,7 @@ Generating interactive PPI
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO4,input_selectOrg_,
-    c(input_minSetSize, input_maxSetSize)  )  
+    c(input_minSetSize_, input_maxSetSize_)  )  
  results <- geneListBclustGO()  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
@@ -522,7 +522,7 @@ Generating interactive PPI
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO5,input_selectOrg_,
-    c(input_minSetSize, input_maxSetSize)  ) 
+    c(input_minSetSize_, input_maxSetSize_)  ) 
  input_selectWGCNA.Module <- 'Entire network'	#Select a module
  input_topGenesNetwork <- 10	#SoftPower to cutoff
  input_edgeThreshold <- 0.4	#Number of top genes 
