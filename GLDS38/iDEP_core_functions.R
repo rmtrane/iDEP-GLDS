@@ -2179,7 +2179,7 @@ DEG.data <- function(allGeneInfo.out) {
 		}
   
 
-vennPlot <- function() {
+vennPlot <- function(input_selectComparisonsVenn, input_UpDownRegulated=FALSE) {
 	
 			results = limma.out$results
 
@@ -2269,7 +2269,7 @@ sigGeneStatsTable <- function( ) {
 }
 
 
-selectedHeatmap.data <- function(input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out) {
+selectedHeatmap.data <- function(input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
  		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
 		  if(!grepl("I:", input_selectContrast) ) {  # if not interaction term
@@ -2414,7 +2414,7 @@ selectedHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) {
 
 
 # Two selectedHeatmap.data functions?
-selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
+selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast, input_selectContrast){
 
 		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
@@ -2511,7 +2511,7 @@ AllGeneListsGMT <- function() {
 
 
 
-geneListData <- function(allGeneInfo.out, input_selectOrg, input_limmaPval=0.1, input_limmaFC=2) {
+geneListData <- function(allGeneInfo.out, input_selectGO2, input_selectOrg, input_limmaPval=0.1, input_limmaFC=2, input_selectContrast) {
 		
 		noSig = as.data.frame("No significant genes find!")
 		if( is.null(input_selectContrast) ) return(NULL)
@@ -2565,7 +2565,7 @@ geneListData <- function(allGeneInfo.out, input_selectOrg, input_limmaPval=0.1, 
   
 
   
-volcanoPlot <- function(input_limmaPval=0.1, input_limmaFC=2) {
+volcanoPlot <- function(input_limmaPval=0.1, input_limmaFC=2, input_selectContrast) {
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
 	} else {
@@ -2591,7 +2591,7 @@ volcanoPlot <- function(input_limmaPval=0.1, input_limmaFC=2) {
 	 
 }
 
-scatterPlot <- function(input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
+scatterPlot <- function(input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast){
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -2650,7 +2650,7 @@ scatterPlot <- function(input_dataFileFormat, input_CountsDEGMethod=3, input_lim
 }
 
 
-MAplot <- function (.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out) {
+MAplot <- function (.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -2743,7 +2743,7 @@ geneListGOTable <- function(minGenesEnrichment = 2) {
   }
 
 
-geneListGO <- function() {	
+geneListGO <- function(input_removeRedudantSets=TRUE) {	
   results1 = geneListGOTable.out
   tem = input_removeRedudantSets
   if(dim(results1)[2] ==1) return(results1) else { 
@@ -3043,7 +3043,7 @@ STRINGDB_mapping_stat <- function( ) {
 }
 
 
-stringDB_GO_enrichmentData <- function(minGenesEnrichment = 2) {
+stringDB_GO_enrichmentData <- function(minGenesEnrichment = 2, input_STRINGdbGO='Process') {
 						   
 		tem = input_STRINGdbGO
 		taxonomyID = findTaxonomyID.out
@@ -3101,7 +3101,7 @@ stringDB_GO_enrichmentData <- function(minGenesEnrichment = 2) {
 }
 
 
-stringDB_network1 <- function( geneLists = 1 ) {  # geneLists =2 for both up and down
+stringDB_network1 <- function( geneLists = 1, input_nGenesPPI=100 ) {  # geneLists =2 for both up and down
 						   
 		tem = input_nGenesPPI
 		taxonomyID = findTaxonomyID.out
@@ -3128,7 +3128,7 @@ stringDB_network1 <- function( geneLists = 1 ) {  # geneLists =2 for both up and
 
 
 # generates a html file containing results and also links to STRING-db
-stringDB_network_link <- function(){
+stringDB_network_link <- function(input_nGenesPPI=100){
 		taxonomyID = findTaxonomyID.out
 		if(is.null( taxonomyID ) ) return(NULL)		
 		
