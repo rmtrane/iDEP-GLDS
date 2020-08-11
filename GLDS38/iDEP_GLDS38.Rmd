@@ -287,9 +287,9 @@ kable( readMetadata.out_ ) %>%
 
 ## 5. PCA and beyond   
 ```{r, message=FALSE  } 
- input_selectFactors <- 'Gravity'	#Factor coded by color
- input_selectFactors2 <- 'Preservation.Method.'	#Factor coded by shape
- input_tsneSeed2 <- 0	#Random seed for t-SNE 
+ input_selectFactors_ <- 'Gravity'	#Factor coded by color
+ input_selectFactors2_ <- 'Preservation.Method.'	#Factor coded by shape
+ input_tsneSeed2_ <- 0	#Random seed for t-SNE 
  #PCA, MDS and t-SNE plots
  PCAplot(input_selectFactors_, input_selectFactors2_)  
 ```     
@@ -303,10 +303,10 @@ kable( readMetadata.out_ ) %>%
 
  #Read gene sets for pathway analysis using PGSEA on principal components 
  input_selectGO6_ <- 'GOBP' 
- GeneSets.out <-readGeneSets( geneSetFile_,
+ GeneSets.out_ <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO6_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  )  
- PCApathway(convertedData.out=convertedData.out, GeneSets.out=GeneSets.out) # Run PGSEA analysis 
+ PCApathway(convertedData.out=convertedData.out, GeneSets.out=GeneSets.out_) # Run PGSEA analysis 
 ```     
 ```{r, message=FALSE  }  
  cat( PCA2factor(readData.out, readSampleInfo.out=readSampleInfo.out) )   #The correlation between PCs with factors 
@@ -314,16 +314,16 @@ kable( readMetadata.out_ ) %>%
 
 ## 6. DEG1   
 ```{r, message=FALSE  } 
- input_CountsDEGMethod <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
- input_limmaPval <- 0.1	#FDR cutoff
- input_limmaFC <- 2	#Fold-change cutoff
- input_selectModelComprions <- 'Gravity: Microgravity vs. Terrestrial'	#Selected comparisons
- input_selectFactorsModel <- 'Gravity'	#Selected comparisons
- input_selectInteractions <- NULL 	#Selected comparisons
- input_selectBlockFactorsModel <- NULL 	#Selected comparisons
+ input_CountsDEGMethod_ <- 3	#DESeq2= 3,limma-voom=2,limma-trend=1 
+ input_limmaPval_ <- 0.1	#FDR cutoff
+ input_limmaFC_ <- 2	#Fold-change cutoff
+ input_selectModelComprions_ <- 'Gravity: Microgravity vs. Terrestrial'	#Selected comparisons
+ input_selectFactorsModel_ <- 'Gravity'	#Selected comparisons
+ input_selectInteractions_ <- NULL 	#Selected comparisons
+ input_selectBlockFactorsModel_ <- NULL 	#Selected comparisons
  factorReferenceLevels.out <- c('Gravity:Terrestrial') 
 
- limma.out <- limma(input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_)
+ limma.out <- limma(input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, , input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, input_selectInteractions=input_selectInteractions_, input_selectBlockFactorsModel=input_selectBlockFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
  DEG.data.out <- DEG.data(allGeneInfo.out_)
  limma.out$comparisons 
 ```     
@@ -342,25 +342,25 @@ kable( readMetadata.out_ ) %>%
 ## 7. DEG2   
 ```{r, message=FALSE  } 
  input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
- selectedHeatmap.data.out <- selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_)
+ selectedHeatmap.data.out <- selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
  selectedHeatmap(.mycolors = mycolors, .heatColors = heatColors)   # heatmap for DEGs in selected comparison
 
  # Save gene lists and data into files
- write.csv( selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_)$genes, 'heatmap.data.csv') 
+ write.csv( selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)$genes, 'heatmap.data.csv') 
  write.csv(DEG.data(allGeneInfo.out_),'DEG.data.csv' )
  write(AllGeneListsGMT() ,'AllGeneListsGMT.gmt')
  
 ```     
 ```{r, message=FALSE  } 
  input_selectGO2 <- 'GOBP'	#Gene set category 
- geneListData.out <- geneListData(allGeneInfo.out_, input_selectOrg_)  
- volcanoPlot()  
+ geneListData.out <- geneListData(allGeneInfo.out_, input_selectOrg_, input_limmaPval_, input_limmaFC_)  
+ volcanoPlot(input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_)  
 ```     
 ```{r, message=FALSE  }  
-  scatterPlot(input_dataFileFormat=input_dataFileFormat_)  
+  scatterPlot(input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out)  
 ```     
 ```{r, message=FALSE  }  
-  MAplot(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_)  
+  MAplot(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out_)  
 ```     
 ```{r, message=FALSE  }  
   geneListGOTable.out <- geneListGOTable()  
@@ -468,7 +468,7 @@ Generating interactive PPI
   enrichmentNetworkPlotly(pathwayListData.out) 
 ```     
 ```{r, message=FALSE,fig.width=9, fig.height=8  }  
-   PGSEAplot(input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_) # pathway analysis using PGSEA 
+   PGSEAplot(input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_) # pathway analysis using PGSEA 
 ```
 
 ## 9. Chromosome   

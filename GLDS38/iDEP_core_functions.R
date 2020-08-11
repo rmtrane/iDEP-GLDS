@@ -2094,7 +2094,7 @@ DEG.DESeq2 <- function (  rawCounts,maxP_limma=.05, minFC_limma=2, selectedCompa
 }
 
 # main function
-limma <- function(input_dataFileFormat = 1, input_countsLogStart = 4, convertedCounts.out=convertedCounts.out) {  
+limma <- function(input_dataFileFormat = 1, input_countsLogStart = 4, convertedCounts.out=convertedCounts.out, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, input_selectInteractions=NULL, input_selectBlockFactorsModel=NULL, factorReferenceLevels.out) {  
 	if(input_dataFileFormat == 1 ) {  # if count data
 		 if(input_CountsDEGMethod == 3 ) {    # if DESeq2 method
 				# rawCounts = read.csv("exampleData/airway_GSE52778.csv", row.names=1)
@@ -2269,7 +2269,7 @@ sigGeneStatsTable <- function( ) {
 }
 
 
-selectedHeatmap.data <- function(input_dataFileFormat) {
+selectedHeatmap.data <- function(input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, factorReferenceLevels.out) {
  		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
 		  if(!grepl("I:", input_selectContrast) ) {  # if not interaction term
@@ -2413,8 +2413,8 @@ selectedHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) {
 }
 
 
-
-selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat){
+# Two selectedHeatmap.data functions?
+selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_selectModelComprions, factorReferenceLevels.out){
 
 		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
@@ -2511,7 +2511,7 @@ AllGeneListsGMT <- function() {
 
 
 
-geneListData <- function(allGeneInfo.out, input_selectOrg) {
+geneListData <- function(allGeneInfo.out, input_selectOrg, input_limmaPval=0.1, input_limmaFC=2) {
 		
 		noSig = as.data.frame("No significant genes find!")
 		if( is.null(input_selectContrast) ) return(NULL)
@@ -2565,7 +2565,7 @@ geneListData <- function(allGeneInfo.out, input_selectOrg) {
   
 
   
-volcanoPlot <- function( ) {
+volcanoPlot <- function(input_limmaPval=0.1, input_limmaFC=2) {
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
 	} else {
@@ -2591,7 +2591,7 @@ volcanoPlot <- function( ) {
 	 
 }
 
-scatterPlot <- function(input_dataFileFormat){
+scatterPlot <- function(input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel){
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -2650,7 +2650,7 @@ scatterPlot <- function(input_dataFileFormat){
 }
 
 
-MAplot <- function (.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat) {
+MAplot <- function (.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, , input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out) {
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -3378,7 +3378,7 @@ PGSEApathway <- function (converted,convertedData, selectOrg,GO,gmt, myrange,Pva
     }
  }
 
-PGSEAplot <- function(input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000){
+PGSEAplot <- function(input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
 
 	if(input_selectGO == "ID not recognized!" ) return( NULL)
 
@@ -3511,7 +3511,7 @@ ReactomePAPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000){
 }
 
 # Function possibly not used
-selectedPathwayData <- function(allGeneInfo.out, input_selectOrg, input_dataFileFormat){
+selectedPathwayData <- function(allGeneInfo.out, input_selectOrg, input_dataFileFormat, input_CountsDEGMethod=3, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
  
     if(input_sigPathways == "All") return (NULL) 
 	ix <- which(names(GeneSets.out ) == input_sigPathways   ) # find the gene set
