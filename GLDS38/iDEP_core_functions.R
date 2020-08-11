@@ -2414,7 +2414,7 @@ selectedHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) {
 
 
 # Two selectedHeatmap.data functions?
-selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast, input_selectContrast){
+selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast){
 
 		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
