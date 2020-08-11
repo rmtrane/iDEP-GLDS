@@ -154,7 +154,7 @@ kable( readMetadata.out_ ) %>%
  allGeneInfo.out_ <- geneInfo(geneInfoFile_) 
  converted.out_ = NULL 
  convertedData.out <- convertedData(converted.out=converted.out_, readData.out=readData.out_, input_noIDConversion=input_noIDConversion_)	 
- nGenesFilter(readData.out=readData.out_, converted.out=converted.out_, convertedData.out=convertedData.out, input_noIDConversion=input_noIDConversion_)  
+ nGenesFilter(readData.out=readData.out_, converted.out=converted.out_, convertedData.out=convertedData.out_, input_noIDConversion=input_noIDConversion_)  
  convertedCounts.out_ <- convertedCounts(readData.out=readData.out_, converted.out=converted.out_)  # converted counts, just for compatibility 
 ```
 
@@ -199,11 +199,11 @@ kable( readMetadata.out_ ) %>%
  ####plot gene or gene family
  input_selectOrg_ ="BestMatch" 
  input_geneSearch_ <- 'HOXA'	#Gene ID for searching 
- genePlot(allGeneInfo.out_, convertedData.out=convertedData.out, input_selectOrg=input_selectOrg_, input_geneSearch=input_geneSearch_)  
+ genePlot(allGeneInfo.out_, convertedData.out=convertedData.out_, input_selectOrg=input_selectOrg_, input_geneSearch=input_geneSearch_)  
 ```
 ```{r, message=FALSE  } 
  input_useSD_ <- 'FALSE'	#Use standard deviation instead of standard error in error bar? 
- geneBarPlotError(allGeneInfo.out_, input_selectOrg_, input_geneSearch_, input_useSD_)       
+ geneBarPlotError(convertedData.out_, allGeneInfo.out_, input_selectOrg_, input_geneSearch_, input_useSD_)       
 ```
 
 ## 3. Heatmap  
@@ -241,7 +241,7 @@ kable( readMetadata.out_ ) %>%
 ```
   ![heatmap] (heatmap.png)   
 ```{r, message=FALSE  }  
- heatmapPlotly(heatColors_, allGeneInfo.out=allGeneInfo.out_, input_geneCentering=input_geneCentering_, input_sampleCentering = input_sampleCentering_, input_geneNormalize = input_geneNormalize_, input_sampleNormalize = input_sampleNormalize_, input_heatColors1=input_heatColors1_) # interactive heatmap using Plotly 
+ heatmapPlotly(convertedData.out_, heatColors_, allGeneInfo.out=allGeneInfo.out_, input_geneCentering=input_geneCentering_, input_sampleCentering = input_sampleCentering_, input_geneNormalize = input_geneNormalize_, input_sampleNormalize = input_sampleNormalize_, input_heatColors1=input_heatColors1_) # interactive heatmap using Plotly 
 ```
 
 ## 4. K-means clustering   
@@ -252,14 +252,14 @@ kable( readMetadata.out_ ) %>%
  input_kmeansNormalization_ <- 'geneMean'	#Normalization
  input_KmeansReRun_ <- 0	#Random seed 
 
- distributionSD(input_nGenesKNN_)  #Distribution of standard deviations 
+ distributionSD(convertedData.out_, input_nGenesKNN_)  #Distribution of standard deviations 
 ```     
 ```{r, message=FALSE  }  
- KmeansNclusters(input_nGenesKNN_)  #Number of clusters 
+ KmeansNclusters(convertedData.out_, input_nGenesKNN_)  #Number of clusters 
 ```     
 ```{r, message=FALSE  }  
 
- Kmeans.out = Kmeans(maxGeneClustering=maxGeneClustering_, input_nGenesKNN=input_nGenesKNN_, input_nClusters=input_nClusters_, input_kmeansNormalization=input_kmeansNormalization_, input_KmeansReRun=input_KmeansReRun_)   #Running K-means 
+ Kmeans.out = Kmeans(convertedData.out_, maxGeneClustering=maxGeneClustering_, input_nGenesKNN=input_nGenesKNN_, input_nClusters=input_nClusters_, input_kmeansNormalization=input_kmeansNormalization_, input_KmeansReRun=input_KmeansReRun_)   #Running K-means 
  KmeansHeatmap(.mycolors = mycolors_, .heatColors = heatColors_, .input_heatColors1=input_heatColors1_)   #Heatmap for k-Means 
  
 ```     
@@ -271,7 +271,7 @@ kable( readMetadata.out_ ) %>%
  input_minSetSize_ <- 15	#Min gene set size
  input_maxSetSize_ <- 2000	#Max gene set size 
  GeneSets.out <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO3_,input_selectOrg_,
+    convertedData.out_, input_selectGO3_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  )  
  # Alternatively, users can use their own GMT files by
  #GeneSets.out <- readGMTRobust('somefile.GMT')  
@@ -293,22 +293,22 @@ kable( readMetadata.out_ ) %>%
  input_selectFactors2_ <- 'Preservation.Method.'	#Factor coded by shape
  input_tsneSeed2_ <- 0	#Random seed for t-SNE 
  #PCA, MDS and t-SNE plots
- PCAplot(readSampleInfo.out_, input_selectFactors_, input_selectFactors2_)  
+ PCAplot(convertedData.out_, readSampleInfo.out_, input_selectFactors_, input_selectFactors2_)  
 ```     
 ```{r, message=FALSE  }  
- MDSplot(readSampleInfo.out_, input_selectFactors_, input_selectFactors2_) 
+ MDSplot(convertedData.out_, readSampleInfo.out_, input_selectFactors_, input_selectFactors2_) 
 ```     
 ```{r, message=FALSE  }  
- tSNEplot(readSampleInfo.out_, input_selectFactors_, input_selectFactors2_, input_tsneSeed2_)  
+ tSNEplot(convertedData.out_, readSampleInfo.out_, input_selectFactors_, input_selectFactors2_, input_tsneSeed2_)  
 ```     
 ```{r, message=FALSE  }  
 
  #Read gene sets for pathway analysis using PGSEA on principal components 
  input_selectGO6_ <- 'GOBP' 
  GeneSets.out_ <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO6_,input_selectOrg_,
+    convertedData.out_, input_selectGO6_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  )  
- PCApathway(convertedData.out=convertedData.out, GeneSets.out=GeneSets.out_) # Run PGSEA analysis 
+ PCApathway(convertedData.out=convertedData.out_, GeneSets.out=GeneSets.out_) # Run PGSEA analysis 
 ```     
 ```{r, message=FALSE  }  
  cat( PCA2factor(readData.out_, readSampleInfo.out=readSampleInfo.out_) )   #The correlation between PCs with factors 
@@ -325,8 +325,8 @@ kable( readMetadata.out_ ) %>%
  input_selectBlockFactorsModel_ <- NULL 	#Selected comparisons
  factorReferenceLevels.out_ <- c('Gravity:Terrestrial') 
 
- limma.out <- limma(readSampleInfo.out=readSampleInfo.out_, input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, input_selectInteractions=input_selectInteractions_, input_selectBlockFactorsModel=input_selectBlockFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
- DEG.data.out <- DEG.data(allGeneInfo.out_)
+ limma.out <- limma(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, input_selectInteractions=input_selectInteractions_, input_selectBlockFactorsModel=input_selectBlockFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
+ DEG.data.out <- DEG.data(convertedData.out_, allGeneInfo.out_)
  limma.out$comparisons 
 ```     
 ```{r, message=FALSE  }  
@@ -344,12 +344,12 @@ kable( readMetadata.out_ ) %>%
 ## 7. DEG2   
 ```{r, message=FALSE  } 
  input_selectContrast_ <- 'Microgravity-Terrestrial'	#Selected comparisons 
- selectedHeatmap.data.out <- selectedHeatmap.data(readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)
+ selectedHeatmap.data.out <- selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)
  selectedHeatmap(.mycolors=mycolors_,.heatColors=heatColors_)   # heatmap for DEGs in selected comparison
 
  # Save gene lists and data into files
- write.csv( selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)$genes, 'heatmap.data.csv') 
- write.csv(DEG.data(allGeneInfo.out_),'DEG.data.csv' )
+ write.csv( selectedHeatmap.data(convertedData.out=convertedData.out_,  readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)$genes, 'heatmap.data.csv') 
+ write.csv(DEG.data(convertedData.out_, allGeneInfo.out_),'DEG.data.csv' )
  write(AllGeneListsGMT() ,'AllGeneListsGMT.gmt')
  
 ```     
@@ -359,16 +359,16 @@ kable( readMetadata.out_ ) %>%
  volcanoPlot(input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectContrast=input_selectContrast_)  
 ```     
 ```{r, message=FALSE  }  
-  scatterPlot(readSampleInfo.out=readSampleInfo.out_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast_)  
+  scatterPlot(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast_)  
 ```     
 ```{r, message=FALSE  }  
-  MAplot(readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out_, input_selectContrast_)  
+  MAplot(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out_, input_selectContrast_)  
 ```     
 ```{r, message=FALSE  }  
   geneListGOTable.out <- geneListGOTable()  
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO2_,input_selectOrg_,
+    convertedData.out_, input_selectGO2_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  ) 
  input_removeRedudantSets_ <- TRUE	#Remove highly redundant gene sets? 
  results <- geneListGO(input_removeRedudantSets_)  #Enrichment analysis
@@ -423,7 +423,7 @@ Generating interactive PPI
  input_maxSetSize_ <- 2000	#Max size for gene set 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO_,input_selectOrg_,
+    convertedData.out_, input_selectGO_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  ) 
  input_pathwayPvalCutoff_ <- 0.2	#FDR cutoff
  input_nPathwayShow_ <- 30	#Top pathways to show
@@ -453,9 +453,9 @@ Generating interactive PPI
 
  input_pathwayMethod_ = 3  # 1  fgsea 
  fgseaPathwayData.out <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_nPathwayShow=input_nPathwayShow_, input_GenePvalCutoff=input_GenePvalCutoff_) #Pathway analysis using fgsea 
- results <- fgseaPathwayData.out  #Enrichment analysis for k-Means clusters	
- results$adj.Pval <- format( results$adj.Pval,digits=3 )
- kable( results, row.names=FALSE) %>%
+ results_ <- fgseaPathwayData.out  #Enrichment analysis for k-Means clusters	
+ results_$adj.Pval <- format( results_$adj.Pval,digits=3 )
+ kable( results_, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```     
@@ -470,7 +470,7 @@ Generating interactive PPI
   enrichmentNetworkPlotly(pathwayListData.out_) 
 ```     
 ```{r, message=FALSE,fig.width=9, fig.height=8  }  
-   PGSEAplot(readSampleInfo.out=readSampleInfo.out_, input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_nPathwayShow_) # pathway analysis using PGSEA 
+   PGSEAplot(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_nPathwayShow_) # pathway analysis using PGSEA 
 ```
 
 ## 9. Chromosome   
@@ -486,7 +486,7 @@ Generating interactive PPI
 ```{r, message=FALSE  } 
  input_nGenesBiclust_ <- 1000	#Top genes for biclustering
  input_biclustMethod_ <- 'BCCC()'	#Method: 'BCCC', 'QUBIC', 'runibic' ... 
- biclustering.out = biclustering(input_nGenesBiclust_, input_biclustMethod_ )  # run analysis
+ biclustering.out = biclustering(convertedData.out_, input_nGenesBiclust_, input_biclustMethod_ )  # run analysis
 
  input_selectBicluster_ <- 1	#select a cluster 
  biclustHeatmap(heatColors_, input_heatColors1=input_heatColors1_, input_selectBicluster=input_selectBicluster_)   # heatmap for selected cluster 
@@ -495,7 +495,7 @@ Generating interactive PPI
  input_selectGO4_ <- 'GOBP'	#Gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO4_, input_selectOrg_,
+    convertedData.out_, input_selectGO4_, input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  )  
  results <- geneListBclustGO(2, input_selectBicluster=input_selectBicluster_)  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
@@ -509,7 +509,7 @@ Generating interactive PPI
  input_mySoftPower_ <- 5	#SoftPower to cutoff
  input_nGenesNetwork_ <- 1000	#Number of top genes
  input_minModuleSize_ <- 20	#Module size minimum 
- wgcna.out = wgcna(2000, input_mySoftPower=input_mySoftPower_, input_nGenesNetwork=input_nGenesNetwork_, input_minModuleSize=input_minModuleSize_)   # run WGCNA  
+ wgcna.out = wgcna(convertedData.out_, 2000, input_mySoftPower=input_mySoftPower_, input_nGenesNetwork=input_nGenesNetwork_, input_minModuleSize=input_minModuleSize_)   # run WGCNA  
 ```     
 ```{r, message=FALSE  }  
  softPower(wgcna.out)  # soft power curve 
@@ -523,7 +523,7 @@ Generating interactive PPI
  input_selectGO5_ <- 'GOBP'	#Gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO5_,input_selectOrg_,
+    convertedData.out_, input_selectGO5_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  ) 
  input_selectWGCNA.Module_ <- 'Entire network'	#Select a module
  input_topGenesNetwork_ <- 10	#SoftPower to cutoff

@@ -523,7 +523,7 @@ nGenesFilter <- function(readData.out, converted.out, convertedData.out, input_n
 }	
 
 	
-geneBarPlotError <- function(allGeneInfo.out, input_selectOrg, input_geneSearch, input_useSD='FALSE') {
+geneBarPlotError <- function(convertedData.out, allGeneInfo.out, input_selectOrg, input_geneSearch, input_useSD='FALSE') {
    x <- convertedData.out
 	
 	Symbols <- rownames(x)
@@ -764,7 +764,7 @@ staticHeatmap <- function (readData.out, readSampleInfo.out, heatColors, input_n
 
 	#Interactive heatmap via Plotly plot ----------------------------------------------
 	# interactive heatmap with plotly
-heatmapPlotly <- function (heatColors, allGeneInfo.out, input_geneCentering=TRUE, input_sampleCentering=FALSE, input_geneNormalize=FALSE, input_sampleNormalize=FALSE, input_heatColors1=1) { 	
+heatmapPlotly <- function (convertedData.out, heatColors, allGeneInfo.out, input_geneCentering=TRUE, input_sampleCentering=FALSE, input_geneNormalize=FALSE, input_sampleNormalize=FALSE, input_heatColors1=1) { 	
 	input_nGenesPlotly= 50
 
 	   x <- convertedData.out
@@ -826,7 +826,7 @@ heatmapPlotly <- function (heatColors, allGeneInfo.out, input_geneCentering=TRUE
 # PCA
 ################################################################
 
-PCAplot <- function(readSampleInfo.out, input_selectFactors, input_selectFactors2) {   #PCA
+PCAplot <- function(convertedData.out, readSampleInfo.out, input_selectFactors, input_selectFactors2) {   #PCA
 	 x <- convertedData.out;
 	 pca.object <- prcomp(t(x))
 		
@@ -855,7 +855,7 @@ PCAplot <- function(readSampleInfo.out, input_selectFactors, input_selectFactors
 	# plot(pca.object,type="bar", xlab="Principal Components", main ="Variances explained")
 	
 	 
-MDSplot <- function(readSampleInfo.out, input_selectFactors, input_selectFactors2) {  # MDS
+MDSplot <- function(convertedData.out, readSampleInfo.out, input_selectFactors, input_selectFactors2) {  # MDS
 	 	x <- convertedData.out;
 	 fit = cmdscale( dist2(t(x) ), eig=T, k=2)
 	 
@@ -883,7 +883,7 @@ MDSplot <- function(readSampleInfo.out, input_selectFactors, input_selectFactors
 	
 	 }
 
-tSNEplot <- function(readSampleInfo.out, input_selectFactors, input_selectFactors2, input_tsneSeed2) {  # t-SNE
+tSNEplot <- function(convertedData.out, readSampleInfo.out, input_selectFactors, input_selectFactors2, input_tsneSeed2) {  # t-SNE
 	 x <- convertedData.out;
 	 set.seed(input_tsneSeed2)
 	 tsne <- Rtsne(t(x), dims = 2, perplexity=1, verbose=FALSE, max_iter = 400)
@@ -1173,7 +1173,7 @@ readCountsBias <- function(readData.out, readSampleInfo.out){
 ################################################################
 	 
   #Distribution of SDs 
-distributionSD <- function(input_nGenesKNN=2000) {
+distributionSD <- function(convertedData.out, input_nGenesKNN=2000) {
 
 		SDs=apply(convertedData.out,1,sd)
 		maxSD = mean(SDs)+ 4*sd(SDs)
@@ -1197,7 +1197,7 @@ distributionSD <- function(input_nGenesKNN=2000) {
 
 
 # Decide number of clusters
-KmeansNclusters <- function(input_nGenesKNN=2000) { # Kmeans clustering
+KmeansNclusters <- function(convertedData.out, input_nGenesKNN=2000) { # Kmeans clustering
 
     x <- convertedData.out
 	#x <- readData.out
@@ -1223,7 +1223,7 @@ KmeansNclusters <- function(input_nGenesKNN=2000) { # Kmeans clustering
 	
 }
  
-Kmeans <- function(maxGeneClustering = 12000, input_nGenesKNN=2000, input_nClusters=4, input_kmeansNormalization='geneMean', input_KmeansReRun=0) { # Kmeans clustering
+Kmeans <- function(convertedData.out, maxGeneClustering = 12000, input_nGenesKNN=2000, input_nClusters=4, input_kmeansNormalization='geneMean', input_KmeansReRun=0) { # Kmeans clustering
 
     x <- convertedData.out
 	#x <- readData.out
@@ -2094,7 +2094,7 @@ DEG.DESeq2 <- function (  rawCounts,maxP_limma=.05, minFC_limma=2, selectedCompa
 }
 
 # main function
-limma <- function(readSampleInfo.out, input_dataFileFormat = 1, input_countsLogStart = 4, convertedCounts.out=convertedCounts.out, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, input_selectInteractions=NULL, input_selectBlockFactorsModel=NULL, factorReferenceLevels.out) {  
+limma <- function(convertedData.out, readSampleInfo.out, input_dataFileFormat = 1, input_countsLogStart = 4, convertedCounts.out=convertedCounts.out, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, input_selectInteractions=NULL, input_selectBlockFactorsModel=NULL, factorReferenceLevels.out) {  
 	if(input_dataFileFormat == 1 ) {  # if count data
 		 if(input_CountsDEGMethod == 3 ) {    # if DESeq2 method
 				# rawCounts = read.csv("exampleData/airway_GSE52778.csv", row.names=1)
@@ -2163,7 +2163,7 @@ limma <- function(readSampleInfo.out, input_dataFileFormat = 1, input_countsLogS
 }
 
 	
-DEG.data <- function(allGeneInfo.out) {
+DEG.data <- function(convertedData.out, allGeneInfo.out) {
 
 		  genes = limma.out$results
 		  genes = as.data.frame( genes[which( rowSums( abs (genes) ) != 0 ),] )
@@ -2269,7 +2269,7 @@ sigGeneStatsTable <- function( ) {
 }
 
 
-selectedHeatmap.data <- function(readSampleInfo.out, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
+selectedHeatmap.data <- function(convertedData.out, readSampleInfo.out, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
  		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
 		  if(!grepl("I:", input_selectContrast) ) {  # if not interaction term
@@ -2414,7 +2414,7 @@ selectedHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) {
 
 
 # Two selectedHeatmap.data functions?
-selectedHeatmap.data <- function(readSampleInfo.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast, input_selectContrast){
+selectedHeatmap.data <- function(convertedData.out, readSampleInfo.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast, input_selectContrast){
 
 		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
@@ -2469,7 +2469,7 @@ selectedHeatmap.data <- function(readSampleInfo.out, .converted.out, .readData.o
 
 
 
-DEG.data <- function(allGeneInfo.out){
+DEG.data <- function(convertedData.out, allGeneInfo.out){
 
 	genes = limma.out$results
 	genes = as.data.frame( genes[which( rowSums(genes) != 0 ),] )
@@ -2591,7 +2591,7 @@ volcanoPlot <- function(input_limmaPval=0.1, input_limmaFC=2, input_selectContra
 	 
 }
 
-scatterPlot <- function(readSampleInfo.out, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast){
+scatterPlot <- function(convertedData.out, readSampleInfo.out, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast){
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -2650,7 +2650,7 @@ scatterPlot <- function(readSampleInfo.out, input_dataFileFormat, input_CountsDE
 }
 
 
-MAplot <- function (readSampleInfo.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
+MAplot <- function (convertedData.out, readSampleInfo.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -3378,7 +3378,7 @@ PGSEApathway <- function (converted,convertedData, selectOrg,GO,gmt, myrange,Pva
     }
  }
 
-PGSEAplot <- function(readSampleInfo.out, input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30){
+PGSEAplot <- function(convertedData.out, readSampleInfo.out, input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30){
 
 	if(input_selectGO == "ID not recognized!" ) return( NULL)
 
@@ -3511,7 +3511,7 @@ ReactomePAPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, in
 }
 
 # Function possibly not used
-selectedPathwayData <- function(readSampleInfo.out, allGeneInfo.out, input_selectOrg, input_dataFileFormat, input_CountsDEGMethod=3, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1){
+selectedPathwayData <- function(convertedData.out, readSampleInfo.out, allGeneInfo.out, input_selectOrg, input_dataFileFormat, input_CountsDEGMethod=3, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1){
  
     if(input_sigPathways == "All") return (NULL) 
 	ix <- which(names(GeneSets.out ) == input_sigPathways   ) # find the gene set
@@ -4142,7 +4142,7 @@ genomePlotDataPre <- function(allGeneInfo.out, PREDA_Permutations = 1000, input_
 # Biclustering
 ################################################################
  
-biclustering <- function(input_nGenesBiclust=1000, input_biclustMethod='BCCC()'){
+biclustering <- function(convertedData.out, input_nGenesBiclust=1000, input_biclustMethod='BCCC()'){
 			
 			x <- convertedData.out
 			n=input_nGenesBiclust	
@@ -4237,7 +4237,7 @@ geneListBclustGO <- function(minGenesEnrichment = 2, input_selectBicluster ){
 # Co-expression network
 ################################################################
 
-wgcna <- function (maxGeneWGCNA = 2000, input_mySoftPower=5, input_nGenesNetwork=1000, input_minModuleSize=20 ){
+wgcna <- function (convertedData.out, maxGeneWGCNA = 2000, input_mySoftPower=5, input_nGenesNetwork=1000, input_minModuleSize=20 ){
 			#http://pklab.med.harvard.edu/scw2014/WGCNA.html
 
 			x <- convertedData.out
