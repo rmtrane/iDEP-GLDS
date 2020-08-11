@@ -2414,7 +2414,7 @@ selectedHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) {
 
 
 # Two selectedHeatmap.data functions?
-selectedHeatmap.data <- function(convertedData.out, readSampleInfo.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast, input_selectContrast){
+selectedHeatmap.data <- function(convertedData.out, readSampleInfo.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast){
 
 		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
@@ -4163,8 +4163,8 @@ biclustering <- function(convertedData.out, input_nGenesBiclust=1000, input_bicl
 }
 
 
-biclustHeatmap <- function (heatColors, input_heatColors1=1, input_selectBicluster){
-			res = biclustering()$res
+biclustHeatmap <- function (biclustering.out, heatColors, input_heatColors1=1, input_selectBicluster){
+			res = biclustering.out$res
 			if( res@Number == 0 ) { plot.new(); text(0.5,0.5, "No cluster found!")} else {
 		
 				x = biclust::bicluster(biclustering.out$x, res, as.numeric( input_selectBicluster)  )[[1]]

@@ -153,7 +153,7 @@ kable( readMetadata.out_ ) %>%
  input_noIDConversion_ = TRUE  
  allGeneInfo.out_ <- geneInfo(geneInfoFile_) 
  converted.out_ = NULL 
- convertedData.out <- convertedData(converted.out=converted.out_, readData.out=readData.out_, input_noIDConversion=input_noIDConversion_)	 
+ convertedData.out_ <- convertedData(converted.out=converted.out_, readData.out=readData.out_, input_noIDConversion=input_noIDConversion_)	 
  nGenesFilter(readData.out=readData.out_, converted.out=converted.out_, convertedData.out=convertedData.out_, input_noIDConversion=input_noIDConversion_)  
  convertedCounts.out_ <- convertedCounts(readData.out=readData.out_, converted.out=converted.out_)  # converted counts, just for compatibility 
 ```
@@ -349,7 +349,7 @@ kable( readMetadata.out_ ) %>%
 
  # Save gene lists and data into files
  write.csv( selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)$genes, 'heatmap.data.csv') 
- write.csv(DEG.data(allGeneInfo.out_),'DEG.data.csv' )
+ write.csv(DEG.data(convertedData.out_, allGeneInfo.out_),'DEG.data.csv' )
  write(AllGeneListsGMT() ,'AllGeneListsGMT.gmt')
  
 ```     
@@ -486,10 +486,10 @@ Generating interactive PPI
 ```{r, message=FALSE  } 
  input_nGenesBiclust_ <- 1000	#Top genes for biclustering
  input_biclustMethod_ <- 'BCCC()'	#Method: 'BCCC', 'QUBIC', 'runibic' ... 
- biclustering.out = biclustering(convertedData.out_, input_nGenesBiclust_, input_biclustMethod_ )  # run analysis
+ biclustering.out = biclustering(convertedData.out=convertedData.out_, input_nGenesBiclust_, input_biclustMethod_ )  # run analysis
 
  input_selectBicluster_ <- 1	#select a cluster 
- biclustHeatmap(heatColors_, input_heatColors1=input_heatColors1_, input_selectBicluster=input_selectBicluster_)   # heatmap for selected cluster 
+ biclustHeatmap(biclustering.out, heatColors_, input_heatColors1=input_heatColors1_, input_selectBicluster=input_selectBicluster_)   # heatmap for selected cluster 
 ```     
 ```{r, message=FALSE  } 
  input_selectGO4_ <- 'GOBP'	#Gene set category 
