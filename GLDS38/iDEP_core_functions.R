@@ -1312,7 +1312,7 @@ KmeansHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) { # Kmea
 }
  
 
-tSNEgenePlot <- function(input_seedTSNE=0, input_colorGenes=TRUE) {
+tSNEgenePlot <- function(input_seedTSNE=0, input_colorGenes=TRUE, mycolors) {
 			Cluster <- Kmeans.out$bar
 			train <- as.data.frame( cbind(Cluster,Kmeans.out$x) )
 
@@ -3244,7 +3244,7 @@ gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_se
 		  return( top1)
 }
 
-fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30, input_GenePvalCutoff=1) {
+fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_absoluteFold=FALSE, input_nPathwayShow=30, input_GenePvalCutoff=1) {
 
 	noSig = as.data.frame("No significant pathway found.")
 	if( length(limma.out$topGenes) == 0 ) return(noSig)
@@ -4360,7 +4360,7 @@ listWGCNA.Modules <- function(){
 }
 
 
-moduleNetwork <- function(input_noIDConversion, allGeneInfo.out, input_selectOrg, input_selectWGCNA.Module="Entire network", input_topGenesNetwork=10, input_edgeThreshold=0.4){
+moduleNetwork <- function(input_noIDConversion, allGeneInfo.out, input_selectOrg, input_selectWGCNA.Module="Entire network", input_topGenesNetwork=10, input_edgeThreshold=0.4, input_selectGO5){
 
 		outfile <- tempfile(fileext='.txt')
 	
