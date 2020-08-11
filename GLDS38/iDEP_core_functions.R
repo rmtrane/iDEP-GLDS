@@ -3789,7 +3789,7 @@ pathwayListData  <- function(allGeneInfo.out, input_selectOrg, input_selectGO, i
 # Genome-wide view
 ################################################################
  
-genomePlotly <- function(allGeneInfo.out ){
+genomePlotly <- function(allGeneInfo.out, input_selectContrast2, input_limmaPvalViz=0.1, input_limmaFCViz=2){
 		# default plot
 		fake = data.frame(a=1:3,b=1:3)
 		p <- ggplot(fake, aes(x = a, y = b)) +
@@ -3915,7 +3915,7 @@ genomePlotly <- function(allGeneInfo.out ){
 }
 
 # results from PREDA, not used
-genomePlotData <- function(allGeneInfo.out ){
+genomePlotData <- function(allGeneInfo.out, input_selectContrast2 ){
  	if (is.null(input_selectContrast2 ) ) return(NULL)
 	
 	if( length(limma.out$topGenes) == 0 ) return(NULL)
@@ -4046,7 +4046,7 @@ genomePlot <- function(){
 }
 
 # pre-calculating PREDA, so that changing FDR cutoffs does not trigger entire calculation
-genomePlotDataPre <- function(allGeneInfo.out, PREDA_Permutations = 1000 ){
+genomePlotDataPre <- function(allGeneInfo.out, PREDA_Permutations = 1000, input_selectContrast2 ){
 	if (is.null(input_selectContrast2 ) ) return(NULL)
 	
 	if( length(limma.out$topGenes) == 0 ) return(NULL)
@@ -4142,7 +4142,7 @@ genomePlotDataPre <- function(allGeneInfo.out, PREDA_Permutations = 1000 ){
 # Biclustering
 ################################################################
  
-biclustering <- function( ){
+biclustering <- function(input_nGenesBiclust=1000, input_biclustMethod='BCCC()'){
 			
 			x <- convertedData.out
 			n=input_nGenesBiclust	
@@ -4163,7 +4163,7 @@ biclustering <- function( ){
 }
 
 
-biclustHeatmap <- function (heatColors, input_heatColors1=1){
+biclustHeatmap <- function (heatColors, input_heatColors1=1, input_selectBicluster){
 			res = biclustering()$res
 			if( res@Number == 0 ) { plot.new(); text(0.5,0.5, "No cluster found!")} else {
 		
@@ -4193,7 +4193,7 @@ biclustHeatmap <- function (heatColors, input_heatColors1=1){
 }
 
 
-geneListBclustGO <- function(minGenesEnrichment = 2 ){		
+geneListBclustGO <- function(minGenesEnrichment = 2, input_selectBicluster ){		
 		
 			res = biclustering.out$res
 			if( res@Number == 0 ) return(as.data.frame("No clusters found!") ) 
@@ -4237,7 +4237,7 @@ geneListBclustGO <- function(minGenesEnrichment = 2 ){
 # Co-expression network
 ################################################################
 
-wgcna <- function (maxGeneWGCNA = 2000 ){
+wgcna <- function (maxGeneWGCNA = 2000, input_mySoftPower=5, input_nGenesNetwork=1000, input_minModuleSize=20 ){
 			#http://pklab.med.harvard.edu/scw2014/WGCNA.html
 
 			x <- convertedData.out
@@ -4300,7 +4300,7 @@ wgcna <- function (maxGeneWGCNA = 2000 ){
 }
 
 
-softPower <- function(){
+softPower <- function(wgcna.out){
 
 		####################################  
 		
@@ -4324,7 +4324,7 @@ softPower <- function(){
 }
 
 
-modulePlot <- function(){
+modulePlot <- function(wgcna.out){
 	
 		diss1 = 1-wgcna.out$TOM;
 		dynamicColors = wgcna.out$dynamicColors
@@ -4360,7 +4360,7 @@ listWGCNA.Modules <- function(){
 }
 
 
-moduleNetwork <- function(input_noIDConversion, allGeneInfo.out, input_selectOrg){
+moduleNetwork <- function(input_noIDConversion, allGeneInfo.out, input_selectOrg, input_selectWGCNA.Module="Entire network", input_topGenesNetwork=10, input_edgeThreshold=0.4){
 
 		outfile <- tempfile(fileext='.txt')
 	
@@ -4421,7 +4421,7 @@ moduleNetwork <- function(input_noIDConversion, allGeneInfo.out, input_selectOrg
 }
 
 
-networkModuleGO <- function(minGenesEnrichment = 2){		
+networkModuleGO <- function(minGenesEnrichment = 2, input_selectWGCNA.Module="Entire network"){		
 
 	
 			#module = gsub(".* ","",input_selectWGCNA.Module)

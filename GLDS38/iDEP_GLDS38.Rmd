@@ -449,7 +449,7 @@ Generating interactive PPI
 ```     
 ```{r, message=FALSE  }  
 
- input_pathwayMethod = 3  # 1  fgsea 
+ input_pathwayMethod_ = 3  # 1  fgsea 
  fgseaPathwayData.out <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_nPathwayShow=input_nPathwayShow_, input_GenePvalCutoff=input_GenePvalCutoff_) #Pathway analysis using fgsea 
  results <- fgseaPathwayData.out  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
@@ -473,29 +473,29 @@ Generating interactive PPI
 
 ## 9. Chromosome   
 ```{r, message=FALSE  } 
- input_selectContrast2 <- 'Microgravity-Terrestrial'	#select Comparison 
+ input_selectContrast2_ <- 'Microgravity-Terrestrial'	#select Comparison 
  #input_selectContrast2 = limma.out$comparisons[3] # manually set
- input_limmaPvalViz <- 0.1	#FDR to filter genes
- input_limmaFCViz <- 2	#FDR to filter genes 
- genomePlotly(allGeneInfo.out_) # shows fold-changes on the genome 
+ input_limmaPvalViz_ <- 0.1	#FDR to filter genes
+ input_limmaFCViz_ <- 2	#FDR to filter genes 
+ genomePlotly(allGeneInfo.out_, input_selectContrast2_, input_limmaPvalViz_, input_limmaFCViz_) # shows fold-changes on the genome 
 ```
 
 ## 10. Biclustering   
 ```{r, message=FALSE  } 
- input_nGenesBiclust <- 1000	#Top genes for biclustering
- input_biclustMethod <- 'BCCC()'	#Method: 'BCCC', 'QUBIC', 'runibic' ... 
- biclustering.out = biclustering()  # run analysis
+ input_nGenesBiclust_ <- 1000	#Top genes for biclustering
+ input_biclustMethod_ <- 'BCCC()'	#Method: 'BCCC', 'QUBIC', 'runibic' ... 
+ biclustering.out = biclustering(input_nGenesBiclust_, input_biclustMethod_ )  # run analysis
 
- input_selectBicluster <- 1	#select a cluster 
- biclustHeatmap(heatColors, input_heatColors1=input_heatColors1_)   # heatmap for selected cluster 
+ input_selectBicluster_ <- 1	#select a cluster 
+ biclustHeatmap(heatColors, input_heatColors1=input_heatColors1_, input_selectBicluster=input_selectBicluster_)   # heatmap for selected cluster 
 ```     
 ```{r, message=FALSE  } 
- input_selectGO4 <- 'GOBP'	#Gene set category 
+ input_selectGO4_ <- 'GOBP'	#Gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO4,input_selectOrg_,
+    convertedData.out, input_selectGO4_, input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  )  
- results <- geneListBclustGO()  #Enrichment analysis for k-Means clusters	
+ results <- geneListBclustGO(2, input_selectBicluster=input_selectBicluster_)  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -504,34 +504,34 @@ Generating interactive PPI
 
 ## 11. Co-expression network    
 ```{r, message=FALSE  } 
- input_mySoftPower <- 5	#SoftPower to cutoff
- input_nGenesNetwork <- 1000	#Number of top genes
- input_minModuleSize <- 20	#Module size minimum 
- wgcna.out = wgcna()   # run WGCNA  
+ input_mySoftPower_ <- 5	#SoftPower to cutoff
+ input_nGenesNetwork_ <- 1000	#Number of top genes
+ input_minModuleSize_ <- 20	#Module size minimum 
+ wgcna.out = wgcna(2000, input_mySoftPower=input_mySoftPower_, input_nGenesNetwork=input_nGenesNetwork_, input_minModuleSize=input_minModuleSize_)   # run WGCNA  
 ```     
 ```{r, message=FALSE  }  
- softPower()  # soft power curve 
+ softPower(wgcna.out)  # soft power curve 
 ```     
 ```{r, message=FALSE  }  
-  modulePlot()  # plot modules  
+  modulePlot(wgcna.out)  # plot modules  
   listWGCNA.Modules.out = listWGCNA.Modules() #modules
  
 ```     
 ```{r, message=FALSE  } 
- input_selectGO5 <- 'GOBP'	#Gene set category 
+ input_selectGO5_ <- 'GOBP'	#Gene set category 
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO5,input_selectOrg_,
+    convertedData.out, input_selectGO5_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  ) 
- input_selectWGCNA.Module <- 'Entire network'	#Select a module
- input_topGenesNetwork <- 10	#SoftPower to cutoff
+ input_selectWGCNA.Module_ <- 'Entire network'	#Select a module
+ input_topGenesNetwork_ <- 10	#SoftPower to cutoff
  input_edgeThreshold <- 0.4	#Number of top genes 
- moduleNetwork(input_noIDConversion=input_noIDConversion_, allGeneInfo.out=allGeneInfo.out_, input_selectOrg_)	# show network of top genes in selected module
+ moduleNetwork(input_noIDConversion=input_noIDConversion_, allGeneInfo.out=allGeneInfo.out_, input_selectOrg_, input_selectWGCNA.Module_, input_topGenesNetwork_, input_edgeThreshold_)	# show network of top genes in selected module
  
 ```     
 ```{r, message=FALSE  } 
- input_removeRedudantSets <- TRUE	#Remove redundant gene sets 
- results <- networkModuleGO()  #Enrichment analysis of selected module
+ input_removeRedudantSets_ <- TRUE	#Remove redundant gene sets 
+ results <- networkModuleGO(2, input_selectWGCNA.Module_)  #Enrichment analysis of selected module
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
