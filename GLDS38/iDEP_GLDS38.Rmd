@@ -291,21 +291,21 @@ kable( readMetadata.out_ ) %>%
  input_selectFactors2 <- 'Preservation.Method.'	#Factor coded by shape
  input_tsneSeed2 <- 0	#Random seed for t-SNE 
  #PCA, MDS and t-SNE plots
- PCAplot()  
+ PCAplot(input_selectFactors_, input_selectFactors2_)  
 ```     
 ```{r, message=FALSE  }  
- MDSplot() 
+ MDSplot(input_selectFactors_, input_selectFactors2_) 
 ```     
 ```{r, message=FALSE  }  
- tSNEplot()  
+ tSNEplot(input_selectFactors_, input_selectFactors2_, input_tsneSeed2_)  
 ```     
 ```{r, message=FALSE  }  
 
  #Read gene sets for pathway analysis using PGSEA on principal components 
- input_selectGO6 <- 'GOBP' 
+ input_selectGO6_ <- 'GOBP' 
  GeneSets.out <-readGeneSets( geneSetFile_,
-    convertedData.out, input_selectGO6,input_selectOrg_,
-    c(input_minSetSize, input_maxSetSize)  )  
+    convertedData.out, input_selectGO6_,input_selectOrg_,
+    c(input_minSetSize_, input_maxSetSize_)  )  
  PCApathway(convertedData.out=convertedData.out, GeneSets.out=GeneSets.out) # Run PGSEA analysis 
 ```     
 ```{r, message=FALSE  }  

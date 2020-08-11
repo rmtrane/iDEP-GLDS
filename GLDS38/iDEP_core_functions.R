@@ -826,7 +826,7 @@ heatmapPlotly <- function (heatColors, allGeneInfo.out, input_geneCentering=TRUE
 # PCA
 ################################################################
 
-PCAplot <- function() {   #PCA
+PCAplot <- function(input_selectFactors, input_selectFactors2) {   #PCA
 	 x <- convertedData.out;
 	 pca.object <- prcomp(t(x))
 		
@@ -855,7 +855,7 @@ PCAplot <- function() {   #PCA
 	# plot(pca.object,type="bar", xlab="Principal Components", main ="Variances explained")
 	
 	 
-MDSplot <- function() {  # MDS
+MDSplot <- function(input_selectFactors, input_selectFactors2) {  # MDS
 	 	x <- convertedData.out;
 	 fit = cmdscale( dist2(t(x) ), eig=T, k=2)
 	 
@@ -883,7 +883,7 @@ MDSplot <- function() {  # MDS
 	
 	 }
 
-tSNEplot <- function() {  # t-SNE
+tSNEplot <- function(input_selectFactors, input_selectFactors2, input_tsneSeed2) {  # t-SNE
 	 x <- convertedData.out;
 	 set.seed(input_tsneSeed2)
 	 tsne <- Rtsne(t(x), dims = 2, perplexity=1, verbose=FALSE, max_iter = 400)
