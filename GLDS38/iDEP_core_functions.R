@@ -2269,7 +2269,7 @@ sigGeneStatsTable <- function( ) {
 }
 
 
-selectedHeatmap.data <- function(input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, factorReferenceLevels.out) {
+selectedHeatmap.data <- function(input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out) {
  		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
 		  if(!grepl("I:", input_selectContrast) ) {  # if not interaction term
@@ -2414,7 +2414,7 @@ selectedHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) {
 
 
 # Two selectedHeatmap.data functions?
-selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_selectModelComprions, factorReferenceLevels.out){
+selectedHeatmap.data <- function(.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
 
 		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
@@ -2591,7 +2591,7 @@ volcanoPlot <- function(input_limmaPval=0.1, input_limmaFC=2) {
 	 
 }
 
-scatterPlot <- function(input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel){
+scatterPlot <- function(input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -2650,7 +2650,7 @@ scatterPlot <- function(input_dataFileFormat, input_CountsDEGMethod=3, input_lim
 }
 
 
-MAplot <- function (.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, , input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out) {
+MAplot <- function (.converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out) {
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -3378,7 +3378,7 @@ PGSEApathway <- function (converted,convertedData, selectOrg,GO,gmt, myrange,Pva
     }
  }
 
-PGSEAplot <- function(input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
+PGSEAplot <- function(input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
 
 	if(input_selectGO == "ID not recognized!" ) return( NULL)
 

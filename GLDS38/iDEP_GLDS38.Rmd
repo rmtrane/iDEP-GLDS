@@ -270,7 +270,7 @@ kable( readMetadata.out_ ) %>%
  input_maxSetSize_ <- 2000	#Max gene set size 
  GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO3_,input_selectOrg_,
-    c(input_minSetSize, input_maxSetSize)  )  
+    c(input_minSetSize_, input_maxSetSize_)  )  
  # Alternatively, users can use their own GMT files by
  #GeneSets.out <- readGMTRobust('somefile.GMT')  
  results <- KmeansGO(input_nClusters=input_nClusters_)  #Enrichment analysis for k-Means clusters	
@@ -321,9 +321,9 @@ kable( readMetadata.out_ ) %>%
  input_selectFactorsModel_ <- 'Gravity'	#Selected comparisons
  input_selectInteractions_ <- NULL 	#Selected comparisons
  input_selectBlockFactorsModel_ <- NULL 	#Selected comparisons
- factorReferenceLevels.out <- c('Gravity:Terrestrial') 
+ factorReferenceLevels.out_ <- c('Gravity:Terrestrial') 
 
- limma.out <- limma(input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, , input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, input_selectInteractions=input_selectInteractions_, input_selectBlockFactorsModel=input_selectBlockFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
+ limma.out <- limma(input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, input_selectInteractions=input_selectInteractions_, input_selectBlockFactorsModel=input_selectBlockFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
  DEG.data.out <- DEG.data(allGeneInfo.out_)
  limma.out$comparisons 
 ```     
@@ -343,7 +343,7 @@ kable( readMetadata.out_ ) %>%
 ```{r, message=FALSE  } 
  input_selectContrast <- 'Microgravity-Terrestrial'	#Selected comparisons 
  selectedHeatmap.data.out <- selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
- selectedHeatmap(.mycolors = mycolors, .heatColors = heatColors)   # heatmap for DEGs in selected comparison
+ selectedHeatmap(.mycolors=mycolors,.heatColors=heatColors)   # heatmap for DEGs in selected comparison
 
  # Save gene lists and data into files
  write.csv( selectedHeatmap.data(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)$genes, 'heatmap.data.csv') 
@@ -357,7 +357,7 @@ kable( readMetadata.out_ ) %>%
  volcanoPlot(input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_)  
 ```     
 ```{r, message=FALSE  }  
-  scatterPlot(input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out)  
+  scatterPlot(input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)  
 ```     
 ```{r, message=FALSE  }  
   MAplot(.converted.out=converted.out_, .readData.out=readData.out, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out_)  
@@ -367,7 +367,7 @@ kable( readMetadata.out_ ) %>%
  # Read pathway data again 
  GeneSets.out <-readGeneSets( geneSetFile_,
     convertedData.out, input_selectGO2,input_selectOrg_,
-    c(input_minSetSize, input_maxSetSize)  ) 
+    c(input_minSetSize_, input_maxSetSize_)  ) 
  input_removeRedudantSets <- TRUE	#Remove highly redundant gene sets? 
  results <- geneListGO()  #Enrichment analysis
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
