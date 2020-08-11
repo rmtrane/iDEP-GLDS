@@ -2990,7 +2990,7 @@ shortSpeciesNames <- function(tem){
 	 return( tolower( paste0(substr(tem2[[1]][1],1,1), tem2[[1]][2]  ) ) )
 }
 
-findTaxonomyID <- function( speciesName = "mmusculus", input_selectOrg) {
+findTaxonomyID <- function( STRING10_species, speciesName = "mmusculus", input_selectOrg) {
 	
     if(!is.null(input_speciesName) ) { # if species name is entered
 	   ix = match(input_speciesName, STRING10_species$official_name)
@@ -3179,7 +3179,7 @@ stringDB_network_link <- function(input_nGenesPPI=100){
 # Pathway analysis
 ################################################################
 
-gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000){	 
+gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow, input_absoluteFold=FALSE, input_GenePvalCutoff=1){	 
 
 
 
@@ -3244,7 +3244,7 @@ gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000){
 		  return( top1)
 }
 
-fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000) {
+fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30, input_GenePvalCutoff=1) {
 
 	noSig = as.data.frame("No significant pathway found.")
 	if( length(limma.out$topGenes) == 0 ) return(noSig)
@@ -3378,7 +3378,7 @@ PGSEApathway <- function (converted,convertedData, selectOrg,GO,gmt, myrange,Pva
     }
  }
 
-PGSEAplot <- function(input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
+PGSEAplot <- function(input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30){
 
 	if(input_selectGO == "ID not recognized!" ) return( NULL)
 
@@ -3430,7 +3430,7 @@ convertEnsembl2Entrez <- function (query,Species) {
 }
 
 # Not Used
-ReactomePAPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000){
+ReactomePAPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30, input_absoluteFold=FALSE, input_GenePvalCutoff=1, input_pathwayMethod=1){
  
 	ensemblSpecies <- c("hsapiens_gene_ensembl","rnorvegicus_gene_ensembl", "mmusculus_gene_ensembl",
 		               "celegans_gene_ensembl","scerevisiae_gene_ensembl", "drerio_gene_ensembl", "dmelanogaster_gene_ensembl")
@@ -3511,7 +3511,7 @@ ReactomePAPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000){
 }
 
 # Function possibly not used
-selectedPathwayData <- function(allGeneInfo.out, input_selectOrg, input_dataFileFormat, input_CountsDEGMethod=3, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out){
+selectedPathwayData <- function(allGeneInfo.out, input_selectOrg, input_dataFileFormat, input_CountsDEGMethod=3, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1){
  
     if(input_sigPathways == "All") return (NULL) 
 	ix <- which(names(GeneSets.out ) == input_sigPathways   ) # find the gene set
@@ -3628,7 +3628,7 @@ keggPathwayID <- function (pathwayDescription, Species, GO,selectOrg, sqlite=dbD
 }
 
 #not used
-KeggImage <- function(input_selectOrg){
+KeggImage <- function(input_selectOrg, input_selectContrast1){
 
    # First generate a blank image. Otherwise return(NULL) gives us errors.
     outfile <- tempfile(fileext='.png')
@@ -3700,7 +3700,7 @@ KeggImage <- function(input_selectOrg){
 }
 
 # list of pathways with details
-pathwayListData  <- function(allGeneInfo.out, input_selectOrg, input_selectGO){
+pathwayListData  <- function(allGeneInfo.out, input_selectOrg, input_selectGO, input_pathwayMethod=1){
     
 	pathways = NULL
 	if( input_pathwayMethod == 1)  
