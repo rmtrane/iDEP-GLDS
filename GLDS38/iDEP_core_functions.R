@@ -1306,13 +1306,13 @@ myheatmap2 <- function (x,bar=NULL,n=-1,mycolor=1,clusterNames=NULL, sideColors=
 		}
 }
 
-KmeansHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) { # Kmeans clustering
+KmeansHeatmap <- function(Kmeans.out, .mycolors, .heatColors, .input_heatColors1=1) { # Kmeans clustering
 
 	myheatmap2(Kmeans.out$x-apply(Kmeans.out$x,1,mean), Kmeans.out$bar,1000,mycolor=.input_heatColors1, mycolors=.mycolors, heatColors=.heatColors)
 }
  
 
-tSNEgenePlot <- function(input_seedTSNE=0, input_colorGenes=TRUE, mycolors) {
+tSNEgenePlot <- function(Kmeans.out, input_seedTSNE=0, input_colorGenes=TRUE, mycolors) {
 			Cluster <- Kmeans.out$bar
 			train <- as.data.frame( cbind(Cluster,Kmeans.out$x) )
 
@@ -1463,7 +1463,7 @@ findOverlapGMT <- function ( query, geneSet, minFDR=.2 ,minSize=2,maxSize=10000 
 	return( result)
 }
 
-KmeansGO <- function(input_nClusters) {
+KmeansGO <- function(Kmeans.out, input_nClusters) {
 		pp=0
 		minFDR = 0.01
 

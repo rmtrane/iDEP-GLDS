@@ -161,31 +161,31 @@ kable( readMetadata.out_ ) %>%
 ## 2. Pre-process 
 ```{r, message=FALSE  }  
 # Read counts per library 
- parDefault = par() 
+ parDefault_ = par() 
  par(mar=c(12,4,2,2)) 
  # barplot of total read counts
  x <- readData.out_$rawCounts
- groups = as.factor( detectGroups(colnames(x ) ) )
- if(nlevels(groups)<=1 | nlevels(groups) >20 )  
-  col1 = 'green'  else
-  col1 = rainbow(nlevels(groups))[ groups ]				
+ groups_ = as.factor( detectGroups(colnames(x ) ) )
+ if(nlevels(groups_)<=1 | nlevels(groups_) >20 )  
+  col1_ = 'green'  else
+  col1_ = rainbow(nlevels(groups_))[ groups_ ]				
 		 
  barplot( colSums(x)/1e6, 
-		col=col1,las=3, main="Total read counts (millions)")  
+		col=col1_,las=3, main="Total read counts (millions)")  
  readCountsBias(readData.out=readData.out_, readSampleInfo.out=readSampleInfo.out_)  # detecting bias in sequencing depth 
 ```
 ```{r, message=FALSE  }  
 
  # Box plot 
  x = readData.out_$data 
- boxplot(x, las = 2, col=col1,
+ boxplot(x, las = 2, col=col1_,
     ylab='Transformed expression levels',
     main='Distribution of transformed data') 
 ```
 ```{r, message=FALSE  }  
 
  #Density plot 
- par(parDefault) 
+ par(parDefault_) 
  densityPlot(readData.out = readData.out_, mycolors_)       
 ```
 ```{r, message=FALSE  }  
@@ -259,8 +259,8 @@ kable( readMetadata.out_ ) %>%
 ```     
 ```{r, message=FALSE  }  
 
- Kmeans.out = Kmeans(convertedData.out_, maxGeneClustering=maxGeneClustering_, input_nGenesKNN=input_nGenesKNN_, input_nClusters=input_nClusters_, input_kmeansNormalization=input_kmeansNormalization_, input_KmeansReRun=input_KmeansReRun_)   #Running K-means 
- KmeansHeatmap(.mycolors = mycolors_, .heatColors = heatColors_, .input_heatColors1=input_heatColors1_)   #Heatmap for k-Means 
+ Kmeans.out_ = Kmeans(convertedData.out_, maxGeneClustering=maxGeneClustering_, input_nGenesKNN=input_nGenesKNN_, input_nClusters=input_nClusters_, input_kmeansNormalization=input_kmeansNormalization_, input_KmeansReRun=input_KmeansReRun_)   #Running K-means 
+ KmeansHeatmap(Kmeans.out_, .mycolors = mycolors_, .heatColors = heatColors_, .input_heatColors1=input_heatColors1_)   #Heatmap for k-Means 
  
 ```     
 ```{r, message=FALSE  }  
@@ -275,7 +275,7 @@ kable( readMetadata.out_ ) %>%
     c(input_minSetSize_, input_maxSetSize_)  )  
  # Alternatively, users can use their own GMT files by
  #GeneSets.out <- readGMTRobust('somefile.GMT')  
- results <- KmeansGO(input_nClusters=input_nClusters_)  #Enrichment analysis for k-Means clusters	
+ results <- KmeansGO(Kmeans.out=Kmeans.out_, input_nClusters=input_nClusters_)  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -284,7 +284,7 @@ kable( readMetadata.out_ ) %>%
 ```{r, message=FALSE  } 
  input_seedTSNE_ <- 0	#Random seed for t-SNE
  input_colorGenes_ <- TRUE	#Color genes in t-SNE plot? 
- tSNEgenePlot(input_seedTSNE=input_seedTSNE_, input_colorGenes=input_colorGenes_, mycolors=mycolors_)  #Plot genes using t-SNE 
+ tSNEgenePlot(Kmeans.out_, input_seedTSNE=input_seedTSNE_, input_colorGenes=input_colorGenes_, mycolors=mycolors_)  #Plot genes using t-SNE 
 ```
 
 ## 5. PCA and beyond   
