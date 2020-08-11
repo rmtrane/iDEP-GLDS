@@ -3244,7 +3244,7 @@ gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_se
 		  return( top1)
 }
 
-fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30, input_GenePvalCutoff=1) {
+fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_absoluteFold=FALSE, input_nPathwayShow=30, input_GenePvalCutoff=1) {
 
 	noSig = as.data.frame("No significant pathway found.")
 	if( length(limma.out$topGenes) == 0 ) return(noSig)

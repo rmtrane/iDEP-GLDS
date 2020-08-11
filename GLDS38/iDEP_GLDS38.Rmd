@@ -449,8 +449,8 @@ Generating interactive PPI
 ```     
 ```{r, message=FALSE  }  
 
- input_pathwayMethod = 3  # 1  fgsea 
- fgseaPathwayData.out <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_nPathwayShow=input_nPathwayShow_, input_GenePvalCutoff=input_GenePvalCutoff_) #Pathway analysis using fgsea 
+ input_pathwayMethod_ = 3  # 1  fgsea 
+ fgseaPathwayData.out <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_absoluteFold=input_absoluteFold_, input_nPathwayShow=input_nPathwayShow_, input_GenePvalCutoff=input_GenePvalCutoff_) #Pathway analysis using fgsea 
  results <- fgseaPathwayData.out  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
