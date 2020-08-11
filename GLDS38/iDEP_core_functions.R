@@ -1463,7 +1463,7 @@ findOverlapGMT <- function ( query, geneSet, minFDR=.2 ,minSize=2,maxSize=10000 
 	return( result)
 }
 
-KmeansGO <- function(Kmeans.out, input_nClusters) {
+KmeansGO <- function(Kmeans.out, input_nClusters, GeneSets.out) {
 		pp=0
 		minFDR = 0.01
 
@@ -2403,7 +2403,7 @@ findContrastSamples <- function(selectContrast, allSampleNames,sampleInfo=NULL, 
 
 
 
-selectedHeatmap <- function(.mycolors, .heatColors, .input_heatColors1=1) {
+selectedHeatmap <- function(selectedHeatmap.data.out, .mycolors, .heatColors, .input_heatColors1=1) {
 
 		 bar = selectedHeatmap.data.out$bar + 2;
 		 bar[bar==3] =2
@@ -2698,7 +2698,7 @@ MAplot <- function (convertedData.out, readSampleInfo.out, .converted.out, .read
 }
 
 
-geneListGOTable <- function(minGenesEnrichment = 2) {		
+geneListGOTable <- function(minGenesEnrichment = 2, GeneSets.out) {		
 		NoSig=NULL
 		# using expression data
 		genes <- selectedHeatmap.data.out$genes
@@ -2743,7 +2743,7 @@ geneListGOTable <- function(minGenesEnrichment = 2) {
   }
 
 
-geneListGO <- function(input_removeRedudantSets=TRUE) {	
+geneListGO <- function( geneListGOTable.out, input_removeRedudantSets=TRUE) {	
   results1 = geneListGOTable.out
   tem = input_removeRedudantSets
   if(dim(results1)[2] ==1) return(results1) else { 
@@ -3008,7 +3008,7 @@ findTaxonomyID <- function( STRING10_species, speciesName = "mmusculus", input_s
     return(STRING10_species$species_id[ix])
 }
 
-STRINGdb_geneList <- function() {
+STRINGdb_geneList <- function(geneListData.out, findTaxonomyID.out) {
 	
 	taxonomyID = findTaxonomyID.out
 
@@ -3032,7 +3032,7 @@ STRINGdb_geneList <- function() {
 }
 
 
-STRINGDB_mapping_stat <- function( ) {
+STRINGDB_mapping_stat <- function(STRINGdb_geneList.out) {
 
 		if( is.null(STRINGdb_geneList.out ) ) return("No genes mapped by STRINGdb. Please enter or double-check species name above.")
 		if(! is.null(STRINGdb_geneList.out ) ) { 
@@ -3043,7 +3043,7 @@ STRINGDB_mapping_stat <- function( ) {
 }
 
 
-stringDB_GO_enrichmentData <- function(minGenesEnrichment = 2, input_STRINGdbGO='Process') {
+stringDB_GO_enrichmentData <- function(minGenesEnrichment = 2, input_STRINGdbGO='Process', findTaxonomyID.out, STRINGdb_geneList.out) {
 						   
 		tem = input_STRINGdbGO
 		taxonomyID = findTaxonomyID.out
@@ -3101,7 +3101,7 @@ stringDB_GO_enrichmentData <- function(minGenesEnrichment = 2, input_STRINGdbGO=
 }
 
 
-stringDB_network1 <- function( geneLists = 1, input_nGenesPPI=100 ) {  # geneLists =2 for both up and down
+stringDB_network1 <- function( geneLists = 1, input_nGenesPPI=100, findTaxonomyID.out, STRINGdb_geneList.out) {  # geneLists =2 for both up and down
 						   
 		tem = input_nGenesPPI
 		taxonomyID = findTaxonomyID.out
@@ -3128,7 +3128,7 @@ stringDB_network1 <- function( geneLists = 1, input_nGenesPPI=100 ) {  # geneLis
 
 
 # generates a html file containing results and also links to STRING-db
-stringDB_network_link <- function(input_nGenesPPI=100){
+stringDB_network_link <- function(input_nGenesPPI=100, findTaxonomyID.out, STRINGdb_geneList.out){
 		taxonomyID = findTaxonomyID.out
 		if(is.null( taxonomyID ) ) return(NULL)		
 		
@@ -3179,7 +3179,7 @@ stringDB_network_link <- function(input_nGenesPPI=100){
 # Pathway analysis
 ################################################################
 
-gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow, input_absoluteFold=FALSE, input_GenePvalCutoff=1){	 
+gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow, input_absoluteFold=FALSE, input_GenePvalCutoff=1, GeneSets.out){	 
 
 
 
@@ -3244,7 +3244,7 @@ gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_se
 		  return( top1)
 }
 
-fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_absoluteFold=FALSE, input_nPathwayShow=30, input_GenePvalCutoff=1) {
+fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_absoluteFold=FALSE, input_nPathwayShow=30, input_GenePvalCutoff=1, GeneSets.out) {
 
 	noSig = as.data.frame("No significant pathway found.")
 	if( length(limma.out$topGenes) == 0 ) return(noSig)
@@ -3378,7 +3378,7 @@ PGSEApathway <- function (converted,convertedData, selectOrg,GO,gmt, myrange,Pva
     }
  }
 
-PGSEAplot <- function(convertedData.out, readSampleInfo.out, input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30){
+PGSEAplot <- function(convertedData.out, readSampleInfo.out, input_selectOrg, input_dataFileFormat, input_selectGO, input_minSetSize=15, input_maxSetSize=2000, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30, GeneSets.out){
 
 	if(input_selectGO == "ID not recognized!" ) return( NULL)
 
@@ -3511,7 +3511,7 @@ ReactomePAPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, in
 }
 
 # Function possibly not used
-selectedPathwayData <- function(convertedData.out, readSampleInfo.out, allGeneInfo.out, input_selectOrg, input_dataFileFormat, input_CountsDEGMethod=3, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1){
+selectedPathwayData <- function(convertedData.out, readSampleInfo.out, allGeneInfo.out, input_selectOrg, input_dataFileFormat, input_CountsDEGMethod=3, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast1, GeneSets.out){
  
     if(input_sigPathways == "All") return (NULL) 
 	ix <- which(names(GeneSets.out ) == input_sigPathways   ) # find the gene set
@@ -3628,7 +3628,7 @@ keggPathwayID <- function (pathwayDescription, Species, GO,selectOrg, sqlite=dbD
 }
 
 #not used
-KeggImage <- function(input_selectOrg, input_selectContrast1){
+KeggImage <- function(input_selectOrg, input_selectContrast1, gagePathwayData.out){
 
    # First generate a blank image. Otherwise return(NULL) gives us errors.
     outfile <- tempfile(fileext='.png')
@@ -3700,7 +3700,7 @@ KeggImage <- function(input_selectOrg, input_selectContrast1){
 }
 
 # list of pathways with details
-pathwayListData  <- function(allGeneInfo.out, input_selectOrg, input_selectGO, input_pathwayMethod=1){
+pathwayListData  <- function(allGeneInfo.out, input_selectOrg, input_selectGO, input_pathwayMethod=1, gagePathwayData.out, fgseaPathwayData.out, GeneSets.out){
     
 	pathways = NULL
 	if( input_pathwayMethod == 1)  
@@ -4193,7 +4193,7 @@ biclustHeatmap <- function (biclustering.out, heatColors, input_heatColors1=1, i
 }
 
 
-geneListBclustGO <- function(minGenesEnrichment = 2, input_selectBicluster ){		
+geneListBclustGO <- function(minGenesEnrichment = 2, input_selectBicluster, GeneSets.out){		
 		
 			res = biclustering.out$res
 			if( res@Number == 0 ) return(as.data.frame("No clusters found!") ) 
@@ -4339,7 +4339,7 @@ modulePlot <- function(wgcna.out){
 }
 
 
-listWGCNA.Modules <- function(){
+listWGCNA.Modules <- function(wgcna.out){
 
 		if (is.null(wgcna.out ) ){ # if sample info is uploaded and correctly parsed.
 		   return(NULL)	   
@@ -4360,7 +4360,7 @@ listWGCNA.Modules <- function(){
 }
 
 
-moduleNetwork <- function(input_noIDConversion, allGeneInfo.out, input_selectOrg, input_selectWGCNA.Module="Entire network", input_topGenesNetwork=10, input_edgeThreshold=0.4, input_selectGO5){
+moduleNetwork <- function(wgcna.out, input_noIDConversion, allGeneInfo.out, input_selectOrg, input_selectWGCNA.Module="Entire network", input_topGenesNetwork=10, input_edgeThreshold=0.4, input_selectGO5){
 
 		outfile <- tempfile(fileext='.txt')
 	
@@ -4421,7 +4421,7 @@ moduleNetwork <- function(input_noIDConversion, allGeneInfo.out, input_selectOrg
 }
 
 
-networkModuleGO <- function(minGenesEnrichment = 2, input_selectWGCNA.Module="Entire network"){		
+networkModuleGO <- function(GeneSets.out, minGenesEnrichment = 2, input_selectWGCNA.Module="Entire network", wgcna.out){		
 
 	
 			#module = gsub(".* ","",input_selectWGCNA.Module)

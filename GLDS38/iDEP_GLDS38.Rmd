@@ -270,12 +270,12 @@ kable( readMetadata.out_ ) %>%
  input_selectGO3_ <- 'GOBP'	#Gene set category
  input_minSetSize_ <- 15	#Min gene set size
  input_maxSetSize_ <- 2000	#Max gene set size 
- GeneSets.out <-readGeneSets( geneSetFile_,
+ GeneSets.out_ <-readGeneSets( geneSetFile_,
     convertedData.out_, input_selectGO3_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  )  
  # Alternatively, users can use their own GMT files by
- #GeneSets.out <- readGMTRobust('somefile.GMT')  
- results <- KmeansGO(Kmeans.out=Kmeans.out_, input_nClusters=input_nClusters_)  #Enrichment analysis for k-Means clusters	
+ #GeneSets.out_ <- readGMTRobust('somefile.GMT')  
+ results <- KmeansGO(Kmeans.out=Kmeans.out_, input_nClusters=input_nClusters_, GeneSets.out=GeneSets.out_)  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -326,7 +326,7 @@ kable( readMetadata.out_ ) %>%
  factorReferenceLevels.out_ <- c('Gravity:Terrestrial') 
 
  limma.out <- limma(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, input_selectInteractions=input_selectInteractions_, input_selectBlockFactorsModel=input_selectBlockFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
- DEG.data.out <- DEG.data(convertedData.out_, allGeneInfo.out_)
+ DEG.data.out_ <- DEG.data(convertedData.out_, allGeneInfo.out_)
  limma.out$comparisons 
 ```     
 ```{r, message=FALSE  }  
@@ -344,8 +344,8 @@ kable( readMetadata.out_ ) %>%
 ## 7. DEG2   
 ```{r, message=FALSE  } 
  input_selectContrast_ <- 'Microgravity-Terrestrial'	#Selected comparisons 
- selectedHeatmap.data.out <- selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)
- selectedHeatmap(.mycolors=mycolors_,.heatColors=heatColors_)   # heatmap for DEGs in selected comparison
+ selectedHeatmap.data.out_ <- selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)
+ selectedHeatmap(selectedHeatmap.data.out=selectedHeatmap.data.out_, .mycolors=mycolors_,.heatColors=heatColors_)   # heatmap for DEGs in selected comparison
 
  # Save gene lists and data into files
  write.csv( selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)$genes, 'heatmap.data.csv') 
@@ -355,7 +355,7 @@ kable( readMetadata.out_ ) %>%
 ```     
 ```{r, message=FALSE  } 
  input_selectGO2_ <- 'GOBP'	#Gene set category 
- geneListData.out <- geneListData(allGeneInfo.out_, input_selectGO2_, input_selectOrg_, input_limmaPval_, input_limmaFC_, input_selectContrast_)  
+ geneListData.out_ <- geneListData(allGeneInfo.out_, input_selectGO2_, input_selectOrg_, input_limmaPval_, input_limmaFC_, input_selectContrast_)  
  volcanoPlot(input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectContrast=input_selectContrast_)  
 ```     
 ```{r, message=FALSE  }  
@@ -365,13 +365,13 @@ kable( readMetadata.out_ ) %>%
   MAplot(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out_, input_selectContrast_)  
 ```     
 ```{r, message=FALSE  }  
-  geneListGOTable.out <- geneListGOTable()  
+  geneListGOTable.out_ <- geneListGOTable(2, GeneSets.out_)  
  # Read pathway data again 
- GeneSets.out <-readGeneSets( geneSetFile_,
+ GeneSets.out_ <-readGeneSets( geneSetFile_,
     convertedData.out_, input_selectGO2_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  ) 
  input_removeRedudantSets_ <- TRUE	#Remove highly redundant gene sets? 
- results <- geneListGO(input_removeRedudantSets_)  #Enrichment analysis
+ results <- geneListGO( geneListGOTable.out_, input_removeRedudantSets_)  #Enrichment analysis
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -381,22 +381,22 @@ kable( readMetadata.out_ ) %>%
 STRING-db API access. 
 	We need to find the taxonomy id of your species, this used by STRING.
   First we try to guess the ID based on iDEP's database. Users can also skip this step and assign NCBI taxonomy id directly by
-  findTaxonomyID.out = 10090 # mouse 10090, human 9606 etc.
+  findTaxonomyID.out_ = 10090 # mouse 10090, human 9606 etc.
 	
 ```{r, message=FALSE  }  
 
   
  STRING10_species_ = read.csv(STRING10_speciesFile_)  
  ix = grep('Arabidopsis thaliana', STRING10_species_$official_name ) 
- findTaxonomyID.out <- STRING10_species_[ix,1] # find taxonomyID
- findTaxonomyID.out  
+ findTaxonomyID.out_ <- STRING10_species_[ix,1] # find taxonomyID
+ findTaxonomyID.out_  
  
 ``` 
 Enrichment analysis using STRING     
 ```{r, message=FALSE  }  
-  STRINGdb_geneList.out <- STRINGdb_geneList() #convert gene lists
+  STRINGdb_geneList.out_ <- STRINGdb_geneList(geneListData.out_, findTaxonomyID.out_) #convert gene lists
  input_STRINGdbGO_ <- 'Process'	#'Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro' 
- results <- stringDB_GO_enrichmentData(input_STRINGdbGO_)  # enrichment using STRING	
+ results <- stringDB_GO_enrichmentData(2, input_STRINGdbGO_, findTaxonomyID.out_, STRINGdb_geneList.out_)  # enrichment using STRING	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -405,11 +405,11 @@ Enrichment analysis using STRING
 PPI network retrieval and analysis    
 ```{r, message=FALSE  } 
  input_nGenesPPI_ <- 100	#Number of top genes for PPI retrieval and analysis 
- stringDB_network1(1, input_nGenesPPI_) #Show PPI network 
+ stringDB_network1(1, input_nGenesPPI_, findTaxonomyID.out_, STRINGdb_geneList.out_) #Show PPI network 
 ``` 
 Generating interactive PPI   
 ```{r, message=FALSE  }  
- write(stringDB_network_link(input_nGenesPPI_), 'PPI_results.html') # write results to html file 
+ write(stringDB_network_link(input_nGenesPPI_, findTaxonomyID.out_, STRINGdb_geneList.out_), 'PPI_results.html') # write results to html file 
  browseURL('PPI_results.html') # open in browser 
 ```
 
@@ -422,7 +422,7 @@ Generating interactive PPI
  input_minSetSize_ <- 15	#Min size for gene set
  input_maxSetSize_ <- 2000	#Max size for gene set 
  # Read pathway data again 
- GeneSets.out <-readGeneSets( geneSetFile_,
+ GeneSets.out_ <-readGeneSets( geneSetFile_,
     convertedData.out_, input_selectGO_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  ) 
  input_pathwayPvalCutoff_ <- 0.2	#FDR cutoff
@@ -430,17 +430,17 @@ Generating interactive PPI
  input_absoluteFold_ <- FALSE	#Use absolute values of fold-change?
  input_GenePvalCutoff_ <- 1	#FDR to remove genes 
 
- input_pathwayMethod_ = 1  # 1  GAGE
- gagePathwayData.out <- gagePathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff_, input_nPathwayShow_, input_absoluteFold_, input_GenePvalCutoff_)  # pathway analysis using GAGE  
+ input_pathwayMethod_ <- 1  # 1  GAGE
+ gagePathwayData.out_ <- gagePathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff_, input_nPathwayShow_, input_absoluteFold_, input_GenePvalCutoff_, GeneSets.out_)  # pathway analysis using GAGE  
    
- results <- gagePathwayData.out  #Enrichment analysis for k-Means clusters	
+ results <- gagePathwayData.out_  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
- pathwayListData.out_ = pathwayListData(allGeneInfo.out_, input_selectOrg_, input_selectGO_, input_pathwayMethod_) 
+ pathwayListData.out_ = pathwayListData(allGeneInfo.out_, input_selectOrg_, input_selectGO_, input_pathwayMethod_, gagePathwayData.out_, fgseaPathwayData.out_, GeneSets.out_) 
  enrichmentPlot(pathwayListData.out_, 25  ) 
 ```     
 ```{r, message=FALSE  }  
@@ -452,15 +452,15 @@ Generating interactive PPI
 ```{r, message=FALSE  }  
 
  input_pathwayMethod_ = 3  # 1  fgsea 
- fgseaPathwayData.out <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_absoluteFold=input_absoluteFold_, input_nPathwayShow=input_nPathwayShow_, input_GenePvalCutoff=input_GenePvalCutoff_) #Pathway analysis using fgsea 
- results <- fgseaPathwayData.out  #Enrichment analysis for k-Means clusters	
+ fgseaPathwayData.out_ <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_absoluteFold=input_absoluteFold_, input_nPathwayShow=input_nPathwayShow_, input_GenePvalCutoff=input_GenePvalCutoff_, GeneSets.out_) #Pathway analysis using fgsea 
+ results <- fgseaPathwayData.out_  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
-  pathwayListData.out_ = pathwayListData(allGeneInfo.out_, input_selectOrg=input_selectOrg_, input_selectGO=input_selectGO_, input_pathwayMethod_) 
+  pathwayListData.out_ = pathwayListData(allGeneInfo.out_, input_selectOrg=input_selectOrg_, input_selectGO=input_selectGO_, input_pathwayMethod_, gagePathwayData.out_, fgseaPathwayData.out_) 
   enrichmentPlot(pathwayListData.out_, 25, mycolors_) 
 ```     
 ```{r, message=FALSE  }  
@@ -470,7 +470,7 @@ Generating interactive PPI
   enrichmentNetworkPlotly(pathwayListData.out_) 
 ```     
 ```{r, message=FALSE,fig.width=9, fig.height=8  }  
-   PGSEAplot(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_nPathwayShow_) # pathway analysis using PGSEA 
+   PGSEAplot(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_selectOrg = input_selectOrg_, input_dataFileFormat=input_dataFileFormat_, input_selectGO=input_selectGO_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_nPathwayShow_, GeneSets.out_) # pathway analysis using PGSEA 
 ```
 
 ## 9. Chromosome   
@@ -486,18 +486,18 @@ Generating interactive PPI
 ```{r, message=FALSE  } 
  input_nGenesBiclust_ <- 1000	#Top genes for biclustering
  input_biclustMethod_ <- 'BCCC()'	#Method: 'BCCC', 'QUBIC', 'runibic' ... 
- biclustering.out = biclustering(convertedData.out=convertedData.out_, input_nGenesBiclust_, input_biclustMethod_ )  # run analysis
+ biclustering.out_ = biclustering(convertedData.out=convertedData.out_, input_nGenesBiclust_, input_biclustMethod_ )  # run analysis
 
  input_selectBicluster_ <- 1	#select a cluster 
- biclustHeatmap(biclustering.out, heatColors_, input_heatColors1=input_heatColors1_, input_selectBicluster=input_selectBicluster_)   # heatmap for selected cluster 
+ biclustHeatmap(biclustering.out_, heatColors_, input_heatColors1=input_heatColors1_, input_selectBicluster=input_selectBicluster_)   # heatmap for selected cluster 
 ```     
 ```{r, message=FALSE  } 
  input_selectGO4_ <- 'GOBP'	#Gene set category 
  # Read pathway data again 
- GeneSets.out <-readGeneSets( geneSetFile_,
+ GeneSets.out_ <-readGeneSets( geneSetFile_,
     convertedData.out_, input_selectGO4_, input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  )  
- results <- geneListBclustGO(2, input_selectBicluster=input_selectBicluster_)  #Enrichment analysis for k-Means clusters	
+ results <- geneListBclustGO(2, input_selectBicluster=input_selectBicluster_,  GeneSets.out_)  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -509,31 +509,31 @@ Generating interactive PPI
  input_mySoftPower_ <- 5	#SoftPower to cutoff
  input_nGenesNetwork_ <- 1000	#Number of top genes
  input_minModuleSize_ <- 20	#Module size minimum 
- wgcna.out = wgcna(convertedData.out_, 2000, input_mySoftPower=input_mySoftPower_, input_nGenesNetwork=input_nGenesNetwork_, input_minModuleSize=input_minModuleSize_)   # run WGCNA  
+ wgcna.out_ = wgcna(convertedData.out_, 2000, input_mySoftPower=input_mySoftPower_, input_nGenesNetwork=input_nGenesNetwork_, input_minModuleSize=input_minModuleSize_)   # run WGCNA  
 ```     
 ```{r, message=FALSE  }  
- softPower(wgcna.out)  # soft power curve 
+ softPower(wgcna.out_)  # soft power curve 
 ```     
 ```{r, message=FALSE  }  
-  modulePlot(wgcna.out)  # plot modules  
-  listWGCNA.Modules.out = listWGCNA.Modules() #modules
+  modulePlot(wgcna.out_)  # plot modules  
+  listWGCNA.Modules.out = listWGCNA.Modules(wgcna.out_) #modules
  
 ```     
 ```{r, message=FALSE  } 
  input_selectGO5_ <- 'GOBP'	#Gene set category 
  # Read pathway data again 
- GeneSets.out <-readGeneSets( geneSetFile_,
+ GeneSets.out_ <-readGeneSets( geneSetFile_,
     convertedData.out_, input_selectGO5_,input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  ) 
  input_selectWGCNA.Module_ <- 'Entire network'	#Select a module
  input_topGenesNetwork_ <- 10	#SoftPower to cutoff
  input_edgeThreshold_ <- 0.4	#Number of top genes 
- moduleNetwork(input_noIDConversion=input_noIDConversion_, allGeneInfo.out=allGeneInfo.out_, input_selectOrg_, input_selectWGCNA.Module_, input_topGenesNetwork_, input_edgeThreshold_, input_selectGO5_)	# show network of top genes in selected module
+ moduleNetwork(wgcna.out_, input_noIDConversion=input_noIDConversion_, allGeneInfo.out=allGeneInfo.out_, input_selectOrg_, input_selectWGCNA.Module_, input_topGenesNetwork_, input_edgeThreshold_, input_selectGO5_)	# show network of top genes in selected module
  
 ```     
 ```{r, message=FALSE  } 
  input_removeRedudantSets_ <- TRUE	#Remove redundant gene sets 
- results <- networkModuleGO(2, input_selectWGCNA.Module_)  #Enrichment analysis of selected module
+ results <- networkModuleGO(GeneSets.out_, 2, input_selectWGCNA.Module_, wgcna.out_)  #Enrichment analysis of selected module
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
