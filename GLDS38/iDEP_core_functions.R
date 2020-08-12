@@ -2698,7 +2698,7 @@ MAplot <- function (convertedData.out, readSampleInfo.out, .converted.out, .read
 }
 
 
-geneListGOTable <- function(minGenesEnrichment = 2, GeneSets.out) {		
+geneListGOTable <- function(minGenesEnrichment = 2, GeneSets.out, selectedHeatmap.data.out) {		
 		NoSig=NULL
 		# using expression data
 		genes <- selectedHeatmap.data.out$genes
@@ -3043,7 +3043,7 @@ STRINGDB_mapping_stat <- function(STRINGdb_geneList.out) {
 }
 
 
-stringDB_GO_enrichmentData <- function(minGenesEnrichment = 2, input_STRINGdbGO='Process', findTaxonomyID.out, STRINGdb_geneList.out) {
+stringDB_GO_enrichmentData <- function(selectedHeatmap.data.out, minGenesEnrichment = 2, input_STRINGdbGO='Process', findTaxonomyID.out, STRINGdb_geneList.out) {
 						   
 		tem = input_STRINGdbGO
 		taxonomyID = findTaxonomyID.out
@@ -3128,7 +3128,7 @@ stringDB_network1 <- function( geneLists = 1, input_nGenesPPI=100, findTaxonomyI
 
 
 # generates a html file containing results and also links to STRING-db
-stringDB_network_link <- function(input_nGenesPPI=100, findTaxonomyID.out, STRINGdb_geneList.out){
+stringDB_network_link <- function(input_nGenesPPI=100, findTaxonomyID.out, STRINGdb_geneList.out, geneListData.out){
 		taxonomyID = findTaxonomyID.out
 		if(is.null( taxonomyID ) ) return(NULL)		
 		
@@ -3149,7 +3149,7 @@ stringDB_network_link <- function(input_nGenesPPI=100, findTaxonomyID.out, STRIN
 			tem = paste(tem, "<a href=\"", link1, "\" target=\"_blank\"> Up-regulated; </a>"  )
 
 			# downregulated
-			ids = STRINGdb_geneList()[[2]]
+			ids = STRINGdb_geneList(geneListData.out, findTaxonomyID.out)[[2]]
 			if(length(ids)> input_nGenesPPI )
 				ids <- ids[1:input_nGenesPPI]
 
@@ -4193,7 +4193,7 @@ biclustHeatmap <- function (biclustering.out, heatColors, input_heatColors1=1, i
 }
 
 
-geneListBclustGO <- function(minGenesEnrichment = 2, input_selectBicluster, GeneSets.out){		
+geneListBclustGO <- function(minGenesEnrichment = 2, input_selectBicluster, biclustering.out, GeneSets.out){		
 		
 			res = biclustering.out$res
 			if( res@Number == 0 ) return(as.data.frame("No clusters found!") ) 

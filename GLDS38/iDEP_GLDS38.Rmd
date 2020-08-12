@@ -365,7 +365,7 @@ kable( readMetadata.out_ ) %>%
   MAplot(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out_, input_selectContrast_)  
 ```     
 ```{r, message=FALSE  }  
-  geneListGOTable.out_ <- geneListGOTable(2, GeneSets.out_)  
+  geneListGOTable.out_ <- geneListGOTable(2, GeneSets.out_, selectedHeatmap.data.out_)  
  # Read pathway data again 
  GeneSets.out_ <-readGeneSets( geneSetFile_,
     convertedData.out_, input_selectGO2_,input_selectOrg_,
@@ -396,7 +396,7 @@ Enrichment analysis using STRING
 ```{r, message=FALSE  }  
   STRINGdb_geneList.out_ <- STRINGdb_geneList(geneListData.out_, findTaxonomyID.out_) #convert gene lists
  input_STRINGdbGO_ <- 'Process'	#'Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro' 
- results <- stringDB_GO_enrichmentData(2, input_STRINGdbGO_, findTaxonomyID.out_, STRINGdb_geneList.out_)  # enrichment using STRING	
+ results <- stringDB_GO_enrichmentData(selectedHeatmap.data.out_, 2, input_STRINGdbGO_, findTaxonomyID.out_, STRINGdb_geneList.out_)  # enrichment using STRING	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -409,7 +409,7 @@ PPI network retrieval and analysis
 ``` 
 Generating interactive PPI   
 ```{r, message=FALSE  }  
- write(stringDB_network_link(input_nGenesPPI_, findTaxonomyID.out_, STRINGdb_geneList.out_), 'PPI_results.html') # write results to html file 
+ write(stringDB_network_link(input_nGenesPPI_, findTaxonomyID.out_, STRINGdb_geneList.out_, geneListData.out_), 'PPI_results.html') # write results to html file 
  browseURL('PPI_results.html') # open in browser 
 ```
 
@@ -460,7 +460,7 @@ Generating interactive PPI
   scroll_box(width = "100%") 
 ```     
 ```{r, message=FALSE  }  
-  pathwayListData.out_ = pathwayListData(allGeneInfo.out_, input_selectOrg=input_selectOrg_, input_selectGO=input_selectGO_, input_pathwayMethod_, gagePathwayData.out_, fgseaPathwayData.out_) 
+  pathwayListData.out_ = pathwayListData(allGeneInfo.out_, input_selectOrg=input_selectOrg_, input_selectGO=input_selectGO_, input_pathwayMethod_, gagePathwayData.out_, fgseaPathwayData.out_, GeneSets.out_) 
   enrichmentPlot(pathwayListData.out_, 25, mycolors_) 
 ```     
 ```{r, message=FALSE  }  
@@ -497,7 +497,7 @@ Generating interactive PPI
  GeneSets.out_ <-readGeneSets( geneSetFile_,
     convertedData.out_, input_selectGO4_, input_selectOrg_,
     c(input_minSetSize_, input_maxSetSize_)  )  
- results <- geneListBclustGO(2, input_selectBicluster=input_selectBicluster_,  GeneSets.out_)  #Enrichment analysis for k-Means clusters	
+ results <- geneListBclustGO(2, input_selectBicluster=input_selectBicluster_, biclustering.out_, GeneSets.out_)  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
