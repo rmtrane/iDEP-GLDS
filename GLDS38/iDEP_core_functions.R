@@ -2163,7 +2163,7 @@ limma <- function(convertedData.out, readSampleInfo.out, input_dataFileFormat = 
 }
 
 	
-DEG.data <- function(convertedData.out, allGeneInfo.out) {
+DEG.data <- function(limma.out, convertedData.out, allGeneInfo.out) {
 
 		  genes = limma.out$results
 		  genes = as.data.frame( genes[which( rowSums( abs (genes) ) != 0 ),] )
@@ -2179,7 +2179,7 @@ DEG.data <- function(convertedData.out, allGeneInfo.out) {
 		}
   
 
-vennPlot <- function(input_selectComparisonsVenn, input_UpDownRegulated=FALSE) {
+vennPlot <- function(limma.out, input_selectComparisonsVenn, input_UpDownRegulated=FALSE) {
 	
 			results = limma.out$results
 
@@ -2224,7 +2224,7 @@ vennPlot <- function(input_selectComparisonsVenn, input_UpDownRegulated=FALSE) {
   }
 
 
-sigGeneStats <- function( ){
+sigGeneStats <- function(limma.out){
 		
 		results = limma.out$results
 
@@ -2253,7 +2253,7 @@ sigGeneStats <- function( ){
 }
 
 
-sigGeneStatsTable <- function( ) {
+sigGeneStatsTable <- function(limma.out) {
 
 		results = limma.out$results
 
@@ -2269,7 +2269,7 @@ sigGeneStatsTable <- function( ) {
 }
 
 
-selectedHeatmap.data <- function(convertedData.out, readSampleInfo.out, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
+selectedHeatmap.data <- function(convertedData.out, readSampleInfo.out, limma.out, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
  		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
 		  if(!grepl("I:", input_selectContrast) ) {  # if not interaction term
@@ -2414,7 +2414,7 @@ selectedHeatmap <- function(selectedHeatmap.data.out, .mycolors, .heatColors, .i
 
 
 # Two selectedHeatmap.data functions?
-selectedHeatmap.data <- function(convertedData.out, readSampleInfo.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast){
+selectedHeatmap.data <- function(convertedData.out, readSampleInfo.out, limma.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast){
 
 		  genes <- limma.out$results
 		  if( is.null(genes) ) return(NULL)
@@ -2469,7 +2469,7 @@ selectedHeatmap.data <- function(convertedData.out, readSampleInfo.out, .convert
 
 
 
-DEG.data <- function(convertedData.out, allGeneInfo.out){
+DEG.data <- function(limma.out, convertedData.out, allGeneInfo.out){
 
 	genes = limma.out$results
 	genes = as.data.frame( genes[which( rowSums(genes) != 0 ),] )
@@ -2485,7 +2485,7 @@ DEG.data <- function(convertedData.out, allGeneInfo.out){
 }
 
 
-AllGeneListsGMT <- function() {
+AllGeneListsGMT <- function(limma.out) {
 
 		
 			results = limma.out$results
@@ -2511,7 +2511,7 @@ AllGeneListsGMT <- function() {
 
 
 
-geneListData <- function(allGeneInfo.out, input_selectGO2, input_selectOrg, input_limmaPval=0.1, input_limmaFC=2, input_selectContrast) {
+geneListData <- function(limma.out, allGeneInfo.out, input_selectGO2, input_selectOrg, input_limmaPval=0.1, input_limmaFC=2, input_selectContrast) {
 		
 		noSig = as.data.frame("No significant genes find!")
 		if( is.null(input_selectContrast) ) return(NULL)
@@ -2565,7 +2565,7 @@ geneListData <- function(allGeneInfo.out, input_selectGO2, input_selectOrg, inpu
   
 
   
-volcanoPlot <- function(input_limmaPval=0.1, input_limmaFC=2, input_selectContrast) {
+volcanoPlot <- function(limma.out, input_limmaPval=0.1, input_limmaFC=2, input_selectContrast) {
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
 	} else {
@@ -2591,7 +2591,7 @@ volcanoPlot <- function(input_limmaPval=0.1, input_limmaFC=2, input_selectContra
 	 
 }
 
-scatterPlot <- function(convertedData.out, readSampleInfo.out, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast){
+scatterPlot <- function(limma.out, convertedData.out, readSampleInfo.out, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast){
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -2650,7 +2650,7 @@ scatterPlot <- function(convertedData.out, readSampleInfo.out, input_dataFileFor
 }
 
 
-MAplot <- function (convertedData.out, readSampleInfo.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
+MAplot <- function (limma.out, convertedData.out, readSampleInfo.out, .converted.out, .readData.out, .input_noIDConversion, input_dataFileFormat, input_CountsDEGMethod=3, input_limmaPval=0.1, input_limmaFC=2, input_selectModelComprions, input_selectFactorsModel, factorReferenceLevels.out, input_selectContrast) {
  
 	if(length( limma.out$comparisons)  ==1 )  
     { top1=limma.out$topGenes[[1]]  
@@ -3179,7 +3179,7 @@ stringDB_network_link <- function(input_nGenesPPI=100, findTaxonomyID.out, STRIN
 # Pathway analysis
 ################################################################
 
-gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow, input_absoluteFold=FALSE, input_GenePvalCutoff=1, GeneSets.out){	 
+gagePathwayData <- function(limma.out, input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow, input_absoluteFold=FALSE, input_GenePvalCutoff=1, GeneSets.out){	 
 
 
 
@@ -3244,7 +3244,7 @@ gagePathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_se
 		  return( top1)
 }
 
-fgseaPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_absoluteFold=FALSE, input_nPathwayShow=30, input_GenePvalCutoff=1, GeneSets.out) {
+fgseaPathwayData <- function(limma.out, input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_absoluteFold=FALSE, input_nPathwayShow=30, input_GenePvalCutoff=1, GeneSets.out) {
 
 	noSig = as.data.frame("No significant pathway found.")
 	if( length(limma.out$topGenes) == 0 ) return(noSig)
@@ -3430,7 +3430,7 @@ convertEnsembl2Entrez <- function (query,Species) {
 }
 
 # Not Used
-ReactomePAPathwayData <- function(input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30, input_absoluteFold=FALSE, input_GenePvalCutoff=1, input_pathwayMethod=1){
+ReactomePAPathwayData <- function(limma.out, input_minSetSize=15, input_maxSetSize=2000, input_selectContrast1, input_pathwayPvalCutoff, input_nPathwayShow=30, input_absoluteFold=FALSE, input_GenePvalCutoff=1, input_pathwayMethod=1){
  
 	ensemblSpecies <- c("hsapiens_gene_ensembl","rnorvegicus_gene_ensembl", "mmusculus_gene_ensembl",
 		               "celegans_gene_ensembl","scerevisiae_gene_ensembl", "drerio_gene_ensembl", "dmelanogaster_gene_ensembl")
@@ -3628,7 +3628,7 @@ keggPathwayID <- function (pathwayDescription, Species, GO,selectOrg, sqlite=dbD
 }
 
 #not used
-KeggImage <- function(input_selectOrg, input_selectContrast1, gagePathwayData.out){
+KeggImage <- function(limma.out, input_selectOrg, input_selectContrast1, gagePathwayData.out){
 
    # First generate a blank image. Otherwise return(NULL) gives us errors.
     outfile <- tempfile(fileext='.png')
@@ -3789,7 +3789,7 @@ pathwayListData  <- function(allGeneInfo.out, input_selectOrg, input_selectGO, i
 # Genome-wide view
 ################################################################
  
-genomePlotly <- function(allGeneInfo.out, input_selectContrast2, input_limmaPvalViz=0.1, input_limmaFCViz=2){
+genomePlotly <- function(limma.out, allGeneInfo.out, input_selectContrast2, input_limmaPvalViz=0.1, input_limmaFCViz=2){
 		# default plot
 		fake = data.frame(a=1:3,b=1:3)
 		p <- ggplot(fake, aes(x = a, y = b)) +
@@ -3915,7 +3915,7 @@ genomePlotly <- function(allGeneInfo.out, input_selectContrast2, input_limmaPval
 }
 
 # results from PREDA, not used
-genomePlotData <- function(allGeneInfo.out, input_selectContrast2 ){
+genomePlotData <- function(limma.out, allGeneInfo.out, input_selectContrast2 ){
  	if (is.null(input_selectContrast2 ) ) return(NULL)
 	
 	if( length(limma.out$topGenes) == 0 ) return(NULL)
@@ -4046,7 +4046,7 @@ genomePlot <- function(){
 }
 
 # pre-calculating PREDA, so that changing FDR cutoffs does not trigger entire calculation
-genomePlotDataPre <- function(allGeneInfo.out, PREDA_Permutations = 1000, input_selectContrast2 ){
+genomePlotDataPre <- function(limma.out, allGeneInfo.out, PREDA_Permutations = 1000, input_selectContrast2 ){
 	if (is.null(input_selectContrast2 ) ) return(NULL)
 	
 	if( length(limma.out$topGenes) == 0 ) return(NULL)
