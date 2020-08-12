@@ -325,44 +325,44 @@ kable( readMetadata.out_ ) %>%
  input_selectBlockFactorsModel_ <- NULL 	#Selected comparisons
  factorReferenceLevels.out_ <- c('Gravity:Terrestrial') 
 
- limma.out <- limma(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, input_selectInteractions=input_selectInteractions_, input_selectBlockFactorsModel=input_selectBlockFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
- DEG.data.out_ <- DEG.data(convertedData.out_, allGeneInfo.out_)
- limma.out$comparisons 
+ limma.out_ <- limma(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_dataFileFormat = input_dataFileFormat_, input_countsLogStart = input_countsLogStart_, convertedCounts.out=convertedCounts.out_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, input_selectInteractions=input_selectInteractions_, input_selectBlockFactorsModel=input_selectBlockFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_)
+ DEG.data.out_ <- DEG.data(limma.out_, convertedData.out_, allGeneInfo.out_)
+ limma.out_$comparisons 
 ```     
 ```{r, message=FALSE  }  
- input_selectComparisonsVenn_ = limma.out$comparisons[1:3] # use first three comparisons
+ input_selectComparisonsVenn_ = limma.out_$comparisons[1:3] # use first three comparisons
  input_UpDownRegulated_ <- FALSE	#Split up and down regulated genes 
- vennPlot(input_selectComparisonsVenn_, input_UpDownRegulated_) # Venn diagram 
+ vennPlot(limma.out_, input_selectComparisonsVenn_, input_UpDownRegulated_) # Venn diagram 
 ```     
 ```{r, message=FALSE  }  
-  sigGeneStats() # number of DEGs as figure 
+  sigGeneStats(limma.out_) # number of DEGs as figure 
 ```     
 ```{r, message=FALSE  }  
-  sigGeneStatsTable() # number of DEGs as table 
+  sigGeneStatsTable(limma.out_) # number of DEGs as table 
 ```
 
 ## 7. DEG2   
 ```{r, message=FALSE  } 
  input_selectContrast_ <- 'Microgravity-Terrestrial'	#Selected comparisons 
- selectedHeatmap.data.out_ <- selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)
+ selectedHeatmap.data.out_ <- selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, limma.out=limma.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)
  selectedHeatmap(selectedHeatmap.data.out=selectedHeatmap.data.out_, .mycolors=mycolors_,.heatColors=heatColors_)   # heatmap for DEGs in selected comparison
 
  # Save gene lists and data into files
  write.csv( selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)$genes, 'heatmap.data.csv') 
- write.csv(DEG.data(convertedData.out_, allGeneInfo.out_),'DEG.data.csv' )
- write(AllGeneListsGMT() ,'AllGeneListsGMT.gmt')
+ write.csv(DEG.data(limma.out_, convertedData.out_, allGeneInfo.out_),'DEG.data.csv' )
+ write(AllGeneListsGMT(limma.out_) ,'AllGeneListsGMT.gmt')
  
 ```     
 ```{r, message=FALSE  } 
  input_selectGO2_ <- 'GOBP'	#Gene set category 
- geneListData.out_ <- geneListData(allGeneInfo.out_, input_selectGO2_, input_selectOrg_, input_limmaPval_, input_limmaFC_, input_selectContrast_)  
- volcanoPlot(input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectContrast=input_selectContrast_)  
+ geneListData.out_ <- geneListData(limma.out_, allGeneInfo.out_, input_selectGO2_, input_selectOrg_, input_limmaPval_, input_limmaFC_, input_selectContrast_)  
+ volcanoPlot(limma.out=limma.out_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectContrast=input_selectContrast_)  
 ```     
 ```{r, message=FALSE  }  
-  scatterPlot(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast_)  
+  scatterPlot(limma.out=limma.out_, convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast_)  
 ```     
 ```{r, message=FALSE  }  
-  MAplot(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out_, input_selectContrast_)  
+  MAplot(limma.out=limma.out_, convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat=input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_limmaPval=input_limmaPval_, input_limmaFC=input_limmaFC_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel_, factorReferenceLevels.out_, input_selectContrast_)  
 ```     
 ```{r, message=FALSE  }  
   geneListGOTable.out_ <- geneListGOTable(2, GeneSets.out_)  
@@ -416,7 +416,7 @@ Generating interactive PPI
 ## 8. Pathway analysis   
 ```{r, message=FALSE  } 
  input_selectContrast1_ <- 'Microgravity-Terrestrial'	#select Comparison 
- #input_selectContrast1 = limma.out$comparisons[3] # manually set
+ #input_selectContrast1 = limma.out_$comparisons[3] # manually set
  input_selectGO_ <- 'GOBP'	#Gene set category 
  #input_selectGO='custom' # if custom gmt file
  input_minSetSize_ <- 15	#Min size for gene set
@@ -431,7 +431,7 @@ Generating interactive PPI
  input_GenePvalCutoff_ <- 1	#FDR to remove genes 
 
  input_pathwayMethod_ <- 1  # 1  GAGE
- gagePathwayData.out_ <- gagePathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff_, input_nPathwayShow_, input_absoluteFold_, input_GenePvalCutoff_, GeneSets.out_)  # pathway analysis using GAGE  
+ gagePathwayData.out_ <- gagePathwayData(limma.out=limma.out_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff_, input_nPathwayShow_, input_absoluteFold_, input_GenePvalCutoff_, GeneSets.out_)  # pathway analysis using GAGE  
    
  results <- gagePathwayData.out_  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
@@ -452,7 +452,7 @@ Generating interactive PPI
 ```{r, message=FALSE  }  
 
  input_pathwayMethod_ = 3  # 1  fgsea 
- fgseaPathwayData.out_ <- fgseaPathwayData(input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_absoluteFold=input_absoluteFold_, input_nPathwayShow=input_nPathwayShow_, input_GenePvalCutoff=input_GenePvalCutoff_, GeneSets.out_) #Pathway analysis using fgsea 
+ fgseaPathwayData.out_ <- fgseaPathwayData(limma.out=limma.out_, input_minSetSize=input_minSetSize_, input_maxSetSize=input_maxSetSize_, input_selectContrast1=input_selectContrast1_, input_pathwayPvalCutoff=input_pathwayPvalCutoff_, input_absoluteFold=input_absoluteFold_, input_nPathwayShow=input_nPathwayShow_, input_GenePvalCutoff=input_GenePvalCutoff_, GeneSets.out_) #Pathway analysis using fgsea 
  results <- fgseaPathwayData.out_  #Enrichment analysis for k-Means clusters	
  results$adj.Pval <- format( results$adj.Pval,digits=3 )
  kable( results, row.names=FALSE) %>%
@@ -476,10 +476,10 @@ Generating interactive PPI
 ## 9. Chromosome   
 ```{r, message=FALSE  } 
  input_selectContrast2_ <- 'Microgravity-Terrestrial'	#select Comparison 
- #input_selectContrast2 = limma.out$comparisons[3] # manually set
+ #input_selectContrast2 = limma.out_$comparisons[3] # manually set
  input_limmaPvalViz_ <- 0.1	#FDR to filter genes
  input_limmaFCViz_ <- 2	#FDR to filter genes 
- genomePlotly(allGeneInfo.out_, input_selectContrast2_, input_limmaPvalViz_, input_limmaFCViz_) # shows fold-changes on the genome 
+ genomePlotly(limma.out_, allGeneInfo.out_, input_selectContrast2_, input_limmaPvalViz_, input_limmaFCViz_) # shows fold-changes on the genome 
 ```
 
 ## 10. Biclustering   
