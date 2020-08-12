@@ -348,7 +348,7 @@ kable( readMetadata.out_ ) %>%
  selectedHeatmap(selectedHeatmap.data.out=selectedHeatmap.data.out_, .mycolors=mycolors_,.heatColors=heatColors_)   # heatmap for DEGs in selected comparison
 
  # Save gene lists and data into files
- write.csv( selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_)$genes, 'heatmap.data.csv') 
+ write.csv( selectedHeatmap.data(convertedData.out=convertedData.out_, readSampleInfo.out=readSampleInfo.out_, .converted.out=converted.out_, .readData.out=readData.out_, .input_noIDConversion=input_noIDConversion_, input_dataFileFormat = input_dataFileFormat_, input_CountsDEGMethod=input_CountsDEGMethod_, input_selectModelComprions=input_selectModelComprions_, input_selectFactorsModel=input_selectFactorsModel_, factorReferenceLevels.out=factorReferenceLevels.out_, input_selectContrast=input_selectContrast_, limma.out=limma.out_)$genes, 'heatmap.data.csv') 
  write.csv(DEG.data(limma.out_, convertedData.out_, allGeneInfo.out_),'DEG.data.csv' )
  write(AllGeneListsGMT(limma.out_) ,'AllGeneListsGMT.gmt')
  
