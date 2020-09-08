@@ -403,7 +403,7 @@ limma.out_ <- limma(convertedData.out = convertedData.out_,
                     input_dataFileFormat = 1, 
                     input_countsLogStart = 4, 
                     convertedCounts.out = convertedCounts.out_, 
-                    input_CountsDEGMethod = 2, # 3 
+                    input_CountsDEGMethod = 3, # 3 
                     input_limmaPval = 0.1, 
                     input_limmaFC = 2, 
                     input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ",
@@ -446,7 +446,7 @@ selectedHeatmap.data.out_ <- selectedHeatmap.data(
   .readData.out = readData.out_, 
   .input_noIDConversion = TRUE, 
   input_dataFileFormat = 1, 
-  input_CountsDEGMethod = 2, 
+  input_CountsDEGMethod = 3, 
   input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ",
                                       unique(readSampleInfo.out_[,1])[1], " vs. ",
                                       unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant"
