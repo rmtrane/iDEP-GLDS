@@ -1814,8 +1814,7 @@ DEG.DESeq2 <- function (  rawCounts,maxP_limma=.05, minFC_limma=2, selectedCompa
   ix <- which( groups %in% g)
   groups <- groups[ix]
   rawCounts <- rawCounts[,ix]
-
-
+  
   Exp.type = paste(length(g)," sample groups detected.")
   comparisons = ""
   for( i in 1:(length(g)-1) )
@@ -1826,8 +1825,9 @@ DEG.DESeq2 <- function (  rawCounts,maxP_limma=.05, minFC_limma=2, selectedCompa
   colData = cbind(colnames(rawCounts), groups )
 
   # no sample file, but user selected comparisons using column names
-  if( is.null(modelFactors) & length( selectedComparisons) >0  )
+  if( is.null(modelFactors) & length( selectedComparisons) > 0  ){
     comparisons = selectedComparisons
+  }
 
   comparisons2 = comparisons	 # this is for showing comparison names, which might be different from internally
   # Set up the DESeqDataSet Object and run the DESeq pipeline
@@ -1835,9 +1835,9 @@ DEG.DESeq2 <- function (  rawCounts,maxP_limma=.05, minFC_limma=2, selectedCompa
                                colData=colData,
                                design=~groups)
 
-  if( is.null(modelFactors)  )
-    dds = DESeq(dds)  	else
-    {    # using selected factors and comparisons
+  if( is.null(modelFactors)  ){
+    dds = DESeq(dds)
+  } else{    # using selected factors and comparisons
       # build model
       modelFactors = c(modelFactors,blockFactor) # block factor is just added in.
 
@@ -1878,17 +1878,18 @@ DEG.DESeq2 <- function (  rawCounts,maxP_limma=.05, minFC_limma=2, selectedCompa
           DESeq2.Object = paste(DESeq2.Object, " + ",tem)
         }
       }
+      
       DESeq2.Object= paste( DESeq2.Object, ")") # ends the model
 
       eval(parse(text = DESeq2.Object) )
       dds = DESeq(dds)  # main function
-
+  
       # comparisons
       # "group: control vs. mutant"
       comparisons = gsub(".*: ","", selectedComparisons)
       comparisons = gsub(" vs\\. ","-", comparisons)
       factorsVector = gsub(":.*","", selectedComparisons) # corresponding factors for each comparison
-
+      
       # comparison2 holds names for display with real factor names
       # comparison  is used in calculation it is A, B, C for factors
       comparisons2 = comparisons

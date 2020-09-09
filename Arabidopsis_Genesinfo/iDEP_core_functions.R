@@ -2297,7 +2297,7 @@ sigGeneStats <- function( ){
 		 colnames(gg) = c("Regulation","Comparisons","Genes")
 		 
  
-		 p= ggplot(gg, aes(x=Comparisons, y=Genes, fill=  Regulation )  )+
+		 p = ggplot(gg, aes(x=Comparisons, y=Genes, fill=  Regulation )  )+
 			 geom_bar(position="dodge", stat="identity") + coord_flip() +
 			 theme(legend.position = "top") + 
 			 scale_fill_manual(values=c("red", "blue")) +

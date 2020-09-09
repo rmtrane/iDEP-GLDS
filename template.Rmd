@@ -6,8 +6,8 @@ output:
   html_document:
     code_folding: hide
 params: 
-  nVennGroupsMax: 3
-  input_folder: "GLDS208_Array"
+  nVennGroupsMax: Inf
+  input_folder: "GLDS37"
   geneInfoFile: "Arabidopsis_Genesinfo/Arabidopsis_thaliana__athaliana_eg_gene_GeneInfo.csv"
   geneSetFile: "Arabidopsis_Genesinfo/Arabidopsis_thaliana__athaliana_eg_gene.db"
 ---
@@ -129,9 +129,9 @@ to use the pathway files available in iDEP (or it is not available).
 ```{r, message=FALSE  }
 inputFolderFiles <- list.files(params$input_folder, full.names = TRUE)
 
-inputFile_ <- inputFolderFiles[stringr::str_detect(tolower(inputFolderFiles), "expression.csv")]
-sampleInfoFile_ <- inputFolderFiles[stringr::str_detect(tolower(inputFolderFiles), "sampleinfo.csv")]
-gldsMetadataFile_ <- inputFolderFiles[stringr::str_detect(tolower(inputFolderFiles), "metadata.csv")]
+inputFile_ <- inputFolderFiles[stringr::str_detect(tolower(inputFolderFiles), "expression.csv$")]
+sampleInfoFile_ <- inputFolderFiles[stringr::str_detect(tolower(inputFolderFiles), "sampleinfo.csv$")]
+gldsMetadataFile_ <- inputFolderFiles[stringr::str_detect(tolower(inputFolderFiles), "metadata.csv$")]
 
 
 geneInfoFile_ <- params$geneInfoFile
@@ -139,7 +139,6 @@ geneSetFile_ <- params$geneSetFile # pathway database in SQL; can be GMT format
 
 STRING10_speciesFile_ <- "https://raw.githubusercontent.com/iDEP-SDSU/idep/master/shinyapps/idep/STRING10_species.csv"
 ``` 
-
 
 ```{r, message=FALSE  }  
 readMetadata.out_ <- readMetadata(inFile = gldsMetadataFile_) #gldsMetadataFile_)
@@ -284,7 +283,7 @@ staticHeatmap(readData.out = readData.out_,
               input_selectFactorsHeatmap = 'Gravity')
 dev.off()
 ```
-![heatmap] (heatmap.png)   
+![heatmap] (`r paste(params$input_folder, "heatmap.png", sep = "/")`)   
 ```{r, message=FALSE  }  
 heatmapPlotly(convertedData.out = convertedData.out_, 
               heatColors = heatColors_, 
@@ -397,453 +396,488 @@ cat(
 ```
 
 ## 6. DEG1   
-```{r, message=FALSE  } 
-limma.out_ <- limma(convertedData.out = convertedData.out_, 
-                    readSampleInfo.out = readSampleInfo.out_, 
-                    input_dataFileFormat = 1, 
-                    input_countsLogStart = 4, 
-                    convertedCounts.out = convertedCounts.out_, 
-                    input_CountsDEGMethod = 3, # 3 
-                    input_limmaPval = 0.1, 
-                    input_limmaFC = 2, 
-                    input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ",
-                                                        unique(readSampleInfo.out_[,1])[1], " vs. ",
-                                                        unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant"
-                    input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity", 
-                    input_selectInteractions = NULL, 
-                    input_selectBlockFactorsModel = NULL, 
-                    factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1],
-                                                      unique(readSampleInfo.out_[,1])[2], sep = ":")) #"Gravity:Terrestrial")
 
-DEG.data.out_ <- DEG.data(limma.out = limma.out_, 
-                          convertedData.out = convertedData.out_, 
-                          allGeneInfo.out = allGeneInfo.out_)
 
-limma.out_$comparisons
-```     
-```{r, message=FALSE  }  
-nVennGroups <- min(params$nVennGroupsMax, length(limma.out_$comparisons)) # if less than three comparisons, include all comparisons.
-vennPlot(limma.out = limma.out_, 
-         input_selectComparisonsVenn = limma.out_$comparisons[1:nVennGroups], 
-         input_UpDownRegulated = FALSE) # Split up and down regulated genes
-```     
-```{r, message=FALSE  }  
-sigGeneStats(limma.out_) # number of DEGs as figure
-```     
-```{r, message=FALSE  }  
-sigGeneStatsTable(limma.out_) # number of DEGs as table
-```
+```{r message=FALSE}
+# List to hold limma outputs for all variables
+limma_outputs <- setNames(as.list(rep(NA, ncol(readSampleInfo.out_))),
+                          nm = colnames(readSampleInfo.out_))
 
-## 7. DEG2
+# List to hold all comparisons for each variable
+comps <- limma_outputs 
 
-```{r, message=FALSE  } 
-# input_selectContrast_ <- "Microgravity-Terrestrial" # Selected comparisons
-selectedHeatmap.data.out_ <- selectedHeatmap.data(
-  convertedData.out = convertedData.out_, 
-  readSampleInfo.out = readSampleInfo.out_, 
-  limma.out = limma.out_, 
-  .converted.out = NULL, 
-  .readData.out = readData.out_, 
-  .input_noIDConversion = TRUE, 
-  input_dataFileFormat = 1, 
-  input_CountsDEGMethod = 3, 
-  input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ",
-                                      unique(readSampleInfo.out_[,1])[1], " vs. ",
-                                      unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant"
-  input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity", 
-  factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1],
-                                    unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial"
-  input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1], 
-                               unique(readSampleInfo.out_[,1])[2],
-                               sep = "-") # "Microgravity-Terrestrial"
+# List to hold all DEG.out for each variable
+DEG_output <- limma_outputs 
+
+for (variable in colnames(readSampleInfo.out_)){
+  values <- unique(readSampleInfo.out_[, variable])
+  
+  # Create all combinations for this variable  
+  all_comps <- outer(values, values, function(x,y) paste0(variable, ": ", x, " vs. ", y))
+  comps[[variable]] <- all_comps[upper.tri(all_comps)]
+}
+
+# Run limma for all variables. lapply runs the function for each element of the list that you provide.
+limma_outputs <- lapply(comps, 
+                        function(x) 
+                          limma(convertedData.out = convertedData.out_, 
+                                readSampleInfo.out = readSampleInfo.out_, 
+                                input_dataFileFormat = 1, 
+                                input_countsLogStart = 4, 
+                                convertedCounts.out = convertedCounts.out_, 
+                                input_CountsDEGMethod = 3, # 3 
+                                input_limmaPval = 0.1, 
+                                input_limmaFC = 3, 
+                                input_selectModelComprions = x, 
+                                input_selectFactorsModel = unlist(strsplit(x[1], split = ":"))[1],
+                                input_selectInteractions = NULL, 
+                                input_selectBlockFactorsModel = NULL, 
+                                factorReferenceLevels.out = NULL)
 )
 
-selectedHeatmap(selectedHeatmap.data.out = selectedHeatmap.data.out_, 
-                .mycolors = mycolors_, 
-                .heatColors = heatColors_) # heatmap for DEGs in selected comparison
-
-# Save gene lists and data into files
-write.csv(
-  selectedHeatmap.data(convertedData.out = convertedData.out_, 
-                       readSampleInfo.out = readSampleInfo.out_,
-                       .converted.out = converted.out_, 
-                       .readData.out = readData.out_, 
-                       .input_noIDConversion = input_noIDConversion_, 
-                       input_dataFileFormat = 1, 
-                       input_CountsDEGMethod = 3, 
-                       input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ",
-                                                           unique(readSampleInfo.out_[,1])[1], " vs. ",
-                                                           unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant"
-                       input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity", 
-                       factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1],
-                                                         unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial"
-                       input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1], 
-                                                    unique(readSampleInfo.out_[,1])[2],
-                                                    sep = "-"),
-                       limma.out = limma.out_)$genes, 
-  paste(params$input_folder, "heatmap.data.csv", sep = "/")
-)
-
-write.csv(DEG.data(limma.out = limma.out_, convertedData.out = convertedData.out_, allGeneInfo.out = allGeneInfo.out_), 
-          paste(params$input_folder, "DEG.data.csv", sep = "/"))
-
-write(AllGeneListsGMT(limma.out_), 
-      paste(params$input_folder, "AllGeneListsGMT.gmt", sep = "/"))
-```     
-```{r, message=FALSE  } 
-input_selectGO2_ <- "GOBP" # Gene set category
-geneListData.out_ <- geneListData(limma.out = limma.out_, 
-                                  allGeneInfo.out = allGeneInfo.out_, 
-                                  input_selectGO2 = "GOBP", 
-                                  input_selectOrg = "NEW", 
-                                  input_limmaPval = 0.1, 
-                                  input_limmaFC = 2, 
-                                  input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1], 
-                                                               unique(readSampleInfo.out_[,1])[2],
-                                                               sep = "-")# "Microgravity-Terrestrial"
-)
-
-volcanoPlot(limma.out = limma.out_, 
-            input_limmaPval = 0.1, 
-            input_limmaFC = 2, 
-            input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1], 
-                                         unique(readSampleInfo.out_[,1])[2],
-                                         sep = "-")# "Microgravity-Terrestrial"
-)
-```     
-```{r, message=FALSE  }  
-scatterPlot(limma.out = limma.out_, 
-            convertedData.out = convertedData.out_, 
-            readSampleInfo.out = readSampleInfo.out_, 
-            input_dataFileFormat = 1,
-            input_CountsDEGMethod = 3, 
-            input_limmaPval = 0.1, 
-            input_limmaFC = 2, 
-            input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ",
-                                                unique(readSampleInfo.out_[,1])[1], " vs. ",
-                                                unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant"
-            input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity", 
-            factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1],
-                                              unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial"
-            input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1], 
-                                         unique(readSampleInfo.out_[,1])[2],
-                                         sep = "-"))
-
+DEG.data_out <- lapply(limma_outputs,
+                       function(x) 
+                         DEG.data(limma.out = x,
+                                  convertedData.out = convertedData.out_, 
+                                  allGeneInfo.out = allGeneInfo.out_))
+```
+```{r results = "asis"}  
+for (var in names(limma_outputs)){
+  # Print header for subsection
+  cat("### Limma for", var) 
+  cat("\n\n")
+  
+  # Print all comparisons done.
+  cat("Comparisons done for this variable:\n") 
+  cat(limma_outputs[[var]]$comparisons, sep = ", ")
+  cat("\n")
+  
+  ## Venn diagram.
+  nVennGroups <- min(params$nVennGroupsMax, length(limma_outputs[[var]]$comparisons)) # if less than three comparisons, include all comparisons.
+  vennPlot(limma.out = limma_outputs[[var]], 
+           input_selectComparisonsVenn = limma_outputs[[var]]$comparisons[1:nVennGroups], 
+           input_UpDownRegulated = FALSE) # Split up and down regulated genes
+  
+  print(sigGeneStats(limma_outputs[[var]])) # number of DEGs as figure
+  
+  kable(sigGeneStatsTable(limma_outputs[[var]]), 
+        row.names = FALSE) %>% # number of DEGs as table
+    kable_styling(bootstrap_options = c("striped", "hover"), position = "center") %>% 
+    print()
+}
 ```
 
-```{r, message=FALSE  } 
-MAplot(
-  limma.out = limma.out_, 
-  convertedData.out = convertedData.out_, 
-  readSampleInfo.out = readSampleInfo.out_, 
-  .converted.out = converted.out_, 
-  .readData.out = readData.out_, 
-  .input_noIDConversion = TRUE, 
-  input_dataFileFormat = 1, 
-  input_CountsDEGMethod = 3, 
-  input_limmaPval = 0.1, 
-  input_limmaFC = 2, 
-  input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ",
-                                      unique(readSampleInfo.out_[,1])[1], " vs. ",
-                                      unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant"
-  input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity", 
-  factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1],
-                                    unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial"
-  input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1], 
-                               unique(readSampleInfo.out_[,1])[2],
-                               sep = "-")
-)
-```     
-```{r, message=FALSE}  
-geneListGOTable.out_ <- geneListGOTable(GeneSets.out = GeneSets.out_, 
-                                        minGenesEnrichment = 2, 
-                                        selectedHeatmap.data.out = selectedHeatmap.data.out_)
-# Read pathway data again
-GeneSets.out_ <- readGeneSets(
-  fileName = geneSetFile_,
-  convertedData = convertedData.out_, 
-  GO = "GOBP", 
-  selectOrg = "NEW",
-  myrange = c(15, 2000)
-)
 
-#input_removeRedudantSets_ <- TRUE # Remove highly redundant gene sets?
-results <- geneListGO(geneListGOTable.out = geneListGOTable.out_, 
-                      input_removeRedudantSets = TRUE) # Enrichment analysis
+<!-- ## 7. DEG2 -->
 
-results$adj.Pval <- format(results$adj.Pval, digits = 3)
+<!-- ```{r, message=FALSE  }  -->
+<!-- # input_selectContrast_ <- "Microgravity-Terrestrial" # Selected comparisons -->
+<!-- selectedHeatmap.data.out_ <- selectedHeatmap.data( -->
+<!--   convertedData.out = convertedData.out_,  -->
+<!--   readSampleInfo.out = readSampleInfo.out_,  -->
+<!--   limma.out = limma.out_,  -->
+<!--   .converted.out = NULL,  -->
+<!--   .readData.out = readData.out_,  -->
+<!--   .input_noIDConversion = TRUE,  -->
+<!--   input_dataFileFormat = 1,  -->
+<!--   input_CountsDEGMethod = 3,  -->
+<!--   input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ", -->
+<!--                                       unique(readSampleInfo.out_[,1])[1], " vs. ", -->
+<!--                                       unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant" -->
+<!--   input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity",  -->
+<!--   factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1], -->
+<!--                                     unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial" -->
+<!--   input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                unique(readSampleInfo.out_[,1])[2], -->
+<!--                                sep = "-") # "Microgravity-Terrestrial" -->
+<!-- ) -->
 
-kable(results, row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  scroll_box(width = "100%")
-```
+<!-- selectedHeatmap(selectedHeatmap.data.out = selectedHeatmap.data.out_,  -->
+<!--                 .mycolors = mycolors_,  -->
+<!--                 .heatColors = heatColors_) # heatmap for DEGs in selected comparison -->
 
-STRING-db API access. 
-We need to find the taxonomy id of your species, this used by STRING.
-First we try to guess the ID based on iDEP's database. Users can also skip this step and assign NCBI taxonomy id directly by
-findTaxonomyID.out_ = 10090 # mouse 10090, human 9606 etc.
+<!-- # Save gene lists and data into files -->
+<!-- write.csv( -->
+<!--   selectedHeatmap.data(convertedData.out = convertedData.out_,  -->
+<!--                        readSampleInfo.out = readSampleInfo.out_, -->
+<!--                        .converted.out = converted.out_,  -->
+<!--                        .readData.out = readData.out_,  -->
+<!--                        .input_noIDConversion = input_noIDConversion_,  -->
+<!--                        input_dataFileFormat = 1,  -->
+<!--                        input_CountsDEGMethod = 3,  -->
+<!--                        input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ", -->
+<!--                                                            unique(readSampleInfo.out_[,1])[1], " vs. ", -->
+<!--                                                            unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant" -->
+<!--                        input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity",  -->
+<!--                        factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1], -->
+<!--                                                          unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial" -->
+<!--                        input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                                     unique(readSampleInfo.out_[,1])[2], -->
+<!--                                                     sep = "-"), -->
+<!--                        limma.out = limma.out_)$genes,  -->
+<!--   paste(params$input_folder, "heatmap.data.csv", sep = "/") -->
+<!-- ) -->
 
-```{r, message = FALSE}
-STRING10_species_ <- read.csv(STRING10_speciesFile_)
-ix <- grep("Arabidopsis thaliana", STRING10_species_$official_name)
-findTaxonomyID.out_ <- STRING10_species_[ix, 1] # find taxonomyID
-findTaxonomyID.out_
-``` 
+<!-- write.csv(DEG.data(limma.out = limma.out_, convertedData.out = convertedData.out_, allGeneInfo.out = allGeneInfo.out_),  -->
+<!--           paste(params$input_folder, "DEG.data.csv", sep = "/")) -->
 
-Enrichment analysis using STRING     
+<!-- write(AllGeneListsGMT(limma.out_),  -->
+<!--       paste(params$input_folder, "AllGeneListsGMT.gmt", sep = "/")) -->
+<!-- ```      -->
+<!-- ```{r, message=FALSE  }  -->
+<!-- input_selectGO2_ <- "GOBP" # Gene set category -->
+<!-- geneListData.out_ <- geneListData(limma.out = limma.out_,  -->
+<!--                                   allGeneInfo.out = allGeneInfo.out_,  -->
+<!--                                   input_selectGO2 = "GOBP",  -->
+<!--                                   input_selectOrg = "NEW",  -->
+<!--                                   input_limmaPval = 0.1,  -->
+<!--                                   input_limmaFC = 2,  -->
+<!--                                   input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                                                unique(readSampleInfo.out_[,1])[2], -->
+<!--                                                                sep = "-")# "Microgravity-Terrestrial" -->
+<!-- ) -->
 
-```{r, message=FALSE  }  
-STRINGdb_geneList.out_ <- STRINGdb_geneList(geneListData.out = geneListData.out_, 
-                                            findTaxonomyID.out = findTaxonomyID.out_) # convert gene lists
+<!-- volcanoPlot(limma.out = limma.out_,  -->
+<!--             input_limmaPval = 0.1,  -->
+<!--             input_limmaFC = 2,  -->
+<!--             input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                          unique(readSampleInfo.out_[,1])[2], -->
+<!--                                          sep = "-")# "Microgravity-Terrestrial" -->
+<!-- ) -->
+<!-- ```      -->
+<!-- ```{r, message=FALSE  }   -->
+<!-- scatterPlot(limma.out = limma.out_,  -->
+<!--             convertedData.out = convertedData.out_,  -->
+<!--             readSampleInfo.out = readSampleInfo.out_,  -->
+<!--             input_dataFileFormat = 1, -->
+<!--             input_CountsDEGMethod = 3,  -->
+<!--             input_limmaPval = 0.1,  -->
+<!--             input_limmaFC = 2,  -->
+<!--             input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ", -->
+<!--                                                 unique(readSampleInfo.out_[,1])[1], " vs. ", -->
+<!--                                                 unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant" -->
+<!--             input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity",  -->
+<!--             factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1], -->
+<!--                                               unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial" -->
+<!--             input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                          unique(readSampleInfo.out_[,1])[2], -->
+<!--                                          sep = "-")) -->
 
-# input_STRINGdbGO_ <- "Process" #' Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro'
-results <- stringDB_GO_enrichmentData(selectedHeatmap.data.out = selectedHeatmap.data.out_, 
-                                      minGenesEnrichment = 2, 
-                                      input_STRINGdbGO = "Process", #' Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro'
-                                      findTaxonomyID.out = findTaxonomyID.out_, 
-                                      STRINGdb_geneList.out = STRINGdb_geneList.out_) # enrichment using STRING
+<!-- ``` -->
 
-results$adj.Pval <- format(results$adj.Pval, digits = 3)
+<!-- ```{r, message=FALSE  }  -->
+<!-- MAplot( -->
+<!--   limma.out = limma.out_,  -->
+<!--   convertedData.out = convertedData.out_,  -->
+<!--   readSampleInfo.out = readSampleInfo.out_,  -->
+<!--   .converted.out = converted.out_,  -->
+<!--   .readData.out = readData.out_,  -->
+<!--   .input_noIDConversion = TRUE,  -->
+<!--   input_dataFileFormat = 1,  -->
+<!--   input_CountsDEGMethod = 3,  -->
+<!--   input_limmaPval = 0.1,  -->
+<!--   input_limmaFC = 2,  -->
+<!--   input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ", -->
+<!--                                       unique(readSampleInfo.out_[,1])[1], " vs. ", -->
+<!--                                       unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant" -->
+<!--   input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity",  -->
+<!--   factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1], -->
+<!--                                     unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial" -->
+<!--   input_selectContrast = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                unique(readSampleInfo.out_[,1])[2], -->
+<!--                                sep = "-") -->
+<!-- ) -->
+<!-- ```      -->
+<!-- ```{r, message=FALSE}   -->
+<!-- geneListGOTable.out_ <- geneListGOTable(GeneSets.out = GeneSets.out_,  -->
+<!--                                         minGenesEnrichment = 2,  -->
+<!--                                         selectedHeatmap.data.out = selectedHeatmap.data.out_) -->
+<!-- # Read pathway data again -->
+<!-- GeneSets.out_ <- readGeneSets( -->
+<!--   fileName = geneSetFile_, -->
+<!--   convertedData = convertedData.out_,  -->
+<!--   GO = "GOBP",  -->
+<!--   selectOrg = "NEW", -->
+<!--   myrange = c(15, 2000) -->
+<!-- ) -->
 
-kable(results, row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  scroll_box(width = "100%")
-``` 
+<!-- #input_removeRedudantSets_ <- TRUE # Remove highly redundant gene sets? -->
+<!-- results <- geneListGO(geneListGOTable.out = geneListGOTable.out_,  -->
+<!--                       input_removeRedudantSets = TRUE) # Enrichment analysis -->
 
-PPI network retrieval and analysis    
+<!-- results$adj.Pval <- format(results$adj.Pval, digits = 3) -->
 
-```{r, message=FALSE  } 
-stringDB_network1(geneLists = 1, 
-                  input_nGenesPPI = 100, 
-                  findTaxonomyID.out = findTaxonomyID.out_, 
-                  STRINGdb_geneList.out = STRINGdb_geneList.out_) # Show PPI network
-``` 
+<!-- kable(results, row.names = FALSE) %>% -->
+<!--   kable_styling(bootstrap_options = c("striped", "hover")) %>% -->
+<!--   scroll_box(width = "100%") -->
+<!-- ``` -->
 
-Generating interactive PPI   
-```{r, message=FALSE  }  
-write(
-  stringDB_network_link(
-    input_nGenesPPI = 100, 
-    findTaxonomyID.out = findTaxonomyID.out_, 
-    STRINGdb_geneList.out = STRINGdb_geneList.out_, 
-    geneListData.out = geneListData.out_
-  ), 
-  paste(params$input_folder, "PPI_results.html", sep = "/")
-)
-```
+<!-- STRING-db API access.  -->
+<!-- We need to find the taxonomy id of your species, this used by STRING. -->
+<!-- First we try to guess the ID based on iDEP's database. Users can also skip this step and assign NCBI taxonomy id directly by -->
+<!-- findTaxonomyID.out_ = 10090 # mouse 10090, human 9606 etc. -->
 
-## 8. Pathway analysis
+<!-- ```{r, message = FALSE} -->
+<!-- STRING10_species_ <- read.csv(STRING10_speciesFile_) -->
+<!-- ix <- grep("Arabidopsis thaliana", STRING10_species_$official_name) -->
+<!-- findTaxonomyID.out_ <- STRING10_species_[ix, 1] # find taxonomyID -->
+<!-- findTaxonomyID.out_ -->
+<!-- ```  -->
 
-```{r, message=FALSE  } 
-# Read pathway data again
-GeneSets.out_ <- readGeneSets(
-  fileName = geneSetFile_,
-  convertedData = convertedData.out_, 
-  GO = "GOBP", 
-  selectOrg = "NEW",
-  myrange = c(15, 2000)
-)
+<!-- Enrichment analysis using STRING      -->
 
-gagePathwayData.out_ <- gagePathwayData(limma.out = limma.out_, 
-                                        input_minSetSize = 15, 
-                                        input_maxSetSize = 2000, 
-                                        input_selectContrast1 = paste(unique(readSampleInfo.out_[,1])[1], 
-                                                                      unique(readSampleInfo.out_[,1])[2],
-                                                                      sep = "-"), #"Microgravity-Terrestrial", 
-                                        input_pathwayPvalCutoff = 0.2, 
-                                        input_nPathwayShow = 30, 
-                                        input_absoluteFold = FALSE, 
-                                        input_GenePvalCutoff = 1, 
-                                        GeneSets.out = GeneSets.out_) # pathway analysis using GAGE
+<!-- ```{r, message=FALSE  }   -->
+<!-- STRINGdb_geneList.out_ <- STRINGdb_geneList(geneListData.out = geneListData.out_,  -->
+<!--                                             findTaxonomyID.out = findTaxonomyID.out_) # convert gene lists -->
 
-results <- gagePathwayData.out_ # Enrichment analysis for k-Means clusters
-results$adj.Pval <- format(results$adj.Pval, digits = 3)
-kable(results, row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  scroll_box(width = "100%")
-```     
-```{r, message=FALSE  }  
-pathwayListData.out_ <- pathwayListData(allGeneInfo.out = allGeneInfo.out_, 
-                                        input_selectOrg = "NEW", 
-                                        input_selectGO = "GOBP", 
-                                        input_pathwayMethod = 1, 
-                                        gagePathwayData.out = gagePathwayData.out_, 
-                                        fgseaPathwayData.out = fgseaPathwayData.out_, 
-                                        GeneSets.out = GeneSets.out_)
+<!-- # input_STRINGdbGO_ <- "Process" #' Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro' -->
+<!-- results <- stringDB_GO_enrichmentData(selectedHeatmap.data.out = selectedHeatmap.data.out_,  -->
+<!--                                       minGenesEnrichment = 2,  -->
+<!--                                       input_STRINGdbGO = "Process", #' Process', 'Component', 'Function', 'KEGG', 'Pfam', 'InterPro' -->
+<!--                                       findTaxonomyID.out = findTaxonomyID.out_,  -->
+<!--                                       STRINGdb_geneList.out = STRINGdb_geneList.out_) # enrichment using STRING -->
 
-enrichmentPlot(pathwayListData.out_, enrichedTerms = 25)
-```     
-```{r, message=FALSE  }  
-enrichmentNetwork(pathwayListData.out_)
-```     
+<!-- results$adj.Pval <- format(results$adj.Pval, digits = 3) -->
 
-```{r, message=FALSE  }  
-enrichmentNetworkPlotly(pathwayListData.out_)
-```     
+<!-- kable(results, row.names = FALSE) %>% -->
+<!--   kable_styling(bootstrap_options = c("striped", "hover")) %>% -->
+<!--   scroll_box(width = "100%") -->
+<!-- ```  -->
 
-```{r, message=FALSE  }  
-# input_pathwayMethod_ <- 3 # 1  fgsea
+<!-- PPI network retrieval and analysis     -->
 
-fgseaPathwayData.out_ <- fgseaPathwayData(limma.out = limma.out_, 
-                                          input_minSetSize = 15, 
-                                          input_maxSetSize = 2000, 
-                                          input_selectContrast1 = paste(unique(readSampleInfo.out_[,1])[1], 
-                                                                        unique(readSampleInfo.out_[,1])[2],
-                                                                        sep = "-"),
-                                          input_pathwayPvalCutoff = 0.2, 
-                                          input_absoluteFold = FALSE, 
-                                          input_nPathwayShow = 30, 
-                                          input_GenePvalCutoff = 1, 
-                                          GeneSets.out = GeneSets.out_) # Pathway analysis using fgsea
+<!-- ```{r, message=FALSE  }  -->
+<!-- stringDB_network1(geneLists = 1,  -->
+<!--                   input_nGenesPPI = 100,  -->
+<!--                   findTaxonomyID.out = findTaxonomyID.out_,  -->
+<!--                   STRINGdb_geneList.out = STRINGdb_geneList.out_) # Show PPI network -->
+<!-- ```  -->
 
-results <- fgseaPathwayData.out_ # Enrichment analysis for k-Means clusters
-results$adj.Pval <- format(results$adj.Pval, digits = 3)
-kable(results, row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  scroll_box(width = "100%")
-```     
-```{r, message=FALSE  }  
-pathwayListData.out_ <- pathwayListData(allGeneInfo.out = allGeneInfo.out_, 
-                                        input_selectOrg = "NEW", 
-                                        input_selectGO = "GOBP", 
-                                        input_pathwayMethod = 3, 
-                                        gagePathwayData.out = gagePathwayData.out_, 
-                                        fgseaPathwayData.out = fgseaPathwayData.out_, 
-                                        GeneSets.out = GeneSets.out_)
+<!-- Generating interactive PPI    -->
+<!-- ```{r, message=FALSE  }   -->
+<!-- write( -->
+<!--   stringDB_network_link( -->
+<!--     input_nGenesPPI = 100,  -->
+<!--     findTaxonomyID.out = findTaxonomyID.out_,  -->
+<!--     STRINGdb_geneList.out = STRINGdb_geneList.out_,  -->
+<!--     geneListData.out = geneListData.out_ -->
+<!--   ),  -->
+<!--   paste(params$input_folder, "PPI_results.html", sep = "/") -->
+<!-- ) -->
+<!-- ``` -->
 
-enrichmentPlot(enrichedTerms = pathwayListData.out_, 
-               rightMargin = 25, 
-               mycolors = mycolors_)
-```     
-```{r, message=FALSE  }  
-enrichmentNetwork(pathwayListData.out_)
-```
+<!-- ## 8. Pathway analysis -->
 
-```{r, message = FALSE}
-enrichmentNetworkPlotly(pathwayListData.out_)
-```     
-```{r, message=FALSE,fig.width=9, fig.height=8  }  
-PGSEAplot(convertedData.out = convertedData.out_, 
-          readSampleInfo.out = readSampleInfo.out_, 
-          input_selectOrg = "NEW", 
-          input_dataFileFormat = 1, 
-          input_selectGO = "GOBP", 
-          input_minSetSize = 15, 
-          input_maxSetSize = 2000, 
-          input_CountsDEGMethod = 3, 
-          input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ",
-                                              unique(readSampleInfo.out_[,1])[1], " vs. ",
-                                              unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant"
-          input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity", 
-          factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1],
-                                            unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial"
-          input_selectContrast1 = paste(unique(readSampleInfo.out_[,1])[1], 
-                                        unique(readSampleInfo.out_[,1])[2],
-                                        sep = ":"),
-          input_pathwayPvalCutoff = 0.2, 
-          input_nPathwayShow = 30, 
-          GeneSets.out = GeneSets.out_) # pathway analysis using PGSEA
-```
+<!-- ```{r, message=FALSE  }  -->
+<!-- # Read pathway data again -->
+<!-- GeneSets.out_ <- readGeneSets( -->
+<!--   fileName = geneSetFile_, -->
+<!--   convertedData = convertedData.out_,  -->
+<!--   GO = "GOBP",  -->
+<!--   selectOrg = "NEW", -->
+<!--   myrange = c(15, 2000) -->
+<!-- ) -->
 
-## 9. Chromosome
+<!-- gagePathwayData.out_ <- gagePathwayData(limma.out = limma.out_,  -->
+<!--                                         input_minSetSize = 15,  -->
+<!--                                         input_maxSetSize = 2000,  -->
+<!--                                         input_selectContrast1 = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                                                       unique(readSampleInfo.out_[,1])[2], -->
+<!--                                                                       sep = "-"), #"Microgravity-Terrestrial",  -->
+<!--                                         input_pathwayPvalCutoff = 0.2,  -->
+<!--                                         input_nPathwayShow = 30,  -->
+<!--                                         input_absoluteFold = FALSE,  -->
+<!--                                         input_GenePvalCutoff = 1,  -->
+<!--                                         GeneSets.out = GeneSets.out_) # pathway analysis using GAGE -->
 
-```{r, message=FALSE  } 
-#input_selectContrast2_ <- "Microgravity-Terrestrial" # select Comparison
-# input_selectContrast2 = limma.out_$comparisons[3] # manually set
-#input_limmaPvalViz_ <- 0.1 # FDR to filter genes
-#input_limmaFCViz_ <- 2 # FDR to filter genes
-genomePlotly(limma.out = limma.out_, 
-             allGeneInfo.out = allGeneInfo.out_, 
-             input_selectContrast2 = paste(unique(readSampleInfo.out_[,1])[1], 
-                                           unique(readSampleInfo.out_[,1])[2],
-                                           sep = "-"),
-             input_limmaPvalViz = 0.1, 
-             input_limmaFCViz = 2) # shows fold-changes on the genome
-```
+<!-- results <- gagePathwayData.out_ # Enrichment analysis for k-Means clusters -->
+<!-- results$adj.Pval <- format(results$adj.Pval, digits = 3) -->
+<!-- kable(results, row.names = FALSE) %>% -->
+<!--   kable_styling(bootstrap_options = c("striped", "hover")) %>% -->
+<!--   scroll_box(width = "100%") -->
+<!-- ```      -->
+<!-- ```{r, message=FALSE  }   -->
+<!-- pathwayListData.out_ <- pathwayListData(allGeneInfo.out = allGeneInfo.out_,  -->
+<!--                                         input_selectOrg = "NEW",  -->
+<!--                                         input_selectGO = "GOBP",  -->
+<!--                                         input_pathwayMethod = 1,  -->
+<!--                                         gagePathwayData.out = gagePathwayData.out_,  -->
+<!--                                         fgseaPathwayData.out = fgseaPathwayData.out_,  -->
+<!--                                         GeneSets.out = GeneSets.out_) -->
 
-## 10. Biclustering
+<!-- enrichmentPlot(pathwayListData.out_, enrichedTerms = 25) -->
+<!-- ```      -->
+<!-- ```{r, message=FALSE  }   -->
+<!-- enrichmentNetwork(pathwayListData.out_) -->
+<!-- ```      -->
 
-```{r, message=FALSE  } 
-biclustering.out_ <- biclustering(convertedData.out = convertedData.out_, 
-                                  input_nGenesBiclust = 1000, 
-                                  input_biclustMethod = "BCCC()") # run analysis
+<!-- ```{r, message=FALSE  }   -->
+<!-- enrichmentNetworkPlotly(pathwayListData.out_) -->
+<!-- ```      -->
 
-input_selectBicluster_ <- 1 # select a cluster
-biclustHeatmap(biclustering.out = biclustering.out_, 
-               heatColors = heatColors_, 
-               input_heatColors1 = 1, 
-               input_selectBicluster = 1) # heatmap for selected cluster
-```
+<!-- ```{r, message=FALSE  }   -->
+<!-- # input_pathwayMethod_ <- 3 # 1  fgsea -->
 
-```{r, message=FALSE  } 
-#input_selectGO4_ <- "GOBP" # Gene set category
-# Read pathway data again
-GeneSets.out_ <- readGeneSets(
-  fileName = geneSetFile_,
-  convertedData = convertedData.out_, 
-  GO = "GOBP", 
-  selectOrg = "NEW",
-  myrange = c(15, 2000)
-)
+<!-- fgseaPathwayData.out_ <- fgseaPathwayData(limma.out = limma.out_,  -->
+<!--                                           input_minSetSize = 15,  -->
+<!--                                           input_maxSetSize = 2000,  -->
+<!--                                           input_selectContrast1 = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                                                         unique(readSampleInfo.out_[,1])[2], -->
+<!--                                                                         sep = "-"), -->
+<!--                                           input_pathwayPvalCutoff = 0.2,  -->
+<!--                                           input_absoluteFold = FALSE,  -->
+<!--                                           input_nPathwayShow = 30,  -->
+<!--                                           input_GenePvalCutoff = 1,  -->
+<!--                                           GeneSets.out = GeneSets.out_) # Pathway analysis using fgsea -->
 
-results <- geneListBclustGO(minGenesEnrichment = 2, 
-                            input_selectBicluster = 1, 
-                            biclustering.out = biclustering.out_, 
-                            GeneSets.out = GeneSets.out_) # Enrichment analysis for k-Means clusters
+<!-- results <- fgseaPathwayData.out_ # Enrichment analysis for k-Means clusters -->
+<!-- results$adj.Pval <- format(results$adj.Pval, digits = 3) -->
+<!-- kable(results, row.names = FALSE) %>% -->
+<!--   kable_styling(bootstrap_options = c("striped", "hover")) %>% -->
+<!--   scroll_box(width = "100%") -->
+<!-- ```      -->
+<!-- ```{r, message=FALSE  }   -->
+<!-- pathwayListData.out_ <- pathwayListData(allGeneInfo.out = allGeneInfo.out_,  -->
+<!--                                         input_selectOrg = "NEW",  -->
+<!--                                         input_selectGO = "GOBP",  -->
+<!--                                         input_pathwayMethod = 3,  -->
+<!--                                         gagePathwayData.out = gagePathwayData.out_,  -->
+<!--                                         fgseaPathwayData.out = fgseaPathwayData.out_,  -->
+<!--                                         GeneSets.out = GeneSets.out_) -->
 
-results$adj.Pval <- format(results$adj.Pval, digits = 3)
+<!-- enrichmentPlot(enrichedTerms = pathwayListData.out_,  -->
+<!--                rightMargin = 25,  -->
+<!--                mycolors = mycolors_) -->
+<!-- ```      -->
+<!-- ```{r, message=FALSE  }   -->
+<!-- enrichmentNetwork(pathwayListData.out_) -->
+<!-- ``` -->
 
-kable(results, row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  scroll_box(width = "100%")
-```
+<!-- ```{r, message = FALSE} -->
+<!-- enrichmentNetworkPlotly(pathwayListData.out_) -->
+<!-- ```      -->
+<!-- ```{r, message=FALSE,fig.width=9, fig.height=8  }   -->
+<!-- PGSEAplot(convertedData.out = convertedData.out_,  -->
+<!--           readSampleInfo.out = readSampleInfo.out_,  -->
+<!--           input_selectOrg = "NEW",  -->
+<!--           input_dataFileFormat = 1,  -->
+<!--           input_selectGO = "GOBP",  -->
+<!--           input_minSetSize = 15,  -->
+<!--           input_maxSetSize = 2000,  -->
+<!--           input_CountsDEGMethod = 3,  -->
+<!--           input_selectModelComprions = paste0(colnames(readSampleInfo.out_)[1], ": ", -->
+<!--                                               unique(readSampleInfo.out_[,1])[1], " vs. ", -->
+<!--                                               unique(readSampleInfo.out_[,1])[2]), #"Gravity: Microgravity vs. Terrestrial", # format as "group: control vs. mutant" -->
+<!--           input_selectFactorsModel = colnames(readSampleInfo.out_)[1], #"Gravity",  -->
+<!--           factorReferenceLevels.out = paste(colnames(readSampleInfo.out_)[1], -->
+<!--                                             unique(readSampleInfo.out_[,1])[2], sep = ":"), #"Gravity:Terrestrial" -->
+<!--           input_selectContrast1 = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                         unique(readSampleInfo.out_[,1])[2], -->
+<!--                                         sep = ":"), -->
+<!--           input_pathwayPvalCutoff = 0.2,  -->
+<!--           input_nPathwayShow = 30,  -->
+<!--           GeneSets.out = GeneSets.out_) # pathway analysis using PGSEA -->
+<!-- ``` -->
 
-## 11. Co-expression network
+<!-- ## 9. Chromosome -->
 
-```{r, message=FALSE  } 
-wgcna.out_ <- wgcna(convertedData.out = convertedData.out_, 
-                    maxGeneWGCNA = 2000, 
-                    input_mySoftPower = 5, 
-                    input_nGenesNetwork = 1000, 
-                    input_minModuleSize = 20) # run WGCNA
-```
+<!-- ```{r, message=FALSE  }  -->
+<!-- #input_selectContrast2_ <- "Microgravity-Terrestrial" # select Comparison -->
+<!-- # input_selectContrast2 = limma.out_$comparisons[3] # manually set -->
+<!-- #input_limmaPvalViz_ <- 0.1 # FDR to filter genes -->
+<!-- #input_limmaFCViz_ <- 2 # FDR to filter genes -->
+<!-- genomePlotly(limma.out = limma.out_,  -->
+<!--              allGeneInfo.out = allGeneInfo.out_,  -->
+<!--              input_selectContrast2 = paste(unique(readSampleInfo.out_[,1])[1],  -->
+<!--                                            unique(readSampleInfo.out_[,1])[2], -->
+<!--                                            sep = "-"), -->
+<!--              input_limmaPvalViz = 0.1,  -->
+<!--              input_limmaFCViz = 2) # shows fold-changes on the genome -->
+<!-- ``` -->
 
-```{r, message=FALSE  }  
-softPower(wgcna.out_) # soft power curve
-```     
+<!-- ## 10. Biclustering -->
 
-```{r, message=FALSE  }  
-listWGCNA.Modules.out <- listWGCNA.Modules(wgcna.out_) # modules
-modulePlot(wgcna.out_) # plot modules
-```     
+<!-- ```{r, message=FALSE  }  -->
+<!-- biclustering.out_ <- biclustering(convertedData.out = convertedData.out_,  -->
+<!--                                   input_nGenesBiclust = 1000,  -->
+<!--                                   input_biclustMethod = "BCCC()") # run analysis -->
 
-```{r, message=FALSE  } 
-# Read pathway data again
-GeneSets.out_ <- readGeneSets(
-  fileName = geneSetFile_,
-  convertedData = convertedData.out_, 
-  GO = "GOBP", 
-  selectOrg = "NEW",
-  myrange = c(15, 2000)
-)
+<!-- input_selectBicluster_ <- 1 # select a cluster -->
+<!-- biclustHeatmap(biclustering.out = biclustering.out_,  -->
+<!--                heatColors = heatColors_,  -->
+<!--                input_heatColors1 = 1,  -->
+<!--                input_selectBicluster = 1) # heatmap for selected cluster -->
+<!-- ``` -->
 
-moduleNetwork(wgcna.out = wgcna.out_, 
-              input_noIDConversion = TRUE, 
-              allGeneInfo.out = allGeneInfo.out_, 
-              input_selectOrg = "NEW", 
-              input_selectWGCNA.Module = "Entire network", 
-              input_topGenesNetwork = 10, 
-              input_edgeThreshold = 0.4, 
-              input_selectGO5 = "GOBP") # show network of top genes in selected module
-```     
-```{r, message=FALSE  } 
-results <- networkModuleGO(GeneSets.out = GeneSets.out_, 
-                           minGenesEnrichment = 2, 
-                           input_selectWGCNA.Module = "Entire network", 
-                           wgcna.out = wgcna.out_) # Enrichment analysis of selected module
+<!-- ```{r, message=FALSE  }  -->
+<!-- #input_selectGO4_ <- "GOBP" # Gene set category -->
+<!-- # Read pathway data again -->
+<!-- GeneSets.out_ <- readGeneSets( -->
+<!--   fileName = geneSetFile_, -->
+<!--   convertedData = convertedData.out_,  -->
+<!--   GO = "GOBP",  -->
+<!--   selectOrg = "NEW", -->
+<!--   myrange = c(15, 2000) -->
+<!-- ) -->
 
-results$adj.Pval <- format(results$adj.Pval, digits = 3)
-kable(results, row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  scroll_box(width = "100%")
-```   
+<!-- results <- geneListBclustGO(minGenesEnrichment = 2,  -->
+<!--                             input_selectBicluster = 1,  -->
+<!--                             biclustering.out = biclustering.out_,  -->
+<!--                             GeneSets.out = GeneSets.out_) # Enrichment analysis for k-Means clusters -->
+
+<!-- results$adj.Pval <- format(results$adj.Pval, digits = 3) -->
+
+<!-- kable(results, row.names = FALSE) %>% -->
+<!--   kable_styling(bootstrap_options = c("striped", "hover")) %>% -->
+<!--   scroll_box(width = "100%") -->
+<!-- ``` -->
+
+<!-- ## 11. Co-expression network -->
+
+<!-- ```{r, message=FALSE  }  -->
+<!-- wgcna.out_ <- wgcna(convertedData.out = convertedData.out_,  -->
+<!--                     maxGeneWGCNA = 2000,  -->
+<!--                     input_mySoftPower = 5,  -->
+<!--                     input_nGenesNetwork = 1000,  -->
+<!--                     input_minModuleSize = 20) # run WGCNA -->
+<!-- ``` -->
+
+<!-- ```{r, message=FALSE  }   -->
+<!-- softPower(wgcna.out_) # soft power curve -->
+<!-- ```      -->
+
+<!-- ```{r, message=FALSE  }   -->
+<!-- listWGCNA.Modules.out <- listWGCNA.Modules(wgcna.out_) # modules -->
+<!-- modulePlot(wgcna.out_) # plot modules -->
+<!-- ```      -->
+
+<!-- ```{r, message=FALSE  }  -->
+<!-- # Read pathway data again -->
+<!-- GeneSets.out_ <- readGeneSets( -->
+<!--   fileName = geneSetFile_, -->
+<!--   convertedData = convertedData.out_,  -->
+<!--   GO = "GOBP",  -->
+<!--   selectOrg = "NEW", -->
+<!--   myrange = c(15, 2000) -->
+<!-- ) -->
+
+<!-- moduleNetwork(wgcna.out = wgcna.out_,  -->
+<!--               input_noIDConversion = TRUE,  -->
+<!--               allGeneInfo.out = allGeneInfo.out_,  -->
+<!--               input_selectOrg = "NEW",  -->
+<!--               input_selectWGCNA.Module = "Entire network",  -->
+<!--               input_topGenesNetwork = 10,  -->
+<!--               input_edgeThreshold = 0.4,  -->
+<!--               input_selectGO5 = "GOBP") # show network of top genes in selected module -->
+<!-- ```      -->
+<!-- ```{r, message=FALSE  }  -->
+<!-- results <- networkModuleGO(GeneSets.out = GeneSets.out_,  -->
+<!--                            minGenesEnrichment = 2,  -->
+<!--                            input_selectWGCNA.Module = "Entire network",  -->
+<!--                            wgcna.out = wgcna.out_) # Enrichment analysis of selected module -->
+
+<!-- results$adj.Pval <- format(results$adj.Pval, digits = 3) -->
+<!-- kable(results, row.names = FALSE) %>% -->
+<!--   kable_styling(bootstrap_options = c("striped", "hover")) %>% -->
+<!--   scroll_box(width = "100%") -->
+<!-- ```    -->
